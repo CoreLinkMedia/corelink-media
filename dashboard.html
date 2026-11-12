@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corelink Media | Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#071b33;color:#14243a;font-family:Arial,sans-serif;padding:20px}
+.container{max-width:1050px;margin:auto}
+header{background:#102b49;color:white;padding:22px;border-radius:12px;margin-bottom:20px}
+.logo{font-size:25px;font-weight:bold}
+.logo span{color:#17c6b2}
+.muted{color:#aebfd0;font-size:13px}
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.stat{background:#edf4f8;padding:18px;border-radius:10px}
+.stat small{color:#64748b}
+.stat h2{margin:10px 0 0;color:#071b33;font-size:27px}
+input,select{width:100%;padding:12px;border:1px solid #ccd7e2;border-radius:7px;margin:7px 0 13px;font-size:15px}
+button{padding:12px 16px;border:0;border-radius:7px;background:#17c6b2;color:#071b33;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+.logout{background:#e8eef4;color:#071b33;float:right}
+h2,h3{color:#071b33}
+label{font-size:13px;font-weight:bold}
+.message{padding:12px;background:#eaf4f7;border-radius:7px;margin:12px 0;overflow-wrap:anywhere}
+.hidden{display:none}
+.link{overflow-wrap:anywhere;font-size:13px;background:#edf4f8;padding:10px;border-radius:6px}
+.item{padding:13px 0;border-bottom:1px solid #e5ebf0}
+.item:last-child{border:0}
+.badge{display:inline-block;background:#d9f8ef;color:#087c69;padding:5px 9px;border-radius:20px;font-size:12px}
+@media(max-width:550px){body{padding:12px}.card{padding:15px}}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+<button class="logout" id="logoutBtn">Logout</button>
+<div class="logo">CORELINK <span>MEDIA</span></div>
+<p class="muted">Grow Together. Earn Through Performance.</p>
+<h2 style="color:white;margin-bottom:5px" id="welcome">Loading dashboard...</h2>
+<div class="muted" id="userEmail"></div>
+</header>
+
+<div id="message" class="message hidden"></div>
+
+<!-- EMPLOYEE DASHBOARD -->
+<section id="memberPanel" class="hidden">
+<div class="card">
+<h2>My Performance</h2>
+<div class="grid">
+<div class="stat"><small>Registrations</small><h2 id="regCount">0</h2></div>
+<div class="stat"><small>First Time Deposits</small><h2 id="ftdCount">0</h2></div>
+<div class="stat"><small>Total Commission</small><h2 id="commissionTotal">R0.00</h2></div>
+</div>
+</div>
+
+<div class="card">
+<h3>My Assigned Campaigns</h3>
+<div id="myCampaigns">Loading campaigns...</div>
+</div>
+</section>
+
+<!-- ADMIN DASHBOARD -->
+<section id="adminPanel" class="hidden">
+
+<div class="card">
+<h2>Administrator Overview</h2>
+<div class="grid">
+<div class="stat"><small>Total Members</small><h2 id="adminMembers">0</h2></div>
+<div class="stat"><small>Total Campaigns</small><h2 id="adminCampaigns">0</h2></div>
+<div class="stat"><small>Pending FTDs</small><h2 id="adminFtd">0</h2></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Create Campaign</h3>
+<form id="campaignForm">
+<label>Campaign Name</label>
+<input id="campaignName" placeholder="Example: Goldrush" required>
+
+<label>Advertiser Name</label>
+<input id="advertiserName" placeholder="Example: Goldrush" required>
+
+<label>Commission Model</label>
+<select id="commissionType">
+<option value="fixed">Fixed amount per FTD</option>
+<option value="percentage">Percentage of first deposit</option>
+<option value="hybrid">Fixed amount plus percentage</option>
+</select>
+
+<label>Fixed Commission Amount (R)</label>
+<input id="fixedAmount" type="number" min="0" step="0.01" value="0">
+
+<label>Percentage Rate (%)</label>
+<input id="percentageRate" type="number" min="0" max="100" step="0.01" value="0">
+
+<button type="submit" id="createCampaignBtn">Create Campaign</button>
+</form>
+</div>
+
+<div class="card">
+<h3>Assign Campaign to Employee</h3>
+<form id="assignmentForm">
+<label>Select Employee</label>
+<select id="employeeSelect" required>
+<option value="">Loading employees...</option>
+</select>
+
+<label>Select Campaign</label>
+<select id="campaignSelect" required>
+<option value="">Select a campaign</option>
+</select>
+
+<button type="submit" id="assignBtn">Assign Campaign</button>
+</form>
+</div>
+
+<div class="card">
+<h3>Campaign Management</h3>
+<div id="campaignList">Loading campaigns...</div>
+</div>
+
+<div class="card">
+<h3>Employee List</h3>
+<div id="employeeList">Loading employees...</div>
+</div>
+
+</section>
+</div>
+
+<script>
+const SUPABASE_URL = "https://gxdbhavpbzjruhpafqpf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DKUKJAPk";
+
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const el = id => document.getElementById(id);
+
+function showMessage(text){
+  el("message").textContent=text;
+  el("message").classList.remove("hidden");
+}
+
+function money(value){
+  return "R" + Number(value || 0).toFixed(2);
+}
+
+function safe(value){
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  }[char]));
+}
+
+let currentUser=null;
+let profile=null;
+let campaigns=[];
+
+async function getCount(table,memberId){
+  let query=db.from(table).select("id",{count:"exact",head:true});
+  if(memberId) query=query.eq("member_id",memberId);
+  const {count,error}=await query;
+  if(error) throw error;
+  return count || 0;
+}
+
+async function loadMemberDashboard(){
+  el("memberPanel").classList.remove("hidden");
+
+  const [registrations,ftds,commissions,assignments] = await Promise.all([
+    getCount("client_registrations",currentUser.id),
+    getCount("member_ftd",currentUser.id),
+    db.from("member_commissions")
+      .select("commission_amount")
+      .eq("member_id",currentUser.id)
+      .eq("commission_status","approved"),
+    db.from("campaign_assignments")
+      .select("id,campaign_id,referral_code,assignment_status")
+      .eq("member_id",currentUser.id)
+  ]);
+
+  if(commissions.error) throw commissions.error;
+  if(assignments.error) throw assignments.error;
+
+  el("regCount").textContent=registrations;
+  el("ftdCount").textContent=ftds;
+
+  const total=(commissions.data || []).reduce(
+    (sum,item)=>sum+Number(item.commission_amount || 0),0
+  );
+  el("commissionTotal").textContent=money(total);
+
+  const campaignIds=(assignments.data || []).map(a=>a.campaign_id);
+  let campaignData=[];
+
+  if(campaignIds.length){
+    const result=await db.from("campaigns")
+      .select("id,campaign_name,advertiser_name,campaign_status")
+      .in("id",campaignIds);
+    if(result.error) throw result.error;
+    campaignData=result.data || [];
+  }
+
+  const list=el("myCampaigns");
+  if(!assignments.data.length){
+    list.textContent="You have not been assigned any campaigns yet.";
+    return;
+  }
+
+  list.innerHTML=assignments.data.map(a=>{
+    const campaign=campaignData.find(c=>c.id===a.campaign_id);
+    const link=location.origin+"/index.html?ref="+
+      encodeURIComponent(a.referral_code)+
+      "&campaign="+encodeURIComponent(a.campaign_id);
+
+    return `<div class="item">
+      <strong>${safe(campaign?.campaign_name || "Campaign")}</strong>
+      <p>${safe(campaign?.advertiser_name || "")}</p>
+      <span class="badge">${safe(a.assignment_status)}</span>
+      <p class="link">${safe(link)}</p>
+      <button type="button" onclick="copyLink('${safe(link)}')">Copy Referral Link</button>
+    </div>`;
+  }).join("");
+}
+
+async function copyLink(link){
+  try{
+    await navigator.clipboard.writeText(link);
+    showMessage("Referral link copied.");
+  }catch(error){
+    showMessage("Copy unavailable. Please select and copy the referral link manually.");
+  }
+}
+
+async function loadAdminDashboard(){
+  el("adminPanel").classList.remove("hidden");
+
+  const [members,campaignResult,ftds] = await Promise.all([
+    db.from("member_profiles").select("id,full_name,email,role,account_status"),
+    db.from("campaigns").select("*").order("created_at",{ascending:false}),
+    db.from("member_ftd").select("id",{count:"exact",head:true})
+      .eq("deposit_status","pending")
+  ]);
+
+  if(members.error) throw members.error;
+  if(campaignResult.error) throw campaignResult.error;
+  if(ftds.error) throw ftds.error;
+
+  const employees=(members.data || []).filter(m=>m.role!=="admin");
+  campaigns=campaignResult.data || [];
+
+  el("adminMembers").textContent=employees.length;
+  el("adminCampaigns").textContent=campaigns.length;
+  el("adminFtd").textContent=ftds.count || 0;
+
+  el("employeeSelect").innerHTML=
+    '<option value="">Select an employee</option>'+
+    employees.map(m=>`<option value="${safe(m.id)}">${safe(m.full_name || m.email)} (${safe(m.email)})</option>`).join("");
+
+  el("campaignSelect").innerHTML=
+    '<option value="">Select a campaign</option>'+
+    campaigns.map(c=>`<option value="${safe(c.id)}">${safe(c.campaign_name)}</option>`).join("");
+
+  el("campaignList").innerHTML=campaigns.length ?
+    campaigns.map(c=>`
+      <div class="item">
+        <strong>${safe(c.campaign_name)}</strong>
+        <p>${safe(c.advertiser_name || "")}</p>
+        <span class="badge">${safe(c.campaign_status)}</span>
+        <p>Model: ${safe(c.commission_type)}</p>
+        <p>Fixed: ${money(c.fixed_amount)} | Percentage: ${safe(c.percentage_rate)}%</p>
+      </div>`).join("") : "No campaigns created yet.";
+
+  el("employeeList").innerHTML=employees.length ?
+    employees.map(m=>`
+      <div class="item">
+        <strong>${safe(m.full_name || "Member")}</strong>
+        <p>${safe(m.email)}</p>
+        <span class="badge">${safe(m.account_status || "active")}</span>
+      </div>`).join("") : "No employees registered yet.";
+}
+
+el("campaignForm").addEventListener("submit",async function(event){
+  event.preventDefault();
+  const button=el("createCampaignBtn");
+  button.disabled=true;
+
+  try{
+    const campaign={
+      campaign_name:el("campaignName").value.trim(),
+      advertiser_name:el("advertiserName").value.trim(),
+      commission_type:el("commissionType").value,
+      fixed_amount:Number(el("fixedAmount").value || 0),
+      percentage_rate:Number(el("percentageRate").value || 0),
+      campaign_status:"active"
+    };
+
+    if(campaign.fixed_amount<0 || campaign.percentage_rate<0 ||
+       campaign.percentage_rate>100){
+      throw new Error("Please enter valid commission amounts and percentages.");
+    }
+
+    if(campaign.commission_type==="fixed" && campaign.fixed_amount<=0){
+      throw new Error("Enter a fixed commission amount greater than zero.");
+    }
+    if(campaign.commission_type==="percentage" && campaign.percentage_rate<=0){
+      throw new Error("Enter a percentage greater than zero.");
+    }
+    if(campaign.commission_type==="hybrid" &&
+       campaign.fixed_amount===0 && campaign.percentage_rate===0){
+      throw new Error("Enter a fixed amount, a percentage, or both.");
+    }
+
+    const {error}=await db.from("campaigns").insert(campaign);
+    if(error) throw error;
+
+    this.reset();
+    el("fixedAmount").value="0";
+    el("percentageRate").value="0";
+    await loadAdminDashboard();
+    showMessage("Campaign created successfully.");
+  }catch(error){
+    showMessage(error.message);
+  }finally{
+    button.disabled=false;
+  }
+});
+
+el("assignmentForm").addEventListener("submit",async function(event){
+  event.preventDefault();
+  const button=el("assignBtn");
+  button.disabled=true;
+
+  try{
+    const memberId=el("employeeSelect").value;
+    const campaignId=el("campaignSelect").value;
+
+    if(!memberId || !campaignId){
+      throw new Error("Please select an employee and a campaign.");
+    }
+
+    const code="CL"+crypto.randomUUID().replace(/-/g,"").substring(0,12).toUpperCase();
+
+    const {error}=await db.from("campaign_assignments").insert({
+      member_id:memberId,
+      campaign_id:campaignId,
+      referral_code:code,
+      assignment_status:"active"
+    });
+
+    if(error) throw error;
+
+    this.reset();
+    showMessage("Campaign assigned successfully. The employee now has a unique referral code.");
+  }catch(error){
+    showMessage(error.message);
+  }finally{
+    button.disabled=false;
+  }
+});
+
+el("logoutBtn").addEventListener("click",async()=>{
+  const {error}=await db.auth.signOut();
+  if(error){showMessage(error.message);return;}
+  location.href="index.html";
+});
+
+async function startDashboard(){
+  try{
+    const {data,error}=await db.auth.getSession();
+    if(error) throw error;
+    currentUser=data.session?.user;
+
+    if(!currentUser){
+      location.href="index.html";
+      return;
+    }
+
+    el("userEmail").textContent=currentUser.email || "";
+
+    const result=await db.from("member_profiles")
+      .select("id,full_name,email,role,account_status")
+      .eq("id",currentUser.id)
+      .single();
+
+    if(result.error) throw result.error;
+    profile=result.data;
+
+    el("welcome").textContent="Welcome, "+(profile.full_name || "Member");
+
+    if(profile.role==="admin"){
+      await loadAdminDashboard();
+    }else{
+      if(profile.account_status==="inactive"){
+        throw new Error("Your account is inactive. Please contact Corelink Media.");
+      }
+      await loadMemberDashboard();
+    }
+  }catch(error){
+    showMessage("Dashboard error: "+error.message);
+  }
+}
+
+startDashboard();
+</script>
+</body>
+</html>
