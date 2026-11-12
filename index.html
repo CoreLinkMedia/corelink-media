@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Corelink Media connects people with digital campaigns and performance-based earning opportunities.">
+<title>Corelink Media | Connect. Promote. Earn.</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: #14243a;
+  background: #f5f8fc;
+  line-height: 1.6;
+}
+
+header {
+  background: #071b33;
+  color: white;
+  padding: 18px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: #17c6b2;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: #17c6b2;
+}
+
+.hero {
+  background: linear-gradient(135deg, #071b33, #123e62);
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 6vw, 62px);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.hero h1 span {
+  color: #17c6b2;
+}
+
+.hero p {
+  max-width: 680px;
+  margin: 0 auto 28px;
+  font-size: 18px;
+  color: #dce8f2;
+}
+
+.btn {
+  display: inline-block;
+  background: #17c6b2;
+  color: #071b33;
+  padding: 13px 26px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 6px;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+}
+
+section {
+  padding: 75px 7%;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-title h2 {
+  color: #071b33;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.section-title p {
+  color: #64748b;
+}
+
+.features,
+.steps,
+.campaigns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+}
+
+.card {
+  background: white;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(7,27,51,0.06);
+  border: 1px solid #e5edf5;
+}
+
+.card h3 {
+  color: #0c3455;
+  margin-bottom: 12px;
+}
+
+.card p {
+  color: #64748b;
+  font-size: 15px;
+}
+
+.card-icon {
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.about {
+  background: white;
+  text-align: center;
+}
+
+.about-content {
+  max-width: 800px;
+  margin: auto;
+}
+
+.about-content p {
+  color: #64748b;
+  margin-top: 15px;
+}
+
+.campaign-section {
+  background: #eef4f9;
+}
+
+.join-section {
+  background: #0b2948;
+  color: white;
+  text-align: center;
+}
+
+.join-section h2 {
+  font-size: 34px;
+  margin-bottom: 15px;
+}
+
+.join-section p {
+  color: #dce8f2;
+  margin-bottom: 20px;
+}
+
+.join-section .btn {
+  background: #17c6b2;
+}
+
+.notice {
+  font-size: 13px;
+  color: #b9cbd9;
+  margin-top: 18px;
+}
+
+footer {
+  background: #071b33;
+  color: white;
+  padding: 35px 7%;
+  text-align: center;
+}
+
+footer p {
+  color: #a9bdce;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.footer-links {
+  margin-top: 15px;
+}
+
+.footer-links a {
+  color: #17c6b2;
+  text-decoration: none;
+  margin: 0 8px;
+  font-size: 13px;
+}
+
+@media(max-width: 650px) {
+  header {
+    justify-content: center;
+    text-align: center;
+  }
+
+  nav {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .hero {
+    padding: 70px 18px;
+  }
+
+  section {
+    padding: 55px 6%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">CORELINK <span>MEDIA</span></div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#how">How It Works</a>
+    <a href="#campaigns">Campaigns</a>
+    <a href="#join">Join Us</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+  <h1>Connect. <span>Promote.</span><br>Earn.</h1>
+
+  <p>
+    Welcome to Corelink Media. A digital performance
+    platform connecting people with campaigns,
+    referral opportunities and measurable results.
+  </p>
+
+  <a href="#join" class="btn">Join Corelink</a>
+  <a href="#how" class="btn btn-outline">Discover How It Works</a>
+</section>
+
+<section id="about" class="about">
+  <div class="about-content">
+    <div class="section-title">
+      <h2>About Corelink Media</h2>
+      <p>Building connections through digital performance.</p>
+    </div>
+
+    <p>
+      Corelink Media is a digital marketing and affiliate
+      platform designed to connect campaign partners
+      with individuals who want to participate in
+      performance-based marketing opportunities.
+    </p>
+
+    <p>
+      Our goal is to provide a transparent system where
+      members can access campaigns, share their own
+      referral links and track verified results.
+    </p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="section-title">
+    <h2>How It Works</h2>
+    <p>A simple process designed for our members.</p>
+  </div>
+
+  <div class="steps">
+    <div class="card">
+      <div class="card-icon">👤</div>
+      <h3>01. Register</h3>
+      <p>Create your Corelink Media member account.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <h3>02. Get Your Link</h3>
+      <p>Access your assigned campaign referral links.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">📢</div>
+      <h3>03. Promote</h3>
+      <p>Share approved campaigns with eligible audiences.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>04. Track Results</h3>
+      <p>Follow verified conversions and eligible earnings.</p>
+    </div>
+  </div>
+</section>
+
+<section class="campaign-section" id="campaigns">
+  <div class="section-title">
+    <h2>Our Campaigns</h2>
+    <p>Explore digital marketing opportunities.</p>
+  </div>
+
+  <div class="campaigns">
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <h3>Digital Campaigns</h3>
+      <p>Discover approved online marketing opportunities.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🤝</div>
+      <h3>Partner Campaigns</h3>
+      <p>Connect with participating campaign partners.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <h3>Performance Tracking</h3>
+      <p>Monitor clicks and verified campaign conversions.</p>
+    </div>
+  </div>
+
+  <p style="text-align:center;margin-top:25px;color:#64748b;">
+    Campaign availability is subject to partner approval
+    and applicable eligibility requirements.
+  </p>
+</section>
+
+<section>
+  <div class="section-title">
+    <h2>Why Corelink Media?</h2>
+    <p>A platform built around transparency and opportunity.</p>
+  </div>
+
+  <div class="features">
+    <div class="card">
+      <h3>Unique Referral Links</h3>
+      <p>Each member will have individually assigned campaign links.</p>
+    </div>
+
+    <div class="card">
+      <h3>Performance Dashboard</h3>
+      <p>View your campaign activity and verified results.</p>
+    </div>
+
+    <div class="card">
+      <h3>Transparent Records</h3>
+      <p>Keep track of eligible commissions and payment records.</p>
+    </div>
+  </div>
+</section>
+
+<section class="join-section" id="join">
+  <h2>Ready to Join Corelink?</h2>
+
+  <p>
+    Become part of a growing digital performance community.
+  </p>
+
+  <p>
+    Member registration and account login are coming soon.
+  </p>
+
+  <a href="#home" class="btn">Explore Corelink</a>
+
+  <div class="notice">
+    Membership and campaign participation are subject to
+    platform terms and campaign eligibility.
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="logo">CORELINK <span>MEDIA</span></div>
+
+  <p>Grow Together. Earn Through Performance.</p>
+
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#how">How It Works</a>
+    <a href="#campaigns">Campaigns</a>
+    <a href="#join">Join</a>
+  </div>
+
+  <p>© 2026 Corelink Media. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
