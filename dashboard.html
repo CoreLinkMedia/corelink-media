@@ -137,6 +137,27 @@ label{font-size:13px;font-weight:bold}
 </div>
 </div>
 
+<!-- ASSIGN CAMPAIGN TO AFFILIATE -->
+<div class="card">
+<h3>Assign Campaign to Affiliate</h3>
+
+<form id="assignmentForm">
+
+<label>Select Affiliate</label>
+<select id="affiliateSelect" required>
+<option value="">Loading affiliates...</option>
+</select>
+
+<label>Select Campaign</label>
+<select id="campaignSelect" required>
+<option value="">Loading campaigns...</option>
+</select>
+
+<button type="submit" id="assignBtn">Assign Campaign</button>
+
+</form>
+</div>
+
 <div class="card">
 <h3>Create Campaign</h3>
 <form id="campaignForm">
@@ -199,6 +220,7 @@ function safe(value){
 let currentUser=null;
 let profile=null;
 let campaigns=[];
+let affiliates=[];
 
 async function getCount(table,memberId){
   let query=db.from(table).select("id",{count:"exact",head:true});
@@ -301,6 +323,7 @@ async function loadMemberDashboard(){
       <strong>${safe(campaign?.campaign_name || "Campaign")}</strong>
       <p>${safe(campaign?.advertiser_name || "")}</p>
       <span class="badge">${safe(a.assignment_status)}</span>
+      <p><strong>My Referral Code:</strong> ${safe(a.referral_code)}</p>
       <p class="link">${safe(link)}</p>
       <button type="button" onclick="copyLink('${safe(link)}')">Copy Referral Link</button>
     </div>`;
@@ -313,6 +336,56 @@ async function copyLink(link){
     showMessage("Referral link copied.");
   }catch(error){
     showMessage("Copy unavailable. Please select and copy the referral link manually.");
+  }
+}
+
+async function loadAssignmentOptions(){
+  const [memberResult,campaignResult]=await Promise.all([
+    db.from("member_profiles")
+      .select("id,full_name,email,role")
+      .neq("role","admin")
+      .order("created_at",{ascending:false}),
+    db.from("campaigns")
+      .select("id,campaign_name,advertiser_name,campaign_status")
+      .order("created_at",{ascending:false})
+  ]);
+
+  if(memberResult.error) throw memberResult.error;
+  if(campaignResult.error) throw campaignResult.error;
+
+  affiliates=memberResult.data || [];
+  const availableCampaigns=campaignResult.data || [];
+
+  const affiliateSelect=el("affiliateSelect");
+  const campaignSelect=el("campaignSelect");
+
+  affiliateSelect.innerHTML='<option value="">Choose an affiliate</option>';
+
+  affiliates.forEach(affiliate=>{
+    const option=document.createElement("option");
+    option.value=affiliate.id;
+    option.textContent=
+      (affiliate.full_name || affiliate.email || "Affiliate")+
+      (affiliate.email ? " ("+affiliate.email+")" : "");
+    affiliateSelect.appendChild(option);
+  });
+
+  campaignSelect.innerHTML='<option value="">Choose a campaign</option>';
+
+  availableCampaigns.forEach(campaign=>{
+    const option=document.createElement("option");
+    option.value=campaign.id;
+    option.textContent=campaign.campaign_name+
+      (campaign.advertiser_name ? " - "+campaign.advertiser_name : "");
+    campaignSelect.appendChild(option);
+  });
+
+  if(!affiliates.length){
+    affiliateSelect.innerHTML='<option value="">No affiliates registered yet</option>';
+  }
+
+  if(!availableCampaigns.length){
+    campaignSelect.innerHTML='<option value="">Create a campaign first</option>';
   }
 }
 
@@ -354,7 +427,73 @@ async function loadAdminDashboard(){
         <p>Model: ${safe(c.commission_type)}</p>
         <p>Fixed: ${money(c.fixed_amount)} | Percentage: ${safe(c.percentage_rate)}%</p>
       </div>`).join("") : "No campaigns created yet.";
+
+  await loadAssignmentOptions();
 }
+
+/* ASSIGN A CAMPAIGN TO AN AFFILIATE */
+
+el("assignmentForm").addEventListener("submit",async function(event){
+  event.preventDefault();
+
+  const button=el("assignBtn");
+  button.disabled=true;
+
+  try{
+    const affiliateId=el("affiliateSelect").value;
+    const campaignId=el("campaignSelect").value;
+
+    if(!affiliateId || !campaignId){
+      throw new Error("Please select an affiliate and a campaign.");
+    }
+
+    const existing=await db.from("campaign_assignments")
+      .select("id")
+      .eq("member_id",affiliateId)
+      .eq("campaign_id",campaignId)
+      .maybeSingle();
+
+    if(existing.error) throw existing.error;
+
+    if(existing.data){
+      throw new Error("This affiliate already has this campaign assigned.");
+    }
+
+    const referralCode="CL"+crypto.randomUUID()
+      .replace(/-/g,"")
+      .substring(0,12)
+      .toUpperCase();
+
+    const {error}=await db.from("campaign_assignments").insert({
+      member_id:affiliateId,
+      campaign_id:campaignId,
+      referral_code:referralCode,
+      assignment_status:"active"
+    });
+
+    if(error) throw error;
+
+    const affiliate=affiliates.find(a=>a.id===affiliateId);
+    const campaign=campaigns.find(c=>c.id===campaignId);
+
+    showMessage(
+      "Campaign assigned successfully to "+
+      (affiliate?.full_name || affiliate?.email || "affiliate")+
+      ". Referral code: "+referralCode
+    );
+
+    this.reset();
+
+    await loadAssignmentOptions();
+
+  }catch(error){
+    showMessage("Assignment error: "+error.message);
+  }finally{
+    button.disabled=false;
+  }
+});
+
+/* CREATE CAMPAIGN */
 
 el("campaignForm").addEventListener("submit",async function(event){
   event.preventDefault();
@@ -407,6 +546,8 @@ el("campaignForm").addEventListener("submit",async function(event){
   }
 });
 
+/* LOGOUT */
+
 el("logoutBtn").addEventListener("click",async()=>{
   const {error}=await db.auth.signOut();
 
@@ -417,6 +558,8 @@ el("logoutBtn").addEventListener("click",async()=>{
 
   location.href="index.html";
 });
+
+/* START DASHBOARD */
 
 async function startDashboard(){
   try{
