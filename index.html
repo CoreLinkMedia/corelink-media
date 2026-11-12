@@ -3,158 +3,572 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Corelink Media connects people with digital campaigns and performance-based earning opportunities.">
+<meta name="description" content="Corelink Media connects people with digital campaigns and performance opportunities.">
 <title>Corelink Media | Connect. Promote. Earn.</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+:root{
+  --navy:#071b33;
+  --navy2:#0d2948;
+  --teal:#17c6b2;
+  --light:#eaf3f7;
+  --white:#ffffff;
+  --muted:#a9bdce;
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f5f7fb;color:#172033;line-height:1.6}
-header{background:#101c35;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.logo{font-size:23px;font-weight:bold;color:#54d6a0}
-nav a{color:white;text-decoration:none;margin-left:15px;font-size:14px}
-.hero{padding:75px 7%;background:linear-gradient(120deg,#101c35,#183d5b);color:white;text-align:center}
-.hero h1{font-size:38px;margin-bottom:15px}
-.hero p{max-width:650px;margin:0 auto 25px;color:#dbe7f5}
-.btn{display:inline-block;background:#16b981;color:#062b22;padding:12px 22px;border:0;border-radius:7px;font-weight:bold;text-decoration:none;cursor:pointer}
-section{padding:45px 7%}
-.section-title{text-align:center;margin-bottom:25px;font-size:27px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-.card{background:white;padding:24px;border-radius:12px;box-shadow:0 3px 15px #14213b12}
-.card h3{margin-bottom:10px;color:#183d5b}
-.auth-area{background:#eaf0f7}
-.auth-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;max-width:900px;margin:auto}
-.auth-card{background:white;padding:25px;border-radius:12px;box-shadow:0 3px 15px #14213b12}
-.auth-card h2{margin-bottom:15px;color:#183d5b}
-input{width:100%;padding:12px;margin:7px 0 13px;border:1px solid #ccd5e2;border-radius:6px;font-size:15px}
-label{font-size:14px;font-weight:bold}
-.auth-card button{width:100%;margin-top:10px}
-.small{font-size:13px;color:#637087;margin-top:12px}
-.message{padding:11px;margin-top:12px;border-radius:6px;font-size:14px;display:none;overflow-wrap:anywhere}
-.success{display:block;background:#e2f8ed;color:#12633d}
-.error{display:block;background:#ffe8e8;color:#9b2020}
-footer{background:#101c35;color:#dbe7f5;text-align:center;padding:25px}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f8fb;
+  color:#10243a;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+header{
+  background:rgba(7,27,51,.97);
+  min-height:85px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  padding:15px 5%;
+  border-bottom:1px solid rgba(23,198,178,.3);
+}
+
+.logo{
+  color:white;
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:3px;
+  text-align:center;
+  text-shadow:0 0 15px rgba(23,198,178,.5);
+}
+
+.logo span{color:var(--teal)}
+
+nav{
+  position:absolute;
+  right:5%;
+  display:flex;
+  gap:18px;
+  align-items:center;
+}
+
+nav a{
+  color:#dceaf4;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:bold;
+  transition:.3s;
+}
+
+nav a:hover{color:var(--teal)}
+
 #memberLink{display:none}
-@media(max-width:600px){.hero h1{font-size:29px}nav a{margin-left:8px}.hero{padding:55px 6%}}
+
+.hero{
+  min-height:590px;
+  padding:75px 7%;
+  background:
+    radial-gradient(circle at 75% 45%,rgba(23,198,178,.18),transparent 32%),
+    linear-gradient(130deg,#06162c,#0c3150 65%,#071b33);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+}
+
+.hero:before,.hero:after{
+  content:"";
+  position:absolute;
+  width:250px;
+  height:250px;
+  border:1px solid rgba(23,198,178,.25);
+  transform:rotate(45deg);
+  z-index:-1;
+}
+
+.hero:before{left:-130px;top:100px}
+.hero:after{right:-120px;bottom:30px}
+
+.hero-content{max-width:850px;z-index:2}
+
+.hero-label{
+  color:var(--teal);
+  letter-spacing:5px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:18px;
+}
+
+.hero h1{
+  font-size:clamp(38px,6vw,65px);
+  line-height:1.12;
+  margin-bottom:20px;
+  text-shadow:0 5px 25px rgba(0,0,0,.35);
+}
+
+.hero h1 span{
+  color:var(--teal);
+  text-shadow:0 0 25px rgba(23,198,178,.45);
+}
+
+.hero p{
+  color:#c8d8e6;
+  max-width:650px;
+  margin:0 auto 28px;
+  font-size:17px;
+}
+
+.btn{
+  display:inline-block;
+  background:linear-gradient(135deg,#22e0c7,#0da994);
+  color:#06253a;
+  padding:14px 27px;
+  border-radius:7px;
+  border:0;
+  text-decoration:none;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 8px 25px rgba(23,198,178,.25);
+  transition:.3s;
+}
+
+.btn:hover{
+  transform:translateY(-4px);
+  box-shadow:0 13px 30px rgba(23,198,178,.4);
+}
+
+.hero-art{
+  position:relative;
+  width:150px;
+  height:150px;
+  margin:0 auto 32px;
+  perspective:700px;
+}
+
+.cube{
+  width:105px;
+  height:105px;
+  position:absolute;
+  top:20px;
+  left:22px;
+  background:linear-gradient(135deg,#21ddc5,#075d6d);
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:20px;
+  transform:rotateX(55deg) rotateZ(45deg);
+  box-shadow:
+    15px 18px 0 #074c5b,
+    30px 35px 35px rgba(0,0,0,.4),
+    0 0 35px rgba(23,198,178,.5);
+  animation:float 4s ease-in-out infinite;
+}
+
+.cube:after{
+  content:"";
+  position:absolute;
+  inset:16px;
+  border:2px solid rgba(255,255,255,.6);
+  border-radius:12px;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotateX(55deg) rotateZ(45deg)}
+  50%{transform:translateY(-13px) rotateX(55deg) rotateZ(45deg)}
+}
+
+section{padding:75px 7%}
+
+.section-title{
+  text-align:center;
+  font-size:32px;
+  color:var(--navy);
+  margin-bottom:12px;
+}
+
+.section-subtitle{
+  text-align:center;
+  color:#687e91;
+  max-width:650px;
+  margin:0 auto 38px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:24px;
+}
+
+.card{
+  background:white;
+  padding:28px;
+  border-radius:13px;
+  border:1px solid #e0eaf0;
+  box-shadow:0 10px 25px rgba(7,27,51,.07);
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 18px 35px rgba(7,27,51,.13);
+}
+
+.card-icon{
+  width:52px;
+  height:52px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#d7fff7,#a8eee2);
+  color:#087d73;
+  font-size:24px;
+  margin-bottom:17px;
+  box-shadow:5px 6px 0 #b3e5dd;
+}
+
+.card h3{color:#0c3150;margin-bottom:10px}
+.card p{color:#687e91;font-size:14px}
+
+.dark-section{
+  background:linear-gradient(130deg,#071b33,#0e3452);
+  color:white;
+}
+
+.dark-section .section-title{color:white}
+.dark-section .section-subtitle{color:#b8cbd9}
+
+.dark-section .card{
+  background:#102f4b;
+  border:1px solid rgba(23,198,178,.2);
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.dark-section .card h3{color:var(--teal)}
+.dark-section .card p{color:#c0d0dd}
+
+.campaign-tag{
+  display:inline-block;
+  padding:5px 12px;
+  background:#d8fff7;
+  color:#087b70;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+  margin-bottom:13px;
+}
+
+.auth-section{
+  background:linear-gradient(180deg,#eaf3f7,#f8fbfd);
+}
+
+.auth-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:25px;
+  max-width:950px;
+  margin:auto;
+}
+
+.auth-card{
+  background:white;
+  padding:30px;
+  border-radius:14px;
+  border-top:4px solid var(--teal);
+  box-shadow:0 15px 35px rgba(7,27,51,.09);
+}
+
+.auth-card h2{
+  color:var(--navy);
+  margin-bottom:8px;
+  font-size:23px;
+}
+
+.auth-card>p{
+  color:#718497;
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+label{
+  font-size:13px;
+  font-weight:bold;
+  color:#29445d;
+}
+
+input:not([type="checkbox"]){
+  display:block;
+  width:100%;
+  padding:13px;
+  margin:7px 0 15px;
+  border:1px solid #d5e0e8;
+  border-radius:7px;
+  background:#fafdff;
+  font-size:14px;
+  outline:none;
+}
+
+input:focus{
+  border-color:var(--teal);
+  box-shadow:0 0 0 3px rgba(23,198,178,.12);
+}
+
+.auth-card button{width:100%;margin-top:15px}
+
+.terms{
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+  font-size:12px;
+  color:#687e91;
+  margin-top:5px;
+}
+
+.terms input{margin-top:4px}
+
+.message{
+  display:none;
+  margin-top:14px;
+  padding:12px;
+  border-radius:7px;
+  font-size:13px;
+  overflow-wrap:anywhere;
+}
+
+.success{display:block;background:#e4f8ed;color:#12633d}
+.error{display:block;background:#ffe8e8;color:#9b2020}
+
+footer{
+  background:#041326;
+  color:#b6c8d8;
+  text-align:center;
+  padding:35px 6%;
+}
+
+.footer-logo{
+  color:white;
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:3px;
+  margin-bottom:8px;
+}
+
+.footer-logo span{color:var(--teal)}
+
+footer p{font-size:13px;margin:5px 0}
+
+@media(max-width:750px){
+  header{padding:18px 10px 65px}
+  .logo{font-size:22px}
+  nav{
+    right:auto;
+    bottom:15px;
+    left:0;
+    width:100%;
+    justify-content:center;
+    gap:13px;
+  }
+  nav a{font-size:11px}
+  .hero{min-height:530px;padding:55px 6%}
+  section{padding:55px 6%}
+  .section-title{font-size:27px}
+  .auth-card{padding:23px}
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="logo">CORELINK MEDIA</div>
-<nav>
-<a href="#home">Home</a>
-<a href="#about">About</a>
-<a href="#campaigns">Campaigns</a>
-<a href="#access">Member Access</a>
-<a href="dashboard.html" id="memberLink">Dashboard</a>
-</nav>
+  <div class="logo">CORELINK <span>MEDIA</span></div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#campaigns">Campaigns</a>
+    <a href="#access">Member Access</a>
+    <a href="dashboard.html" id="memberLink">Dashboard</a>
+  </nav>
 </header>
 
 <main>
+
 <section class="hero" id="home">
-<h1>Connect. Promote. Earn.</h1>
-<p>Corelink Media connects people with digital campaigns and performance-based earning opportunities. Join our growing community and access campaigns through your member account.</p>
-<a class="btn" href="#access">Join Corelink Media</a>
+  <div class="hero-content">
+    <div class="hero-art"><div class="cube"></div></div>
+    <div class="hero-label">DIGITAL CAMPAIGNS. REAL CONNECTIONS.</div>
+    <h1>Connect. <span>Promote.</span><br>Earn.</h1>
+    <p>Welcome to Corelink Media. A digital campaign platform built around connections, opportunities and performance. Join our growing community and move forward with us.</p>
+    <a class="btn" href="#access">Become a Member</a>
+  </div>
 </section>
 
 <section id="about">
-<h2 class="section-title">About Corelink Media</h2>
-<div class="cards">
-<div class="card"><h3>Who We Are</h3><p>Corelink Media is a digital campaign platform connecting members with promotional opportunities.</p></div>
-<div class="card"><h3>Our Mission</h3><p>To build opportunities through digital connections, teamwork and performance-based campaigns.</p></div>
-<div class="card"><h3>Our Community</h3><p>We provide members with access to assigned campaigns and a dashboard to monitor activity.</p></div>
-</div>
+  <h2 class="section-title">About Corelink Media</h2>
+  <p class="section-subtitle">Building connections that create digital opportunities.</p>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">✦</div>
+      <h3>Who We Are</h3>
+      <p>Corelink Media connects members with digital promotional campaigns and performance-based opportunities.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">◎</div>
+      <h3>Our Mission</h3>
+      <p>To create an organised platform where people can access campaigns, promote responsibly and track their activity.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">◇</div>
+      <h3>Our Vision</h3>
+      <p>To grow a trusted digital community built on opportunity, teamwork and meaningful connections.</p>
+    </div>
+  </div>
 </section>
 
-<section>
-<h2 class="section-title">How It Works</h2>
-<div class="cards">
-<div class="card"><h3>1. Register</h3><p>Create your free Corelink Media member account.</p></div>
-<div class="card"><h3>2. Access Campaigns</h3><p>Log in to view campaigns assigned to your account.</p></div>
-<div class="card"><h3>3. Promote</h3><p>Use your assigned campaign links and follow campaign rules.</p></div>
-<div class="card"><h3>4. Track Activity</h3><p>Check your dashboard for recorded activity and approved commissions.</p></div>
-</div>
+<section class="dark-section">
+  <h2 class="section-title">How It Works</h2>
+  <p class="section-subtitle">Your journey with Corelink Media starts with a few simple steps.</p>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">01</div>
+      <h3>Create Your Account</h3>
+      <p>Register for your own Corelink Media member account.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">02</div>
+      <h3>Get Connected</h3>
+      <p>Access the campaigns assigned to your member account.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">03</div>
+      <h3>Promote</h3>
+      <p>Share your approved campaign links and follow partner rules.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">04</div>
+      <h3>Track Activity</h3>
+      <p>Monitor recorded activity and approved commissions from your dashboard.</p>
+    </div>
+  </div>
 </section>
 
 <section id="campaigns">
-<h2 class="section-title">Our Campaign Partners</h2>
-<div class="cards">
-<div class="card"><h3>Goldrush</h3><p>A campaign available to eligible Corelink Media members.</p></div>
-<div class="card"><h3>YesPlay</h3><p>A campaign available to eligible Corelink Media members.</p></div>
-</div>
-<p class="small" style="text-align:center">Campaign access depends on member assignment and partner requirements. Follow all applicable campaign terms and age restrictions.</p>
+  <h2 class="section-title">Our Campaign Partners</h2>
+  <p class="section-subtitle">Explore the campaign opportunities available to eligible members.</p>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">G</div>
+      <span class="campaign-tag">CAMPAIGN PARTNER</span>
+      <h3>Goldrush</h3>
+      <p>Goldrush campaign access is provided to members assigned to this campaign.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">Y</div>
+      <span class="campaign-tag">CAMPAIGN PARTNER</span>
+      <h3>YesPlay</h3>
+      <p>YesPlay campaign access is provided to members assigned to this campaign.</p>
+    </div>
+  </div>
+  <p class="section-subtitle" style="margin-top:25px;margin-bottom:0">Campaign participation is subject to partner approval, eligibility and applicable terms. Age restrictions apply.</p>
 </section>
 
-<section class="auth-area" id="access">
-<h2 class="section-title">Member Access</h2>
-<div class="auth-grid">
-
-<div class="auth-card">
-<h2>Create Your Corelink Media Member Account</h2>
-<form id="registerForm">
-<label for="fullName">Full Name</label>
-<input id="fullName" type="text" placeholder="Enter your full name" required>
-
-<label for="mobile">Mobile Number</label>
-<input id="mobile" type="tel" placeholder="Enter your mobile number" required>
-
-<label for="telegram">Telegram Username (optional)</label>
-<input id="telegram" type="text" placeholder="@username">
-
-<label for="registerEmail">Email Address</label>
-<input id="registerEmail" type="email" placeholder="Enter your email" required>
-
-<label for="registerPassword">Password</label>
-<input id="registerPassword" type="password" minlength="6" placeholder="At least 6 characters" required>
-
-<label for="confirmPassword">Confirm Password</label>
-<input id="confirmPassword" type="password" minlength="6" placeholder="Repeat your password" required>
-
-<label style="font-weight:normal">
-<input id="terms" type="checkbox" required style="width:auto;margin-right:7px">
-I agree to the website terms and campaign rules.
-</label>
-
-<button class="btn" id="registerButton" type="submit">Create Account</button>
-</form>
-<div id="registerMessage" class="message" role="status"></div>
-<p class="small">Check your email and confirm your account before logging in.</p>
-</div>
-
-<div class="auth-card">
-<h2>Member Login</h2>
-<form id="loginForm">
-<label for="loginEmail">Email Address</label>
-<input id="loginEmail" type="email" placeholder="Enter your registered email" required>
-
-<label for="loginPassword">Password</label>
-<input id="loginPassword" type="password" placeholder="Enter your password" required>
-
-<button class="btn" id="loginButton" type="submit">Login to Dashboard</button>
-</form>
-<div id="loginMessage" class="message" role="status"></div>
-<p class="small">Use the email and password you registered with.</p>
-</div>
-
-</div>
+<section class="dark-section">
+  <h2 class="section-title">Why Choose Corelink Media?</h2>
+  <p class="section-subtitle">A member-focused platform designed to keep your campaign activity organised.</p>
+  <div class="cards">
+    <div class="card">
+      <h3>Member Dashboard</h3>
+      <p>Your own account to access assigned campaigns and view your activity.</p>
+    </div>
+    <div class="card">
+      <h3>Organised Campaigns</h3>
+      <p>Campaign access managed through your member account.</p>
+    </div>
+    <div class="card">
+      <h3>Activity Tracking</h3>
+      <p>View recorded registrations and approved commission information.</p>
+    </div>
+  </div>
 </section>
 
-<section>
-<div class="card" style="text-align:center">
-<h2>Ready to Connect?</h2>
-<p>Create your member account and access your Corelink Media dashboard.</p>
-<a class="btn" href="#access" style="margin-top:15px">Get Started</a>
-</div>
+<section class="auth-section" id="access">
+  <h2 class="section-title">Member Access</h2>
+  <p class="section-subtitle">Join Corelink Media or sign in to access your personal dashboard.</p>
+
+  <div class="auth-grid">
+
+    <div class="auth-card">
+      <h2>Create Your Account</h2>
+      <p>Become part of the Corelink Media community.</p>
+
+      <form id="registerForm">
+        <label for="fullName">Full Name</label>
+        <input id="fullName" type="text" placeholder="Enter your full name" required>
+
+        <label for="mobile">Mobile Number</label>
+        <input id="mobile" type="tel" placeholder="Enter mobile number" required>
+
+        <label for="telegram">Telegram Username (optional)</label>
+        <input id="telegram" type="text" placeholder="@username">
+
+        <label for="registerEmail">Email Address</label>
+        <input id="registerEmail" type="email" placeholder="Enter your email" required>
+
+        <label for="registerPassword">Password</label>
+        <input id="registerPassword" type="password" minlength="6" placeholder="At least 6 characters" required>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" minlength="6" placeholder="Repeat your password" required>
+
+        <label class="terms">
+          <input id="terms" type="checkbox" required>
+          <span>I agree to the website terms and applicable campaign rules.</span>
+        </label>
+
+        <button class="btn" id="registerButton" type="submit">Create Member Account</button>
+      </form>
+
+      <div id="registerMessage" class="message" role="status"></div>
+    </div>
+
+    <div class="auth-card">
+      <h2>Welcome Back</h2>
+      <p>Sign in to your Corelink Media member account.</p>
+
+      <form id="loginForm">
+        <label for="loginEmail">Email Address</label>
+        <input id="loginEmail" type="email" placeholder="Your registered email" required>
+
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password" placeholder="Your password" required>
+
+        <button class="btn" id="loginButton" type="submit">Login to Dashboard</button>
+      </form>
+
+      <div id="loginMessage" class="message" role="status"></div>
+      <p style="margin-top:18px">Your member dashboard is waiting for you.</p>
+    </div>
+
+  </div>
 </section>
+
 </main>
 
 <footer>
-<p><strong>Corelink Media</strong></p>
-<p>Connect. Promote. Earn.</p>
-<p>Contact: Corelinkmediaa@gmail.com</p>
-<p style="margin-top:10px">© 2026 Corelink Media. All rights reserved.</p>
+  <div class="footer-logo">CORELINK <span>MEDIA</span></div>
+  <p>Connect. Promote. Earn.</p>
+  <p>Contact: Corelinkmediaa@gmail.com</p>
+  <p style="margin-top:15px">© 2026 Corelink Media. All rights reserved.</p>
 </footer>
 
 <script>
@@ -169,8 +583,8 @@ function showMessage(id, message, type) {
   box.className = "message " + type;
 }
 
-function setLoading(buttonId, loading, normalText) {
-  const button = document.getElementById(buttonId);
+function setLoading(id, loading, normalText) {
+  const button = document.getElementById(id);
   button.disabled = loading;
   button.textContent = loading ? "Please wait..." : normalText;
 }
@@ -214,12 +628,12 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
     return;
   }
 
-  setLoading("registerButton", true, "Create Account");
+  setLoading("registerButton", true, "Create Member Account");
 
   try {
     const { data, error } = await db.auth.signUp({
-      email,
-      password,
+      email: email,
+      password: password,
       options: {
         emailRedirectTo: window.location.origin + "/auth.html",
         data: {
@@ -243,7 +657,7 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   } catch (error) {
     showMessage("registerMessage", error.message || "Registration failed. Please try again.", "error");
   } finally {
-    setLoading("registerButton", false, "Create Account");
+    setLoading("registerButton", false, "Create Member Account");
   }
 });
 
@@ -257,8 +671,8 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
 
   try {
     const { data, error } = await db.auth.signInWithPassword({
-      email,
-      password
+      email: email,
+      password: password
     });
 
     if (error) throw error;
@@ -268,6 +682,7 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
     }
 
     showMessage("loginMessage", "Login successful. Opening your dashboard...", "success");
+
     window.location.href = "dashboard.html";
 
   } catch (error) {
