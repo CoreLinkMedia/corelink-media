@@ -48,14 +48,42 @@ label{font-size:13px;font-weight:bold}
 
 <div id="message" class="message hidden"></div>
 
-<!-- EMPLOYEE DASHBOARD -->
+<!-- MEMBER DASHBOARD -->
 <section id="memberPanel" class="hidden">
+
 <div class="card">
 <h2>My Performance</h2>
 <div class="grid">
-<div class="stat"><small>Registrations</small><h2 id="regCount">0</h2></div>
-<div class="stat"><small>First Time Deposits</small><h2 id="ftdCount">0</h2></div>
-<div class="stat"><small>Total Commission</small><h2 id="commissionTotal">R0.00</h2></div>
+<div class="stat">
+<small>Registrations</small>
+<h2 id="regCount">0</h2>
+</div>
+<div class="stat">
+<small>First Time Deposits</small>
+<h2 id="ftdCount">0</h2>
+</div>
+<div class="stat">
+<small>Total Commission</small>
+<h2 id="commissionTotal">R0.00</h2>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>My Commission</h2>
+<div class="grid">
+<div class="stat">
+<small>Pending Commission</small>
+<h2 id="memberPending">R0.00</h2>
+</div>
+<div class="stat">
+<small>Approved Commission</small>
+<h2 id="memberApproved">R0.00</h2>
+</div>
+<div class="stat">
+<small>Paid Commission</small>
+<h2 id="memberPaid">R0.00</h2>
+</div>
 </div>
 </div>
 
@@ -63,6 +91,7 @@ label{font-size:13px;font-weight:bold}
 <h3>My Assigned Campaigns</h3>
 <div id="myCampaigns">Loading campaigns...</div>
 </div>
+
 </section>
 
 <!-- ADMIN DASHBOARD -->
@@ -71,15 +100,47 @@ label{font-size:13px;font-weight:bold}
 <div class="card">
 <h2>Administrator Overview</h2>
 <div class="grid">
-<div class="stat"><small>Total Members</small><h2 id="adminMembers">0</h2></div>
-<div class="stat"><small>Total Campaigns</small><h2 id="adminCampaigns">0</h2></div>
-<div class="stat"><small>Pending FTDs</small><h2 id="adminFtd">0</h2></div>
+<div class="stat">
+<small>Total Members</small>
+<h2 id="adminMembers">0</h2>
+</div>
+<div class="stat">
+<small>Total Campaigns</small>
+<h2 id="adminCampaigns">0</h2>
+</div>
+<div class="stat">
+<small>Pending FTDs</small>
+<h2 id="adminFtd">0</h2>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>Commission Overview</h2>
+<div class="grid">
+<div class="stat">
+<small>Total Commission</small>
+<h2 id="adminCommissionTotal">R0.00</h2>
+</div>
+<div class="stat">
+<small>Pending Commission</small>
+<h2 id="adminCommissionPending">R0.00</h2>
+</div>
+<div class="stat">
+<small>Approved Commission</small>
+<h2 id="adminCommissionApproved">R0.00</h2>
+</div>
+<div class="stat">
+<small>Paid Commission</small>
+<h2 id="adminCommissionPaid">R0.00</h2>
+</div>
 </div>
 </div>
 
 <div class="card">
 <h3>Create Campaign</h3>
 <form id="campaignForm">
+
 <label>Campaign Name</label>
 <input id="campaignName" placeholder="Example: Goldrush" required>
 
@@ -104,30 +165,8 @@ label{font-size:13px;font-weight:bold}
 </div>
 
 <div class="card">
-<h3>Assign Campaign to Employee</h3>
-<form id="assignmentForm">
-<label>Select Employee</label>
-<select id="employeeSelect" required>
-<option value="">Loading employees...</option>
-</select>
-
-<label>Select Campaign</label>
-<select id="campaignSelect" required>
-<option value="">Select a campaign</option>
-</select>
-
-<button type="submit" id="assignBtn">Assign Campaign</button>
-</form>
-</div>
-
-<div class="card">
 <h3>Campaign Management</h3>
 <div id="campaignList">Loading campaigns...</div>
-</div>
-
-<div class="card">
-<h3>Employee List</h3>
-<div id="employeeList">Loading employees...</div>
 </div>
 
 </section>
@@ -169,6 +208,46 @@ async function getCount(table,memberId){
   return count || 0;
 }
 
+function calculateCommissions(records){
+  const totals={
+    total:0,
+    pending:0,
+    approved:0,
+    paid:0
+  };
+
+  (records || []).forEach(item=>{
+    const amount=Number(item.commission_amount || 0);
+    const status=String(item.commission_status || "").toLowerCase();
+
+    totals.total+=amount;
+
+    if(status==="pending"){
+      totals.pending+=amount;
+    }else if(status==="approved"){
+      totals.approved+=amount;
+    }else if(status==="paid"){
+      totals.paid+=amount;
+    }
+  });
+
+  return totals;
+}
+
+function displayMemberCommissions(totals){
+  el("commissionTotal").textContent=money(totals.total);
+  el("memberPending").textContent=money(totals.pending);
+  el("memberApproved").textContent=money(totals.approved);
+  el("memberPaid").textContent=money(totals.paid);
+}
+
+function displayAdminCommissions(totals){
+  el("adminCommissionTotal").textContent=money(totals.total);
+  el("adminCommissionPending").textContent=money(totals.pending);
+  el("adminCommissionApproved").textContent=money(totals.approved);
+  el("adminCommissionPaid").textContent=money(totals.paid);
+}
+
 async function loadMemberDashboard(){
   el("memberPanel").classList.remove("hidden");
 
@@ -176,9 +255,8 @@ async function loadMemberDashboard(){
     getCount("client_registrations",currentUser.id),
     getCount("member_ftd",currentUser.id),
     db.from("member_commissions")
-      .select("commission_amount")
-      .eq("member_id",currentUser.id)
-      .eq("commission_status","approved"),
+      .select("commission_amount,commission_status")
+      .eq("member_id",currentUser.id),
     db.from("campaign_assignments")
       .select("id,campaign_id,referral_code,assignment_status")
       .eq("member_id",currentUser.id)
@@ -190,10 +268,8 @@ async function loadMemberDashboard(){
   el("regCount").textContent=registrations;
   el("ftdCount").textContent=ftds;
 
-  const total=(commissions.data || []).reduce(
-    (sum,item)=>sum+Number(item.commission_amount || 0),0
-  );
-  el("commissionTotal").textContent=money(total);
+  const totals=calculateCommissions(commissions.data);
+  displayMemberCommissions(totals);
 
   const campaignIds=(assignments.data || []).map(a=>a.campaign_id);
   let campaignData=[];
@@ -202,11 +278,13 @@ async function loadMemberDashboard(){
     const result=await db.from("campaigns")
       .select("id,campaign_name,advertiser_name,campaign_status")
       .in("id",campaignIds);
+
     if(result.error) throw result.error;
     campaignData=result.data || [];
   }
 
   const list=el("myCampaigns");
+
   if(!assignments.data.length){
     list.textContent="You have not been assigned any campaigns yet.";
     return;
@@ -214,6 +292,7 @@ async function loadMemberDashboard(){
 
   list.innerHTML=assignments.data.map(a=>{
     const campaign=campaignData.find(c=>c.id===a.campaign_id);
+
     const link=location.origin+"/index.html?ref="+
       encodeURIComponent(a.referral_code)+
       "&campaign="+encodeURIComponent(a.campaign_id);
@@ -240,31 +319,31 @@ async function copyLink(link){
 async function loadAdminDashboard(){
   el("adminPanel").classList.remove("hidden");
 
-  const [members,campaignResult,ftds] = await Promise.all([
-    db.from("member_profiles").select("id,full_name,email,role,account_status"),
+  const [members,campaignResult,ftds,commissions] = await Promise.all([
+    db.from("member_profiles").select("id,role"),
     db.from("campaigns").select("*").order("created_at",{ascending:false}),
     db.from("member_ftd").select("id",{count:"exact",head:true})
-      .eq("deposit_status","pending")
+      .eq("deposit_status","pending"),
+    db.from("member_commissions")
+      .select("commission_amount,commission_status")
   ]);
 
   if(members.error) throw members.error;
   if(campaignResult.error) throw campaignResult.error;
   if(ftds.error) throw ftds.error;
+  if(commissions.error) throw commissions.error;
 
-  const employees=(members.data || []).filter(m=>m.role!=="admin");
+  const membersList=members.data || [];
   campaigns=campaignResult.data || [];
 
-  el("adminMembers").textContent=employees.length;
+  const memberCount=membersList.filter(m=>m.role!=="admin").length;
+
+  el("adminMembers").textContent=memberCount;
   el("adminCampaigns").textContent=campaigns.length;
   el("adminFtd").textContent=ftds.count || 0;
 
-  el("employeeSelect").innerHTML=
-    '<option value="">Select an employee</option>'+
-    employees.map(m=>`<option value="${safe(m.id)}">${safe(m.full_name || m.email)} (${safe(m.email)})</option>`).join("");
-
-  el("campaignSelect").innerHTML=
-    '<option value="">Select a campaign</option>'+
-    campaigns.map(c=>`<option value="${safe(c.id)}">${safe(c.campaign_name)}</option>`).join("");
+  const totals=calculateCommissions(commissions.data);
+  displayAdminCommissions(totals);
 
   el("campaignList").innerHTML=campaigns.length ?
     campaigns.map(c=>`
@@ -275,18 +354,11 @@ async function loadAdminDashboard(){
         <p>Model: ${safe(c.commission_type)}</p>
         <p>Fixed: ${money(c.fixed_amount)} | Percentage: ${safe(c.percentage_rate)}%</p>
       </div>`).join("") : "No campaigns created yet.";
-
-  el("employeeList").innerHTML=employees.length ?
-    employees.map(m=>`
-      <div class="item">
-        <strong>${safe(m.full_name || "Member")}</strong>
-        <p>${safe(m.email)}</p>
-        <span class="badge">${safe(m.account_status || "active")}</span>
-      </div>`).join("") : "No employees registered yet.";
 }
 
 el("campaignForm").addEventListener("submit",async function(event){
   event.preventDefault();
+
   const button=el("createCampaignBtn");
   button.disabled=true;
 
@@ -308,9 +380,11 @@ el("campaignForm").addEventListener("submit",async function(event){
     if(campaign.commission_type==="fixed" && campaign.fixed_amount<=0){
       throw new Error("Enter a fixed commission amount greater than zero.");
     }
+
     if(campaign.commission_type==="percentage" && campaign.percentage_rate<=0){
       throw new Error("Enter a percentage greater than zero.");
     }
+
     if(campaign.commission_type==="hybrid" &&
        campaign.fixed_amount===0 && campaign.percentage_rate===0){
       throw new Error("Enter a fixed amount, a percentage, or both.");
@@ -322,41 +396,10 @@ el("campaignForm").addEventListener("submit",async function(event){
     this.reset();
     el("fixedAmount").value="0";
     el("percentageRate").value="0";
+
     await loadAdminDashboard();
     showMessage("Campaign created successfully.");
-  }catch(error){
-    showMessage(error.message);
-  }finally{
-    button.disabled=false;
-  }
-});
 
-el("assignmentForm").addEventListener("submit",async function(event){
-  event.preventDefault();
-  const button=el("assignBtn");
-  button.disabled=true;
-
-  try{
-    const memberId=el("employeeSelect").value;
-    const campaignId=el("campaignSelect").value;
-
-    if(!memberId || !campaignId){
-      throw new Error("Please select an employee and a campaign.");
-    }
-
-    const code="CL"+crypto.randomUUID().replace(/-/g,"").substring(0,12).toUpperCase();
-
-    const {error}=await db.from("campaign_assignments").insert({
-      member_id:memberId,
-      campaign_id:campaignId,
-      referral_code:code,
-      assignment_status:"active"
-    });
-
-    if(error) throw error;
-
-    this.reset();
-    showMessage("Campaign assigned successfully. The employee now has a unique referral code.");
   }catch(error){
     showMessage(error.message);
   }finally{
@@ -366,14 +409,21 @@ el("assignmentForm").addEventListener("submit",async function(event){
 
 el("logoutBtn").addEventListener("click",async()=>{
   const {error}=await db.auth.signOut();
-  if(error){showMessage(error.message);return;}
+
+  if(error){
+    showMessage(error.message);
+    return;
+  }
+
   location.href="index.html";
 });
 
 async function startDashboard(){
   try{
     const {data,error}=await db.auth.getSession();
+
     if(error) throw error;
+
     currentUser=data.session?.user;
 
     if(!currentUser){
@@ -389,6 +439,7 @@ async function startDashboard(){
       .single();
 
     if(result.error) throw result.error;
+
     profile=result.data;
 
     el("welcome").textContent="Welcome, "+(profile.full_name || "Member");
@@ -399,8 +450,10 @@ async function startDashboard(){
       if(profile.account_status==="inactive"){
         throw new Error("Your account is inactive. Please contact Corelink Media.");
       }
+
       await loadMemberDashboard();
     }
+
   }catch(error){
     showMessage("Dashboard error: "+error.message);
   }
