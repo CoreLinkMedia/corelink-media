@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Corelink Media connects people with digital campaigns and performance opportunities.">
-<title>Corelink Media | Connect. Promote. Earn.</title>
+<meta name="description" content="Corelink Media is a multi-industry CPA affiliate network connecting advertisers with performance-driven affiliates across sports, finance, technology, education and e-commerce.">
+<meta name="theme-color" content="#071b33">
+<title>Corelink Media | Multi-Industry CPA Affiliate Network</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -50,7 +51,7 @@ header{
   text-shadow:0 0 15px rgba(23,198,178,.5);
 }
 
-.logo span{color:var(--teal)}
+.logo span,.footer-logo span{color:var(--teal)}
 
 nav{
   position:absolute;
@@ -69,7 +70,6 @@ nav a{
 }
 
 nav a:hover{color:var(--teal)}
-
 #memberLink{display:none}
 
 .hero{
@@ -100,7 +100,6 @@ nav a:hover{color:var(--teal)}
 
 .hero:before{left:-130px;top:100px}
 .hero:after{right:-120px;bottom:30px}
-
 .hero-content{max-width:850px;z-index:2}
 
 .hero-label{
@@ -125,7 +124,7 @@ nav a:hover{color:var(--teal)}
 
 .hero p{
   color:#c8d8e6;
-  max-width:650px;
+  max-width:680px;
   margin:0 auto 28px;
   font-size:17px;
 }
@@ -167,8 +166,7 @@ nav a:hover{color:var(--teal)}
   border:1px solid rgba(255,255,255,.5);
   border-radius:20px;
   transform:rotateX(55deg) rotateZ(45deg);
-  box-shadow:
-    15px 18px 0 #074c5b,
+  box-shadow:15px 18px 0 #074c5b,
     30px 35px 35px rgba(0,0,0,.4),
     0 0 35px rgba(23,198,178,.5);
   animation:float 4s ease-in-out infinite;
@@ -199,7 +197,7 @@ section{padding:75px 7%}
 .section-subtitle{
   text-align:center;
   color:#687e91;
-  max-width:650px;
+  max-width:700px;
   margin:0 auto 38px;
 }
 
@@ -267,6 +265,9 @@ section{padding:75px 7%}
   font-weight:bold;
   margin-bottom:13px;
 }
+
+.industry-card{min-height:210px}
+.industry-card .card-icon{font-size:21px}
 
 .auth-section{
   background:linear-gradient(180deg,#eaf3f7,#f8fbfd);
@@ -363,8 +364,6 @@ footer{
   margin-bottom:8px;
 }
 
-.footer-logo span{color:var(--teal)}
-
 footer p{font-size:13px;margin:5px 0}
 
 @media(max-width:750px){
@@ -377,6 +376,7 @@ footer p{font-size:13px;margin:5px 0}
     width:100%;
     justify-content:center;
     gap:13px;
+    flex-wrap:wrap;
   }
   nav a{font-size:11px}
   .hero{min-height:530px;padding:55px 6%}
@@ -384,7 +384,6 @@ footer p{font-size:13px;margin:5px 0}
   .section-title{font-size:27px}
   .auth-card{padding:23px}
 }
-
 </style>
 </head>
 
@@ -395,9 +394,10 @@ footer p{font-size:13px;margin:5px 0}
   <nav>
     <a href="#home">Home</a>
     <a href="#about">About</a>
+    <a href="#industries">Industries</a>
     <a href="#campaigns">Campaigns</a>
     <a href="#access">Member Access</a>
-    <a href="dashboard.html" id="memberLink">Dashboard</a>
+    <a href="Dashboard.html" id="memberLink">Dashboard</a>
   </nav>
 </header>
 
@@ -406,110 +406,299 @@ footer p{font-size:13px;margin:5px 0}
 <section class="hero" id="home">
   <div class="hero-content">
     <div class="hero-art"><div class="cube"></div></div>
-    <div class="hero-label">DIGITAL CAMPAIGNS. REAL CONNECTIONS.</div>
+    <div class="hero-label">ADVERTISERS. AFFILIATES. PERFORMANCE.</div>
     <h1>Connect. <span>Promote.</span><br>Earn.</h1>
-    <p>Welcome to Corelink Media. A digital campaign platform built around connections, opportunities and performance. Join our growing community and move forward with us.</p>
-    <a class="btn" href="#access">Become a Member</a>
+    <p>
+      Welcome to Corelink Media, a multi-industry CPA affiliate network
+      connecting advertisers with performance-driven affiliates.
+      One network. Multiple opportunities. Measurable performance.
+    </p>
+    <a class="btn" href="#access">Become an Affiliate</a>
   </div>
 </section>
 
 <section id="about">
   <h2 class="section-title">About Corelink Media</h2>
-  <p class="section-subtitle">Building connections that create digital opportunities.</p>
+  <p class="section-subtitle">
+    Connecting brands with people who turn approved marketing activity
+    into measurable performance.
+  </p>
+
   <div class="cards">
     <div class="card">
       <div class="card-icon">✦</div>
       <h3>Who We Are</h3>
-      <p>Corelink Media connects members with digital promotional campaigns and performance-based opportunities.</p>
+      <p>
+        Corelink Media is a performance marketing and CPA affiliate
+        network connecting advertisers, campaign partners and affiliates
+        across multiple industries.
+      </p>
     </div>
+
     <div class="card">
       <div class="card-icon">◎</div>
       <h3>Our Mission</h3>
-      <p>To create an organised platform where people can access campaigns, promote responsibly and track their activity.</p>
+      <p>
+        To build an organised performance network where businesses
+        can acquire customers and affiliates can promote approved
+        campaigns with transparent tracking.
+      </p>
     </div>
+
     <div class="card">
       <div class="card-icon">◇</div>
       <h3>Our Vision</h3>
-      <p>To grow a trusted digital community built on opportunity, teamwork and meaningful connections.</p>
+      <p>
+        To become a trusted multi-industry affiliate network built
+        around responsible marketing, strong partnerships and
+        measurable results.
+      </p>
     </div>
   </div>
 </section>
 
 <section class="dark-section">
   <h2 class="section-title">How It Works</h2>
-  <p class="section-subtitle">Your journey with Corelink Media starts with a few simple steps.</p>
+  <p class="section-subtitle">
+    A clear performance-based process for advertisers and affiliates.
+  </p>
+
   <div class="cards">
     <div class="card">
       <div class="card-icon">01</div>
-      <h3>Create Your Account</h3>
-      <p>Register for your own Corelink Media member account.</p>
+      <h3>Join the Network</h3>
+      <p>
+        Affiliates create a Corelink Media account and complete
+        the required registration process.
+      </p>
     </div>
+
     <div class="card">
       <div class="card-icon">02</div>
-      <h3>Get Connected</h3>
-      <p>Access the campaigns assigned to your member account.</p>
+      <h3>Apply to Campaigns</h3>
+      <p>
+        Explore available campaigns and apply for opportunities
+        that match your audience and marketing channels.
+      </p>
     </div>
+
     <div class="card">
       <div class="card-icon">03</div>
-      <h3>Promote</h3>
-      <p>Share your approved campaign links and follow partner rules.</p>
+      <h3>Promote Approved Links</h3>
+      <p>
+        Receive approved campaign tracking links and promote
+        according to each advertiser's rules.
+      </p>
     </div>
+
     <div class="card">
       <div class="card-icon">04</div>
-      <h3>Track Activity</h3>
-      <p>Monitor recorded activity and approved commissions from your dashboard.</p>
+      <h3>Track Performance</h3>
+      <p>
+        Eligible acquisitions are tracked and validated.
+        Approved CPA commissions are recorded in the member account.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="industries">
+  <h2 class="section-title">Industries We Connect</h2>
+  <p class="section-subtitle">
+    One affiliate network with opportunities across different
+    business sectors. Campaign availability depends on partner
+    agreements and approval.
+  </p>
+
+  <div class="cards">
+    <div class="card industry-card">
+      <div class="card-icon">🏆</div>
+      <h3>Sports & iGaming</h3>
+      <p>
+        Approved sports betting and eligible gaming-related
+        acquisition campaigns, subject to applicable laws,
+        licences and advertising rules.
+      </p>
+    </div>
+
+    <div class="card industry-card">
+      <div class="card-icon">📈</div>
+      <h3>Forex & Trading</h3>
+      <p>
+        Financial services and trading-platform acquisition
+        campaigns, subject to regulatory and partner approval.
+      </p>
+    </div>
+
+    <div class="card industry-card">
+      <div class="card-icon">🛍</div>
+      <h3>E-commerce</h3>
+      <p>
+        Online retail, product promotions and customer
+        acquisition opportunities.
+      </p>
+    </div>
+
+    <div class="card industry-card">
+      <div class="card-icon">💻</div>
+      <h3>Technology & SaaS</h3>
+      <p>
+        Software subscriptions, technology platforms and
+        digital service acquisition campaigns.
+      </p>
+    </div>
+
+    <div class="card industry-card">
+      <div class="card-icon">🎓</div>
+      <h3>Education</h3>
+      <p>
+        Education providers, online courses, training
+        programmes and learning platforms.
+      </p>
+    </div>
+
+    <div class="card industry-card">
+      <div class="card-icon">💼</div>
+      <h3>Business Services</h3>
+      <p>
+        Business solutions, professional services and
+        approved lead-generation campaigns.
+      </p>
     </div>
   </div>
 </section>
 
 <section id="campaigns">
   <h2 class="section-title">Our Campaign Partners</h2>
-  <p class="section-subtitle">Explore the campaign opportunities available to eligible members.</p>
+  <p class="section-subtitle">
+    View partner campaigns currently featured by Corelink Media.
+    Access is subject to campaign availability and approval.
+  </p>
+
   <div class="cards">
     <div class="card">
       <div class="card-icon">G</div>
-      <span class="campaign-tag">CAMPAIGN PARTNER</span>
+      <span class="campaign-tag">FEATURED PARTNER</span>
       <h3>Goldrush</h3>
-      <p>Goldrush campaign access is provided to members assigned to this campaign.</p>
+      <p>
+        Goldrush campaign access is provided to members
+        assigned to an eligible and approved campaign.
+      </p>
     </div>
+
     <div class="card">
       <div class="card-icon">Y</div>
-      <span class="campaign-tag">CAMPAIGN PARTNER</span>
+      <span class="campaign-tag">FEATURED PARTNER</span>
       <h3>YesPlay</h3>
-      <p>YesPlay campaign access is provided to members assigned to this campaign.</p>
+      <p>
+        YesPlay campaign access is provided to members
+        assigned to an eligible and approved campaign.
+      </p>
     </div>
   </div>
-  <p class="section-subtitle" style="margin-top:25px;margin-bottom:0">Campaign participation is subject to partner approval, eligibility and applicable terms. Age restrictions apply.</p>
+
+  <p class="section-subtitle" style="margin-top:25px;margin-bottom:0">
+    Featured partners are not a guarantee of an active campaign.
+    All promotions must follow partner terms, age restrictions,
+    responsible marketing requirements and applicable laws.
+  </p>
 </section>
 
 <section class="dark-section">
-  <h2 class="section-title">Why Choose Corelink Media?</h2>
-  <p class="section-subtitle">A member-focused platform designed to keep your campaign activity organised.</p>
+  <h2 class="section-title">Our CPA Business Model</h2>
+  <p class="section-subtitle">
+    Cost Per Acquisition means commissions are linked to
+    qualifying customer actions defined by the advertiser.
+  </p>
+
   <div class="cards">
     <div class="card">
+      <h3>Advertiser Agreement</h3>
+      <p>
+        The advertiser agrees to a CPA rate and defines
+        the qualifying acquisition and validation conditions.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Affiliate Commission</h3>
+      <p>
+        Corelink agrees an affiliate payout rate for each
+        approved campaign and eligible affiliate.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Performance Validation</h3>
+      <p>
+        Conversions are recorded and checked against the
+        advertiser's campaign rules before approval.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Transparent Reporting</h3>
+      <p>
+        Approved commissions, pending conversions and
+        payment records are reported through the network.
+      </p>
+    </div>
+  </div>
+
+  <p style="text-align:center;color:#c0d0dd;font-size:13px;margin-top:30px">
+    CPA commissions are not guaranteed earnings. Only qualifying
+    and approved acquisitions are eligible for payment.
+  </p>
+</section>
+
+<section>
+  <h2 class="section-title">Why Choose Corelink Media?</h2>
+  <p class="section-subtitle">
+    A network focused on organised campaigns, performance
+    tracking and long-term business relationships.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">01</div>
+      <h3>Multiple Industries</h3>
+      <p>
+        Access different campaign categories through
+        one affiliate network.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">02</div>
       <h3>Member Dashboard</h3>
-      <p>Your own account to access assigned campaigns and view your activity.</p>
+      <p>
+        A personal account designed to organise campaign
+        access and member performance.
+      </p>
     </div>
+
     <div class="card">
-      <h3>Organised Campaigns</h3>
-      <p>Campaign access managed through your member account.</p>
-    </div>
-    <div class="card">
-      <h3>Activity Tracking</h3>
-      <p>View recorded registrations and approved commission information.</p>
+      <div class="card-icon">03</div>
+      <h3>Performance Focus</h3>
+      <p>
+        Campaign reporting designed around qualifying
+        acquisitions and agreed CPA terms.
+      </p>
     </div>
   </div>
 </section>
 
 <section class="auth-section" id="access">
   <h2 class="section-title">Member Access</h2>
-  <p class="section-subtitle">Join Corelink Media or sign in to access your personal dashboard.</p>
+  <p class="section-subtitle">
+    Join Corelink Media or sign in to access your personal dashboard.
+  </p>
 
   <div class="auth-grid">
 
     <div class="auth-card">
       <h2>Create Your Account</h2>
-      <p>Become part of the Corelink Media community.</p>
+      <p>Become part of the Corelink Media affiliate network.</p>
 
       <form id="registerForm">
         <label for="fullName">Full Name</label>
@@ -535,7 +724,9 @@ footer p{font-size:13px;margin:5px 0}
           <span>I agree to the website terms and applicable campaign rules.</span>
         </label>
 
-        <button class="btn" id="registerButton" type="submit">Create Member Account</button>
+        <button class="btn" id="registerButton" type="submit">
+          Create Member Account
+        </button>
       </form>
 
       <div id="registerMessage" class="message" role="status"></div>
@@ -552,11 +743,15 @@ footer p{font-size:13px;margin:5px 0}
         <label for="loginPassword">Password</label>
         <input id="loginPassword" type="password" placeholder="Your password" required>
 
-        <button class="btn" id="loginButton" type="submit">Login to Dashboard</button>
+        <button class="btn" id="loginButton" type="submit">
+          Login to Dashboard
+        </button>
       </form>
 
       <div id="loginMessage" class="message" role="status"></div>
-      <p style="margin-top:18px">Your member dashboard is waiting for you.</p>
+      <p style="margin-top:18px">
+        Your member dashboard is waiting for you.
+      </p>
     </div>
 
   </div>
@@ -566,9 +761,12 @@ footer p{font-size:13px;margin:5px 0}
 
 <footer>
   <div class="footer-logo">CORELINK <span>MEDIA</span></div>
-  <p>Connect. Promote. Earn.</p>
+  <p>One Network. Multiple Opportunities.</p>
+  <p>Advertisers. Affiliates. Performance.</p>
   <p>Contact: Corelinkmediaa@gmail.com</p>
-  <p style="margin-top:15px">© 2026 Corelink Media. All rights reserved.</p>
+  <p style="margin-top:15px">
+    © 2026 Corelink Media. All rights reserved.
+  </p>
 </footer>
 
 <script>
@@ -635,7 +833,7 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
       email: email,
       password: password,
       options: {
-        emailRedirectTo: window.location.origin + "/auth.html",
+        emailRedirectTo: window.location.origin + "/Auth.html",
         data: {
           full_name: fullName,
           mobile_number: mobile,
@@ -683,7 +881,7 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
 
     showMessage("loginMessage", "Login successful. Opening your dashboard...", "success");
 
-    window.location.href = "dashboard.html";
+    window.location.href = "Dashboard.html";
 
   } catch (error) {
     showMessage("loginMessage", error.message || "Login failed. Please check your details.", "error");
