@@ -7,139 +7,37 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  padding: 30px 15px;
-  font-family: Arial, sans-serif;
-  background: #071b33;
-  color: #14243a;
-}
-
-.container {
-  max-width: 480px;
-  margin: 25px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-}
-
-.logo {
-  text-align: center;
-  font-size: 25px;
-  font-weight: bold;
-  color: #071b33;
-  margin-bottom: 8px;
-}
-
-.logo span { color: #17c6b2; }
-
-.subtitle {
-  text-align: center;
-  color: #64748b;
-  margin-bottom: 25px;
-}
-
-.tabs {
-  display: flex;
-  margin-bottom: 22px;
-}
-
-.tabs button {
-  width: 50%;
-  padding: 13px;
-  border: 0;
-  background: #eaf0f5;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.tabs button.active {
-  background: #17c6b2;
-  color: #071b33;
-}
-
-label {
-  display: block;
-  margin: 13px 0 6px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #ccd7e2;
-  border-radius: 6px;
-  font-size: 15px;
-}
-
-input:focus {
-  outline: 2px solid #17c6b2;
-}
-
-.check {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  font-size: 13px;
-  margin: 18px 0;
-}
-
-.check input {
-  width: auto;
-  margin-top: 3px;
-}
-
-.submit {
-  width: 100%;
-  padding: 14px;
-  background: #17c6b2;
-  border: 0;
-  border-radius: 6px;
-  color: #071b33;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 12px;
-}
-
-.submit:hover { background: #12aa9a; }
-
-.message {
-  margin-top: 16px;
-  padding: 12px;
-  background: #eef4f9;
-  border-radius: 6px;
-  font-size: 14px;
-  overflow-wrap: anywhere;
-}
-
-.hidden { display: none; }
-
-.back {
-  display: block;
-  text-align: center;
-  color: #17a99a;
-  margin-top: 22px;
-  text-decoration: none;
-}
+*{box-sizing:border-box}
+body{margin:0;padding:30px 15px;font-family:Arial,sans-serif;background:#071b33;color:#14243a}
+.container{max-width:480px;margin:25px auto;background:white;padding:30px;border-radius:12px}
+.logo{text-align:center;font-size:25px;font-weight:bold;color:#071b33;margin-bottom:8px}
+.logo span{color:#17c6b2}
+.subtitle{text-align:center;color:#64748b;margin-bottom:25px}
+.tabs{display:flex;margin-bottom:22px}
+.tabs button{width:50%;padding:13px;border:0;background:#eaf0f5;cursor:pointer;font-weight:bold}
+.tabs button.active{background:#17c6b2;color:#071b33}
+label{display:block;margin:13px 0 6px;font-size:14px;font-weight:bold}
+input{width:100%;padding:13px;border:1px solid #ccd7e2;border-radius:6px;font-size:15px}
+input:focus{outline:2px solid #17c6b2}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13px;margin:18px 0}
+.check input{width:auto;margin-top:3px}
+.submit{width:100%;padding:14px;background:#17c6b2;border:0;border-radius:6px;color:#071b33;font-size:16px;font-weight:bold;cursor:pointer;margin-top:12px}
+.submit:hover{background:#12aa9a}
+.submit:disabled{opacity:.6;cursor:wait}
+.message{margin-top:16px;padding:12px;background:#eef4f9;border-radius:6px;font-size:14px;overflow-wrap:anywhere}
+.hidden{display:none}
+.back{display:block;text-align:center;color:#17a99a;margin-top:22px;text-decoration:none}
 </style>
 </head>
 
 <body>
-
 <div class="container">
-
   <div class="logo">CORELINK <span>MEDIA</span></div>
   <p class="subtitle">Grow Together. Earn Through Performance.</p>
 
   <div class="tabs">
-    <button id="registerTab" class="active" type="button"
-      onclick="showForm('register')">Register</button>
-    <button id="loginTab" type="button"
-      onclick="showForm('login')">Member Login</button>
+    <button id="registerTab" class="active" type="button">Register</button>
+    <button id="loginTab" type="button">Member Login</button>
   </div>
 
   <form id="registerForm">
@@ -153,25 +51,20 @@ input:focus {
     <input id="mobile" type="tel" required>
 
     <label>Telegram Username</label>
-    <input id="telegram" type="text"
-      placeholder="@yourusername" required>
+    <input id="telegram" type="text" placeholder="@yourusername" required>
 
     <label>Password</label>
-    <input id="regPassword" type="password"
-      minlength="8" required>
+    <input id="regPassword" type="password" minlength="8" required>
 
     <label>Confirm Password</label>
-    <input id="confirmPassword" type="password"
-      minlength="8" required>
+    <input id="confirmPassword" type="password" minlength="8" required>
 
     <div class="check">
       <input id="terms" type="checkbox" required>
       <span>I agree to the Corelink Media Terms and Privacy Policy.</span>
     </div>
 
-    <button class="submit" type="submit">
-      Create Member Account
-    </button>
+    <button class="submit" type="submit">Create Member Account</button>
   </form>
 
   <form id="loginForm" class="hidden">
@@ -181,78 +74,52 @@ input:focus {
     <label>Password</label>
     <input id="loginPassword" type="password" required>
 
-    <button class="submit" type="submit">
-      Login to Corelink
-    </button>
+    <button class="submit" type="submit">Login to Corelink</button>
   </form>
 
-  <div id="message" class="message hidden"
-    role="status" aria-live="polite"></div>
-
+  <div id="message" class="message hidden" role="status" aria-live="polite"></div>
   <a class="back" href="index.html">← Back to Homepage</a>
-
 </div>
 
 <script>
 const SUPABASE_URL = "https://gxdbhavpbzjruhpafqpf.supabase.co";
-const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DKUKJAPk";
+const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DUKJAPk";
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
-const message = document.getElementById("message");
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const el = id => document.getElementById(id);
 
 function showMessage(text) {
-  message.textContent = text;
-  message.classList.remove("hidden");
+  el("message").textContent = text;
+  el("message").classList.remove("hidden");
 }
 
 function showForm(type) {
-  document.getElementById("registerForm")
-    .classList.toggle("hidden", type !== "register");
-
-  document.getElementById("loginForm")
-    .classList.toggle("hidden", type !== "login");
-
-  document.getElementById("registerTab")
-    .classList.toggle("active", type === "register");
-
-  document.getElementById("loginTab")
-    .classList.toggle("active", type === "login");
-
-  message.classList.add("hidden");
+  el("registerForm").classList.toggle("hidden", type !== "register");
+  el("loginForm").classList.toggle("hidden", type !== "login");
+  el("registerTab").classList.toggle("active", type === "register");
+  el("loginTab").classList.toggle("active", type === "login");
+  el("message").classList.add("hidden");
 }
 
-document.getElementById("registerForm")
-.addEventListener("submit", async function(event) {
+el("registerTab").addEventListener("click", () => showForm("register"));
+el("loginTab").addEventListener("click", () => showForm("login"));
+
+el("registerForm").addEventListener("submit", async function(event) {
   event.preventDefault();
 
-  const fullName =
-    document.getElementById("fullName").value.trim();
-
-  const email =
-    document.getElementById("regEmail").value.trim();
-
-  const mobile =
-    document.getElementById("mobile").value.trim();
-
-  const telegram =
-    document.getElementById("telegram").value.trim();
-
-  const password =
-    document.getElementById("regPassword").value;
-
-  const confirm =
-    document.getElementById("confirmPassword").value;
+  const fullName = el("fullName").value.trim();
+  const email = el("regEmail").value.trim();
+  const mobile = el("mobile").value.trim();
+  const telegram = el("telegram").value.trim();
+  const password = el("regPassword").value;
+  const confirm = el("confirmPassword").value;
 
   if (password !== confirm) {
     showMessage("Your passwords do not match.");
     return;
   }
 
-  if (!document.getElementById("terms").checked) {
+  if (!el("terms").checked) {
     showMessage("Please agree to the terms first.");
     return;
   }
@@ -262,7 +129,7 @@ document.getElementById("registerForm")
   button.textContent = "Creating account...";
 
   try {
-    const { data, error } = await db.auth.signUp({
+    const { error } = await db.auth.signUp({
       email,
       password,
       options: {
@@ -271,17 +138,14 @@ document.getElementById("registerForm")
           mobile_number: mobile,
           telegram_username: telegram
         },
-        emailRedirectTo: window.location.origin + "/auth.html"
+        emailRedirectTo: window.location.origin + "/Auth.html"
       }
     });
 
     if (error) throw error;
 
-    showMessage(
-      "Registration submitted. Check your email for a confirmation link. After confirming, you can log in."
-    );
-
     this.reset();
+    showMessage("Registration submitted. Check your email for the confirmation link. After confirming, return here and log in.");
 
   } catch (error) {
     showMessage(error.message);
@@ -291,17 +155,13 @@ document.getElementById("registerForm")
   }
 });
 
-document.getElementById("loginForm")
-.addEventListener("submit", async function(event) {
+el("loginForm").addEventListener("submit", async function(event) {
   event.preventDefault();
 
-  const email =
-    document.getElementById("loginEmail").value.trim();
-
-  const password =
-    document.getElementById("loginPassword").value;
-
+  const email = el("loginEmail").value.trim();
+  const password = el("loginPassword").value;
   const button = this.querySelector("button[type=submit]");
+
   button.disabled = true;
   button.textContent = "Logging in...";
 
@@ -312,17 +172,20 @@ document.getElementById("loginForm")
     });
 
     if (error) throw error;
+    if (!data.session) throw new Error("Login session could not be created.");
 
-    showMessage("Login successful. Your member dashboard is the next stage we will connect.");
+    showMessage("Login successful. Opening your dashboard...");
+
+    window.location.assign(
+      new URL("Dashboard.html", window.location.href).href
+    );
 
   } catch (error) {
     showMessage(error.message);
-  } finally {
     button.disabled = false;
     button.textContent = "Login to Corelink";
   }
 });
 </script>
-
 </body>
 </html>
