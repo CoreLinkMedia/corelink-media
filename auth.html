@@ -83,7 +83,7 @@ input:focus{outline:2px solid #17c6b2}
 
 <script>
 const SUPABASE_URL = "https://gxdbhavpbzjruhpafqpf.supabase.co";
-const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DKUKJAPk";
+const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DUKJAPk";
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const el = id => document.getElementById(id);
@@ -138,7 +138,7 @@ el("registerForm").addEventListener("submit", async function(event) {
           mobile_number: mobile,
           telegram_username: telegram
         },
-        emailRedirectTo: window.location.origin + "/Auth.html"
+        emailRedirectTo: window.location.origin + "/auth.html"
       }
     });
 
@@ -177,7 +177,7 @@ el("loginForm").addEventListener("submit", async function(event) {
     showMessage("Login successful. Opening your dashboard...");
 
     window.location.assign(
-      new URL("Dashboard.html", window.location.href).href
+      new URL("MemberDashboard.html", window.location.href).href
     );
 
   } catch (error) {
