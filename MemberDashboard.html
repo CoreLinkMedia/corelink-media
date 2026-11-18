@@ -1,4 +1,4 @@
-async function createCampaign(){
+async function createCampaign() {
   const name = document.getElementById("campaignName").value.trim();
   const advertiser = document.getElementById("advertiserName").value.trim();
   const type = document.getElementById("commissionType").value;
@@ -6,16 +6,16 @@ async function createCampaign(){
   const percentage = Number(document.getElementById("percentageRate").value || 0);
   const button = document.getElementById("createCampaignButton");
 
-  if(!name || !advertiser){
-    showMessage("Enter the campaign name and advertiser.");
+  if (!name || !advertiser) {
+    showMessage("Please enter the campaign name and advertiser name.");
     return;
   }
 
   button.disabled = true;
-  button.textContent = "Creating...";
+  button.textContent = "Creating campaign...";
 
-  try{
-    const {error} = await db.from("campaigns").insert({
+  try {
+    const campaignData = {
       name: name,
       campaign_name: name,
       advertiser_name: advertiser,
@@ -24,16 +24,21 @@ async function createCampaign(){
       commission_type: type,
       fixed_amount: fixed,
       percentage_rate: percentage
-    });
+    };
 
-    if(error){
-      console.error("Campaign creation error:",error);
-      showMessage("CAMPAIGN CREATION ERROR: " + error.message +
-        (error.code ? " | Code: " + error.code : ""));
+    const { data, error } = await db
+      .from("campaigns")
+      .insert([campaignData])
+      .select();
+
+    if (error) {
+      console.error("Campaign creation error:", error);
+      showMessage("CAMPAIGN ERROR: " + error.message +
+        " | Code: " + error.code);
       return;
     }
 
-    showMessage("Campaign created successfully.");
+    showMessage("Campaign created successfully!");
 
     document.getElementById("campaignName").value = "";
     document.getElementById("advertiserName").value = "";
@@ -42,10 +47,10 @@ async function createCampaign(){
 
     await loadAdmin();
 
-  }catch(error){
-    console.error("Campaign error:",error);
-    showMessage("CAMPAIGN ERROR: " + error.message);
-  }finally{
+  } catch (error) {
+    console.error(error);
+    showMessage("ERROR: " + error.message);
+  } finally {
     button.disabled = false;
     button.textContent = "Create Campaign";
   }
