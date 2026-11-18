@@ -82,7 +82,7 @@ th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}
 </select>
 <input id="fixedAmount" type="number" placeholder="Fixed amount (R)">
 <input id="percentageRate" type="number" placeholder="Percentage rate">
-<button onclick="createCampaign()">Create Campaign</button>
+<button id="createCampaignButton" onclick="createCampaign()">Create Campaign</button>
 </div>
 
 <div class="card">
@@ -108,10 +108,7 @@ th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}
 const SUPABASE_URL = "https://gxdbhavpbzjruhpafqpf.supabase.co";
 const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DKUKJAPk";
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let currentUser = null;
 let profile = null;
@@ -137,19 +134,16 @@ function safe(value){
 }
 
 async function startDashboard(){
-  try {
+  try{
     const {data,error} = await db.auth.getSession();
-
     if(error) throw error;
 
-    const session = data.session;
-
-    if(!session){
+    if(!data.session){
       window.location.replace("auth.html");
       return;
     }
 
-    currentUser = session.user;
+    currentUser = data.session.user;
 
     const {data:memberProfile,error:profileError} = await db
       .from("member_profiles")
@@ -160,18 +154,11 @@ async function startDashboard(){
     if(profileError || !memberProfile){
       console.error("Profile loading error:",profileError);
 
-      const errorText = profileError
-        ? profileError.message + 
-          (profileError.code ? " | Code: " + profileError.code : "") +
-          (profileError.details ? " | Details: " + profileError.details : "") +
-          (profileError.hint ? " | Hint: " + profileError.hint : "")
-        : "No profile row returned.";
+      showMessage("PROFILE ERROR: " +
+        (profileError?.message || "No profile returned") +
+        (profileError?.code ? " | Code: " + profileError.code : ""));
 
-      showMessage("PROFILE ERROR: " + errorText);
-
-      document.getElementById("welcome").textContent =
-        "Profile not available";
-
+      document.getElementById("welcome").textContent = "Profile not available";
       return;
     }
 
@@ -198,7 +185,7 @@ async function startDashboard(){
       await loadMember();
     }
 
-  } catch(error) {
+  }catch(error){
     console.error("Dashboard startup error:",error);
     showMessage("DASHBOARD ERROR: " + (error.message || "Please try again."));
   }
@@ -227,18 +214,11 @@ async function loadMember(){
   ]);
 
   if(regs.error || ftds.error || commissions.error || assignments.error){
-    console.error("Member data errors:",{
-      registrations:regs.error,
-      ftds:ftds.error,
-      commissions:commissions.error,
-      assignments:assignments.error
-    });
-
     const firstError = regs.error || ftds.error ||
       commissions.error || assignments.error;
 
-    showMessage("MEMBER DATA ERROR: " + firstError.message +
-      (firstError.code ? " | Code: " + firstError.code : ""));
+    console.error("Member data errors:",firstError);
+    showMessage("MEMBER DATA ERROR: " + firstError.message);
     return;
   }
 
@@ -299,18 +279,11 @@ async function loadAdmin(){
   ]);
 
   if(members.error || campaigns.error || ftds.error || commissions.error){
-    console.error("Admin data errors:",{
-      members:members.error,
-      campaigns:campaigns.error,
-      ftds:ftds.error,
-      commissions:commissions.error
-    });
-
     const firstError = members.error || campaigns.error ||
       ftds.error || commissions.error;
 
-    showMessage("ADMIN DATA ERROR: " + firstError.message +
-      (firstError.code ? " | Code: " + firstError.code : ""));
+    console.error("Admin data errors:",firstError);
+    showMessage("ADMIN DATA ERROR: " + firstError.message);
     return;
   }
 
@@ -329,15 +302,17 @@ async function loadAdmin(){
 
   document.getElementById("campaignList").innerHTML = list.length
     ? list.map(c=>`<tr>
-        <td>${safe(c.campaign_name)}</td>
+        <td>${safe(c.campaign_name || c.name)}</td>
         <td>${safe(c.advertiser_name)}</td>
         <td>${safe(c.campaign_status)}</td>
       </tr>`).join("")
     : "<tr><td colspan='3'>No campaigns created yet.</td></tr>";
 
   document.getElementById("assignCampaign").innerHTML =
-    list.map(c=>`<option value="${safe(c.id)}">${safe(c.campaign_name)}</option>`).join("");
+    list.map(c=>`<option value="${safe(c.id)}">${safe(c.campaign_name || c.name)}</option>`).join("");
 }
+
+/* CORRECTED CREATE CAMPAIGN FUNCTION */
 
 async function createCampaign(){
   const name = document.getElementById("campaignName").value.trim();
@@ -345,29 +320,50 @@ async function createCampaign(){
   const type = document.getElementById("commissionType").value;
   const fixed = Number(document.getElementById("fixedAmount").value || 0);
   const percentage = Number(document.getElementById("percentageRate").value || 0);
+  const button = document.getElementById("createCampaignButton");
 
   if(!name || !advertiser){
     showMessage("Enter the campaign name and advertiser.");
     return;
   }
 
-  const {error} = await db.from("campaigns").insert({
-    campaign_name:name,
-    advertiser_name:advertiser,
-    campaign_status:"active",
-    commission_type:type,
-    fixed_amount:fixed,
-    percentage_rate:percentage
-  });
+  button.disabled = true;
+  button.textContent = "Creating...";
 
-  if(error){
-    console.error("Campaign creation error:",error);
-    showMessage("Campaign creation error: " + error.message);
-    return;
+  try{
+    const {error} = await db.from("campaigns").insert({
+      name: name,
+      campaign_name: name,
+      advertiser_name: advertiser,
+      campaign_status: "active",
+      commission_type: type,
+      fixed_amount: fixed,
+      percentage_rate: percentage
+    });
+
+    if(error){
+      console.error("Campaign creation error:",error);
+      showMessage("CAMPAIGN CREATION ERROR: " + error.message +
+        (error.code ? " | Code: " + error.code : ""));
+      return;
+    }
+
+    showMessage("Campaign created successfully.");
+
+    document.getElementById("campaignName").value = "";
+    document.getElementById("advertiserName").value = "";
+    document.getElementById("fixedAmount").value = "";
+    document.getElementById("percentageRate").value = "";
+
+    await loadAdmin();
+
+  }catch(error){
+    console.error("Campaign error:",error);
+    showMessage("CAMPAIGN ERROR: " + error.message);
+  }finally{
+    button.disabled = false;
+    button.textContent = "Create Campaign";
   }
-
-  showMessage("Campaign created successfully.");
-  await loadAdmin();
 }
 
 async function assignCampaign(){
@@ -388,8 +384,7 @@ async function assignCampaign(){
   if(memberError || !member){
     console.error("Member lookup error:",memberError);
     showMessage("Member lookup error: " +
-      (memberError?.message || "Member not found") +
-      (memberError?.code ? " | Code: " + memberError.code : ""));
+      (memberError?.message || "Member not found"));
     return;
   }
 
