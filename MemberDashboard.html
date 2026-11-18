@@ -133,7 +133,7 @@ async function startDashboard(){
  const {data:{session},error}=await db.auth.getSession();
 
  if(error || !session){
-  window.location.replace("Auth.html");
+  window.location.replace("auth.html");
   return;
  }
 
