@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Corelink Media is a multi-industry CPA affiliate network connecting advertisers with performance-driven affiliates across sports, finance, technology, education and e-commerce.">
+<meta name="description" content="Corelink Media connects affiliates with digital campaigns and performance-based earning opportunities. Connect. Promote. Earn.">
 <meta name="theme-color" content="#071b33">
-<title>Corelink Media | Multi-Industry CPA Affiliate Network</title>
+<title>Corelink Media | Connect. Promote. Earn.</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -43,15 +43,19 @@ header{
 }
 
 .logo{
-  color:white;
-  font-size:27px;
-  font-weight:900;
-  letter-spacing:3px;
-  text-align:center;
-  text-shadow:0 0 15px rgba(23,198,178,.5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
 }
 
-.logo span,.footer-logo span{color:var(--teal)}
+.logo img{
+  display:block;
+  width:190px;
+  max-width:55%;
+  max-height:65px;
+  object-fit:contain;
+}
 
 nav{
   position:absolute;
@@ -266,9 +270,6 @@ section{padding:75px 7%}
   margin-bottom:13px;
 }
 
-.industry-card{min-height:210px}
-.industry-card .card-icon{font-size:21px}
-
 .auth-section{
   background:linear-gradient(180deg,#eaf3f7,#f8fbfd);
 }
@@ -357,18 +358,25 @@ footer{
 }
 
 .footer-logo{
-  color:white;
-  font-size:23px;
-  font-weight:900;
-  letter-spacing:3px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   margin-bottom:8px;
+}
+
+.footer-logo img{
+  display:block;
+  width:165px;
+  max-width:55%;
+  max-height:60px;
+  object-fit:contain;
 }
 
 footer p{font-size:13px;margin:5px 0}
 
 @media(max-width:750px){
-  header{padding:18px 10px 65px}
-  .logo{font-size:22px}
+  header{padding:18px 10px 75px}
+  .logo img{width:165px;max-height:55px}
   nav{
     right:auto;
     bottom:15px;
@@ -390,11 +398,12 @@ footer p{font-size:13px;margin:5px 0}
 <body>
 
 <header>
-  <div class="logo">CORELINK <span>MEDIA</span></div>
+  <div class="logo">
+    <img src="logo.jpeg" alt="Corelink Media Logo">
+  </div>
   <nav>
     <a href="#home">Home</a>
     <a href="#about">About</a>
-    <a href="#industries">Industries</a>
     <a href="#campaigns">Campaigns</a>
     <a href="#access">Member Access</a>
     <a href="Dashboard.html" id="memberLink">Dashboard</a>
@@ -406,12 +415,13 @@ footer p{font-size:13px;margin:5px 0}
 <section class="hero" id="home">
   <div class="hero-content">
     <div class="hero-art"><div class="cube"></div></div>
-    <div class="hero-label">ADVERTISERS. AFFILIATES. PERFORMANCE.</div>
+    <div class="hero-label">AFFILIATES. CAMPAIGNS. PERFORMANCE.</div>
     <h1>Connect. <span>Promote.</span><br>Earn.</h1>
     <p>
-      Welcome to Corelink Media, a multi-industry CPA affiliate network
-      connecting advertisers with performance-driven affiliates.
-      One network. Multiple opportunities. Measurable performance.
+      Welcome to Corelink Media. We connect affiliates with
+      digital campaigns and performance-based opportunities.
+      Promote approved campaigns, track your performance
+      and earn commissions on qualifying results.
     </p>
     <a class="btn" href="#access">Become an Affiliate</a>
   </div>
@@ -420,8 +430,8 @@ footer p{font-size:13px;margin:5px 0}
 <section id="about">
   <h2 class="section-title">About Corelink Media</h2>
   <p class="section-subtitle">
-    Connecting brands with people who turn approved marketing activity
-    into measurable performance.
+    Connecting affiliates with campaign opportunities through
+    performance marketing and trusted partnerships.
   </p>
 
   <div class="cards">
@@ -429,9 +439,9 @@ footer p{font-size:13px;margin:5px 0}
       <div class="card-icon">✦</div>
       <h3>Who We Are</h3>
       <p>
-        Corelink Media is a performance marketing and CPA affiliate
-        network connecting advertisers, campaign partners and affiliates
-        across multiple industries.
+        Corelink Media is an affiliate marketing network
+        connecting campaign partners with affiliates who
+        promote approved digital campaigns.
       </p>
     </div>
 
@@ -439,9 +449,9 @@ footer p{font-size:13px;margin:5px 0}
       <div class="card-icon">◎</div>
       <h3>Our Mission</h3>
       <p>
-        To build an organised performance network where businesses
-        can acquire customers and affiliates can promote approved
-        campaigns with transparent tracking.
+        To create opportunities for affiliates and campaign
+        partners through organised promotions, transparent
+        tracking and performance-based partnerships.
       </p>
     </div>
 
@@ -449,9 +459,9 @@ footer p{font-size:13px;margin:5px 0}
       <div class="card-icon">◇</div>
       <h3>Our Vision</h3>
       <p>
-        To become a trusted multi-industry affiliate network built
-        around responsible marketing, strong partnerships and
-        measurable results.
+        To build a trusted affiliate network focused on
+        strong partnerships, responsible marketing
+        and measurable results.
       </p>
     </div>
   </div>
@@ -460,109 +470,43 @@ footer p{font-size:13px;margin:5px 0}
 <section class="dark-section">
   <h2 class="section-title">How It Works</h2>
   <p class="section-subtitle">
-    A clear performance-based process for advertisers and affiliates.
+    Getting started with Corelink Media is simple.
   </p>
 
   <div class="cards">
     <div class="card">
       <div class="card-icon">01</div>
-      <h3>Join the Network</h3>
+      <h3>Register</h3>
       <p>
-        Affiliates create a Corelink Media account and complete
-        the required registration process.
+        Create your free Corelink Media member account
+        using the registration form.
       </p>
     </div>
 
     <div class="card">
       <div class="card-icon">02</div>
-      <h3>Apply to Campaigns</h3>
+      <h3>Get Campaign Access</h3>
       <p>
-        Explore available campaigns and apply for opportunities
-        that match your audience and marketing channels.
+        Access available campaigns after the required
+        review and approval process.
       </p>
     </div>
 
     <div class="card">
       <div class="card-icon">03</div>
-      <h3>Promote Approved Links</h3>
+      <h3>Promote</h3>
       <p>
-        Receive approved campaign tracking links and promote
-        according to each advertiser's rules.
+        Share your approved campaign links and follow
+        the campaign partner's promotion rules.
       </p>
     </div>
 
     <div class="card">
       <div class="card-icon">04</div>
-      <h3>Track Performance</h3>
+      <h3>Earn Commissions</h3>
       <p>
-        Eligible acquisitions are tracked and validated.
-        Approved CPA commissions are recorded in the member account.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section id="industries">
-  <h2 class="section-title">Industries We Connect</h2>
-  <p class="section-subtitle">
-    One affiliate network with opportunities across different
-    business sectors. Campaign availability depends on partner
-    agreements and approval.
-  </p>
-
-  <div class="cards">
-    <div class="card industry-card">
-      <div class="card-icon">🏆</div>
-      <h3>Sports & iGaming</h3>
-      <p>
-        Approved sports betting and eligible gaming-related
-        acquisition campaigns, subject to applicable laws,
-        licences and advertising rules.
-      </p>
-    </div>
-
-    <div class="card industry-card">
-      <div class="card-icon">📈</div>
-      <h3>Forex & Trading</h3>
-      <p>
-        Financial services and trading-platform acquisition
-        campaigns, subject to regulatory and partner approval.
-      </p>
-    </div>
-
-    <div class="card industry-card">
-      <div class="card-icon">🛍</div>
-      <h3>E-commerce</h3>
-      <p>
-        Online retail, product promotions and customer
-        acquisition opportunities.
-      </p>
-    </div>
-
-    <div class="card industry-card">
-      <div class="card-icon">💻</div>
-      <h3>Technology & SaaS</h3>
-      <p>
-        Software subscriptions, technology platforms and
-        digital service acquisition campaigns.
-      </p>
-    </div>
-
-    <div class="card industry-card">
-      <div class="card-icon">🎓</div>
-      <h3>Education</h3>
-      <p>
-        Education providers, online courses, training
-        programmes and learning platforms.
-      </p>
-    </div>
-
-    <div class="card industry-card">
-      <div class="card-icon">💼</div>
-      <h3>Business Services</h3>
-      <p>
-        Business solutions, professional services and
-        approved lead-generation campaigns.
+        Qualifying acquisitions are tracked and validated.
+        Approved commissions are recorded in your account.
       </p>
     </div>
   </div>
@@ -571,82 +515,82 @@ footer p{font-size:13px;margin:5px 0}
 <section id="campaigns">
   <h2 class="section-title">Our Campaign Partners</h2>
   <p class="section-subtitle">
-    View partner campaigns currently featured by Corelink Media.
-    Access is subject to campaign availability and approval.
+    Explore the campaign partners currently featured
+    by Corelink Media.
   </p>
 
   <div class="cards">
     <div class="card">
       <div class="card-icon">G</div>
-      <span class="campaign-tag">FEATURED PARTNER</span>
+      <span class="campaign-tag">CAMPAIGN PARTNER</span>
       <h3>Goldrush</h3>
       <p>
-        Goldrush campaign access is provided to members
-        assigned to an eligible and approved campaign.
+        Goldrush campaign opportunities are available
+        to eligible members following campaign approval.
       </p>
     </div>
 
     <div class="card">
       <div class="card-icon">Y</div>
-      <span class="campaign-tag">FEATURED PARTNER</span>
+      <span class="campaign-tag">CAMPAIGN PARTNER</span>
       <h3>YesPlay</h3>
       <p>
-        YesPlay campaign access is provided to members
-        assigned to an eligible and approved campaign.
+        YesPlay campaign opportunities are available
+        to eligible members following campaign approval.
       </p>
     </div>
   </div>
 
   <p class="section-subtitle" style="margin-top:25px;margin-bottom:0">
-    Featured partners are not a guarantee of an active campaign.
-    All promotions must follow partner terms, age restrictions,
-    responsible marketing requirements and applicable laws.
+    Campaign access is subject to availability, partner approval,
+    applicable age restrictions, responsible marketing requirements
+    and relevant laws.
   </p>
 </section>
 
 <section class="dark-section">
-  <h2 class="section-title">Our CPA Business Model</h2>
+  <h2 class="section-title">Our Affiliate Commission Model</h2>
   <p class="section-subtitle">
-    Cost Per Acquisition means commissions are linked to
-    qualifying customer actions defined by the advertiser.
+    Our commission model is based on qualifying actions
+    defined by each campaign partner.
   </p>
 
   <div class="cards">
     <div class="card">
-      <h3>Advertiser Agreement</h3>
+      <h3>Campaign Terms</h3>
       <p>
-        The advertiser agrees to a CPA rate and defines
-        the qualifying acquisition and validation conditions.
+        Each campaign has its own qualifying acquisition
+        requirements and commission terms.
       </p>
     </div>
 
     <div class="card">
-      <h3>Affiliate Commission</h3>
+      <h3>Affiliate Commissions</h3>
       <p>
-        Corelink agrees an affiliate payout rate for each
-        approved campaign and eligible affiliate.
+        Affiliates receive the agreed payout for each
+        qualifying and approved acquisition.
       </p>
     </div>
 
     <div class="card">
       <h3>Performance Validation</h3>
       <p>
-        Conversions are recorded and checked against the
-        advertiser's campaign rules before approval.
+        Conversions are checked against campaign rules
+        before commissions are approved.
       </p>
     </div>
 
     <div class="card">
-      <h3>Transparent Reporting</h3>
+      <h3>Member Reporting</h3>
       <p>
-        Approved commissions, pending conversions and
-        payment records are reported through the network.
+        Member accounts are designed to organise campaign
+        access, performance and commission records.
       </p>
     </div>
   </div>
 
   <p style="text-align:center;color:#c0d0dd;font-size:13px;margin-top:30px">
-    CPA commissions are not guaranteed earnings. Only qualifying
+    Commissions are not guaranteed earnings. Only qualifying
     and approved acquisitions are eligible for payment.
   </p>
 </section>
@@ -654,17 +598,17 @@ footer p{font-size:13px;margin:5px 0}
 <section>
   <h2 class="section-title">Why Choose Corelink Media?</h2>
   <p class="section-subtitle">
-    A network focused on organised campaigns, performance
-    tracking and long-term business relationships.
+    A network built around campaign opportunities,
+    affiliate support and performance tracking.
   </p>
 
   <div class="cards">
     <div class="card">
       <div class="card-icon">01</div>
-      <h3>Multiple Industries</h3>
+      <h3>Campaign Opportunities</h3>
       <p>
-        Access different campaign categories through
-        one affiliate network.
+        Access available campaigns through one
+        Corelink Media member account.
       </p>
     </div>
 
@@ -672,8 +616,8 @@ footer p{font-size:13px;margin:5px 0}
       <div class="card-icon">02</div>
       <h3>Member Dashboard</h3>
       <p>
-        A personal account designed to organise campaign
-        access and member performance.
+        Use your personal dashboard to access
+        your member account and available features.
       </p>
     </div>
 
@@ -681,8 +625,8 @@ footer p{font-size:13px;margin:5px 0}
       <div class="card-icon">03</div>
       <h3>Performance Focus</h3>
       <p>
-        Campaign reporting designed around qualifying
-        acquisitions and agreed CPA terms.
+        Campaign activity is organised around
+        qualifying acquisitions and agreed terms.
       </p>
     </div>
   </div>
@@ -760,10 +704,12 @@ footer p{font-size:13px;margin:5px 0}
 </main>
 
 <footer>
-  <div class="footer-logo">CORELINK <span>MEDIA</span></div>
-  <p>One Network. Multiple Opportunities.</p>
-  <p>Advertisers. Affiliates. Performance.</p>
- 
+  <div class="footer-logo">
+    <img src="logo.jpeg" alt="Corelink Media Logo">
+  </div>
+  <p>Connect. Promote. Earn.</p>
+  <p>Affiliates. Campaigns. Performance.</p>
+
   <p style="margin-top:15px">
     © 2026 Corelink Media. All rights reserved.
   </p>
