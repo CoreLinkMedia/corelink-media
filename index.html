@@ -3,789 +3,1224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Corelink Media connects advertisers and affiliates through performance-based CPA campaigns. Connect. Promote. Earn.">
+
+<meta name="description" content="Corelink Media connects advertisers and affiliates through performance-driven CPA marketing campaigns. Connect. Promote. Earn.">
+
 <meta name="theme-color" content="#071b33">
+
 <title>Corelink Media | Connect. Promote. Earn.</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-:root{
-  --navy:#071b33;
-  --navy2:#0d2948;
-  --teal:#17c6b2;
-  --light:#f4f7fa;
-  --white:#ffffff;
-  --text:#263445;
-  --muted:#66768a;
+:root {
+    --navy: #071b33;
+    --navy-light: #102b49;
+    --navy-mid: #0d2948;
+    --teal: #17c6b2;
+    --white: #ffffff;
+    --muted: #aab9ca;
+    --light: #f4f8fb;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-
-html{scroll-behavior:smooth}
-
-body{
-  font-family:Inter,Arial,sans-serif;
-  color:var(--text);
-  background:var(--white);
-  line-height:1.6;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-a{text-decoration:none;color:inherit}
-
-button,input{font:inherit}
-
-header{
-  background:var(--navy);
-  color:white;
-  padding:18px 6%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  position:sticky;
-  top:0;
-  z-index:100;
-  box-shadow:0 4px 15px rgba(0,0,0,.15);
+html {
+    scroll-behavior: smooth;
 }
 
-.logo{
-  color:white;
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:2px;
-  white-space:nowrap;
-  text-shadow:0 0 15px rgba(23,198,178,.35);
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--white);
+    color: #17283b;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-nav{
-  display:flex;
-  align-items:center;
-  gap:22px;
-  flex-wrap:wrap;
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
-nav a{
-  color:white;
-  font-size:13px;
-  font-weight:600;
-  transition:.2s;
+/* HEADER */
+
+header {
+    background: var(--navy);
+    color: white;
+    padding: 18px 6%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-nav a:hover{color:var(--teal)}
-
-.nav-button{
-  background:var(--teal);
-  color:var(--navy);
-  padding:10px 17px;
-  border-radius:6px;
-  font-weight:800;
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: white;
+    text-align: center;
 }
 
-.hero{
-  background:linear-gradient(130deg,var(--navy),var(--navy2));
-  color:white;
-  padding:105px 7%;
-  text-align:center;
+.logo span {
+    color: var(--teal);
 }
 
-.hero-label{
-  color:var(--teal);
-  font-weight:800;
-  letter-spacing:3px;
-  font-size:12px;
-  margin-bottom:18px;
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
 }
 
-.hero h1{
-  font-size:clamp(36px,6vw,65px);
-  line-height:1.12;
-  margin-bottom:20px;
-  font-weight:900;
+nav a {
+    color: #dce7f1;
+    font-size: 14px;
+    transition: 0.3s;
 }
 
-.hero h1 span{color:var(--teal)}
-
-.hero p{
-  max-width:720px;
-  margin:0 auto 30px;
-  color:#d4e0ec;
-  font-size:17px;
+nav a:hover {
+    color: var(--teal);
 }
 
-.primary-button{
-  display:inline-block;
-  background:var(--teal);
-  color:var(--navy);
-  padding:14px 25px;
-  border-radius:6px;
-  font-weight:800;
-  transition:.2s;
-  border:0;
-  cursor:pointer;
+.nav-button {
+    background: var(--teal);
+    color: var(--navy);
+    padding: 10px 19px;
+    border-radius: 6px;
+    font-weight: bold;
 }
 
-.primary-button:hover{transform:translateY(-2px);opacity:.9}
-
-.secondary-button{
-  display:inline-block;
-  border:1px solid rgba(255,255,255,.7);
-  color:white;
-  padding:13px 25px;
-  border-radius:6px;
-  font-weight:700;
-  margin-left:10px;
+.nav-button:hover {
+    background: white;
+    color: var(--navy);
 }
 
-section{padding:75px 7%}
-
-.section-heading{
-  text-align:center;
-  max-width:750px;
-  margin:0 auto 42px;
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: 0;
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
 }
 
-.section-heading h2{
-  color:var(--navy);
-  font-size:clamp(27px,4vw,38px);
-  margin-bottom:12px;
+/* HERO SECTION */
+
+.hero {
+    min-height: auto;
+    padding: 55px 6% 30px;
+    background:
+        radial-gradient(circle at 50% 75%, rgba(23,198,178,0.10), transparent 32%),
+        linear-gradient(120deg, #071b33 0%, #0d2948 60%, #071b33 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 5px;
+    overflow: hidden;
+    position: relative;
 }
 
-.section-heading p{color:var(--muted)}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border: 1px solid rgba(23,198,178,0.09);
+    border-radius: 50%;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
-.card{
-  background:white;
-  border:1px solid #e5ebf1;
-  border-radius:10px;
-  padding:28px;
-  box-shadow:0 5px 20px rgba(7,27,51,.05);
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
 }
 
-.card h3{
-  color:var(--navy);
-  font-size:19px;
-  margin-bottom:12px;
+.eyebrow {
+    display: inline-block;
+    color: var(--teal);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
 }
 
-.card p{color:var(--muted);font-size:14px}
-
-.card-icon{
-  width:45px;
-  height:45px;
-  border-radius:9px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#e5faf7;
-  color:#079d8c;
-  font-size:22px;
-  font-weight:900;
-  margin-bottom:17px;
+.hero h1 {
+    font-size: clamp(40px, 5vw, 58px);
+    line-height: 1.12;
+    margin-bottom: 18px;
+    font-weight: 800;
 }
 
-.soft-section{background:var(--light)}
-
-.campaign-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:25px;
-  max-width:900px;
-  margin:auto;
+.hero h1 span {
+    color: var(--teal);
 }
 
-.campaign{
-  background:white;
-  border-radius:12px;
-  padding:32px;
-  border:1px solid #e4ebf2;
-  box-shadow:0 7px 25px rgba(7,27,51,.06);
+.hero p {
+    color: #c0cede;
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 570px;
+    margin: 0 auto 25px;
 }
 
-.campaign h3{
-  font-size:25px;
-  color:var(--navy);
-  margin-bottom:10px;
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 13px;
 }
 
-.campaign p{
-  color:var(--muted);
-  margin-bottom:20px;
-  font-size:14px;
+.btn {
+    display: inline-block;
+    padding: 13px 23px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
 }
 
-.campaign-tag{
-  display:inline-block;
-  background:#e5faf7;
-  color:#078f80;
-  padding:5px 12px;
-  border-radius:30px;
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:15px;
+.btn-primary {
+    background: var(--teal);
+    color: var(--navy);
 }
 
-.model-box{
-  background:var(--navy);
-  color:white;
-  padding:38px;
-  border-radius:12px;
-  max-width:950px;
-  margin:auto;
-  text-align:center;
+.btn-primary:hover {
+    background: white;
+    transform: translateY(-2px);
 }
 
-.model-box h3{
-  font-size:26px;
-  margin-bottom:12px;
+.btn-outline {
+    border: 1px solid rgba(255,255,255,0.55);
+    color: white;
 }
 
-.model-box p{color:#d2deeb}
-
-.access-section{
-  background:linear-gradient(130deg,var(--navy),var(--navy2));
-  color:white;
+.btn-outline:hover {
+    border-color: var(--teal);
+    color: var(--teal);
 }
 
-.access-section .section-heading h2{color:white}
-.access-section .section-heading p{color:#d2deeb}
+/* COMPACT 3D SQUARE */
 
-.auth-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:25px;
-  max-width:950px;
-  margin:auto;
-  align-items:start;
+.hero-visual {
+    min-height: 235px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    perspective: 900px;
+    overflow: hidden;
+    margin-top: 5px;
 }
 
-.auth-card{
-  background:white;
-  color:var(--text);
-  border-radius:12px;
-  padding:30px;
+.glow {
+    position: absolute;
+    width: 165px;
+    height: 165px;
+    background: rgba(23,198,178,0.16);
+    filter: blur(60px);
+    border-radius: 50%;
 }
 
-.auth-card h3{
-  color:var(--navy);
-  font-size:23px;
-  margin-bottom:8px;
+.orbit {
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border: 1px solid rgba(23,198,178,0.25);
+    border-radius: 50%;
+    transform: rotateX(65deg) rotateZ(-25deg);
 }
 
-.auth-card>p{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:22px;
+.cube {
+    width: 115px;
+    height: 115px;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(-25deg) rotateY(35deg);
+    animation: float 7s ease-in-out infinite;
 }
 
-.auth-card label{
-  display:block;
-  font-size:12px;
-  font-weight:700;
-  margin:13px 0 6px;
-  color:var(--navy);
+.cube-face {
+    position: absolute;
+    width: 115px;
+    height: 115px;
+    border: 1.5px solid rgba(23,198,178,0.8);
+    background: linear-gradient(
+        145deg,
+        rgba(23,198,178,0.22),
+        rgba(13,41,72,0.92)
+    );
+    box-shadow: inset 0 0 25px rgba(23,198,178,0.12);
 }
 
-.auth-card input{
-  width:100%;
-  padding:12px;
-  border:1px solid #d8e0e8;
-  border-radius:6px;
-  outline:none;
-  background:#fff;
+.front {
+    transform: translateZ(57.5px);
 }
 
-.auth-card input:focus{
-  border-color:var(--teal);
-  box-shadow:0 0 0 3px rgba(23,198,178,.12);
+.back {
+    transform: rotateY(180deg) translateZ(57.5px);
 }
 
-.auth-card .primary-button{
-  width:100%;
-  margin-top:18px;
+.right {
+    transform: rotateY(90deg) translateZ(57.5px);
 }
 
-.terms-row{
-  display:flex;
-  align-items:flex-start;
-  gap:9px;
-  margin-top:15px;
-  font-size:12px;
-  color:var(--muted);
+.left {
+    transform: rotateY(-90deg) translateZ(57.5px);
 }
 
-.terms-row input{width:auto;margin-top:4px}
-
-.message{
-  margin-top:14px;
-  font-size:13px;
-  font-weight:600;
-  overflow-wrap:anywhere;
+.top {
+    transform: rotateX(90deg) translateZ(57.5px);
 }
 
-footer{
-  background:#041326;
-  color:white;
-  padding:45px 7% 20px;
+.bottom {
+    transform: rotateX(-90deg) translateZ(57.5px);
 }
 
-.footer-content{
-  display:flex;
-  justify-content:space-between;
-  gap:30px;
-  flex-wrap:wrap;
-  padding-bottom:30px;
+.cube-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateZ(59px);
+    color: var(--teal);
+    font-size: 27px;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
-.footer-logo{
-  color:white;
-  font-size:23px;
-  font-weight:900;
-  letter-spacing:2px;
-  margin-bottom:8px;
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotateX(-25deg) rotateY(35deg);
+    }
+    50% {
+        transform: translateY(-10px) rotateX(-18deg) rotateY(50deg);
+    }
 }
 
-footer p{
-  color:#aebdcd;
-  font-size:13px;
-  max-width:400px;
+/* INTRO STRIP */
+
+.intro-strip {
+    background: var(--teal);
+    color: var(--navy);
+    text-align: center;
+    padding: 15px 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 12px;
 }
 
-.footer-links{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
+/* GENERAL SECTIONS */
+
+section:not(.hero) {
+    padding: 75px 7%;
 }
 
-.footer-links a{
-  color:#d8e2ec;
-  font-size:13px;
+.section-heading {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 42px;
 }
 
-.footer-links a:hover{color:var(--teal)}
-
-.copyright{
-  border-top:1px solid rgba(255,255,255,.12);
-  padding-top:18px;
-  text-align:center;
-  color:#91a2b5;
-  font-size:12px;
+.section-heading span {
+    color: #079e90;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
 }
 
-@media(max-width:850px){
-  header{flex-direction:column}
-  nav{justify-content:center;gap:14px}
-  .cards{grid-template-columns:1fr 1fr}
+.section-heading h2 {
+    color: var(--navy);
+    font-size: clamp(28px, 4vw, 39px);
+    line-height: 1.2;
+    margin: 12px 0;
 }
 
-@media(max-width:600px){
-  .logo{font-size:22px}
-  .hero{padding:75px 6%}
-  section{padding:58px 6%}
-  .cards,.campaign-grid,.auth-grid{grid-template-columns:1fr}
-  .secondary-button{margin:12px 0 0}
-  .auth-card{padding:23px}
+.section-heading p {
+    color: #657487;
+    font-size: 15px;
 }
+
+/* ABOUT */
+
+.about {
+    background: var(--light);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.about-text h2 {
+    color: var(--navy);
+    font-size: 34px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    color: #627286;
+    margin-bottom: 16px;
+    font-size: 15px;
+}
+
+.about-panel {
+    background: linear-gradient(145deg, var(--navy), var(--navy-light));
+    color: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(7,27,51,0.13);
+    position: relative;
+    overflow: hidden;
+}
+
+.about-panel::after {
+    content: "";
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border: 1px solid rgba(23,198,178,0.3);
+    transform: rotate(45deg);
+    right: -75px;
+    bottom: -75px;
+}
+
+.about-panel h3 {
+    color: var(--teal);
+    font-size: 23px;
+    margin-bottom: 15px;
+}
+
+.about-panel p {
+    color: #c1cedc;
+    margin-bottom: 15px;
+}
+
+/* HOW IT WORKS */
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 23px;
+}
+
+.step-card {
+    background: white;
+    border: 1px solid #e5edf2;
+    border-radius: 11px;
+    padding: 30px 24px;
+    box-shadow: 0 8px 25px rgba(7,27,51,0.05);
+    transition: 0.3s;
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--teal);
+}
+
+.step-number {
+    width: 45px;
+    height: 45px;
+    background: rgba(23,198,178,0.14);
+    color: #078e82;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.step-card h3 {
+    color: var(--navy);
+    font-size: 19px;
+    margin-bottom: 11px;
+}
+
+.step-card p {
+    color: #69798b;
+    font-size: 14px;
+}
+
+/* CAMPAIGNS */
+
+.campaigns {
+    background: var(--light);
+}
+
+.campaign-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 23px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.campaign-card {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    border: 1px solid #e5edf2;
+    box-shadow: 0 10px 28px rgba(7,27,51,0.05);
+    transition: 0.3s;
+}
+
+.campaign-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(7,27,51,0.09);
+}
+
+.campaign-label {
+    display: inline-block;
+    color: #078e82;
+    background: rgba(23,198,178,0.13);
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.campaign-card h3 {
+    color: var(--navy);
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.campaign-card p {
+    color: #68798b;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.campaign-card a {
+    color: #078e82;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* MEMBER CTA */
+
+.member-cta {
+    background:
+        radial-gradient(circle at 90% 20%, rgba(23,198,178,0.12), transparent 30%),
+        var(--navy);
+    text-align: center;
+    color: white;
+}
+
+.member-cta h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    margin-bottom: 15px;
+}
+
+.member-cta p {
+    max-width: 620px;
+    margin: 0 auto 27px;
+    color: #b9c8d8;
+}
+
+/* FOOTER */
+
+footer {
+    background: #041426;
+    color: white;
+    padding: 42px 7% 20px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 35px;
+    flex-wrap: wrap;
+    padding-bottom: 28px;
+}
+
+.footer-brand p {
+    color: #9eafc1;
+    font-size: 13px;
+    margin-top: 12px;
+    max-width: 300px;
+}
+
+.footer-links h4 {
+    color: var(--teal);
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    display: block;
+    color: #b7c5d4;
+    font-size: 13px;
+    margin: 8px 0;
+}
+
+.footer-links a:hover {
+    color: var(--teal);
+}
+
+.copyright {
+    border-top: 1px solid rgba(255,255,255,0.10);
+    padding-top: 18px;
+    text-align: center;
+    color: #8fa1b4;
+    font-size: 12px;
+}
+
+/* TABLET */
+
+@media (max-width: 850px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 15px 5%;
+        gap: 9px;
+    }
+
+    .logo {
+        font-size: 21px;
+        letter-spacing: 1.7px;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        right: 17px;
+        top: 12px;
+    }
+
+    nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--navy-light);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 12px 6% 18px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    nav.active {
+        display: flex;
+    }
+
+    nav a {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .nav-button {
+        margin-top: 10px;
+        border-bottom: none;
+    }
+
+    .hero {
+        padding: 43px 6% 18px;
+        gap: 0;
+    }
+
+    .hero::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .eyebrow {
+        font-size: 11px;
+        margin-bottom: 13px;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+        line-height: 1.15;
+        margin-bottom: 14px;
+    }
+
+    .hero p {
+        font-size: 14px;
+        line-height: 1.65;
+        margin-bottom: 20px;
+    }
+
+    .hero-buttons {
+        gap: 9px;
+    }
+
+    .hero-buttons .btn {
+        padding: 12px 15px;
+        font-size: 12px;
+    }
+
+    .hero-visual {
+        min-height: 175px;
+        margin-top: 3px;
+    }
+
+    .cube,
+    .cube-face {
+        width: 90px;
+        height: 90px;
+    }
+
+    .front {
+        transform: translateZ(45px);
+    }
+
+    .back {
+        transform: rotateY(180deg) translateZ(45px);
+    }
+
+    .right {
+        transform: rotateY(90deg) translateZ(45px);
+    }
+
+    .left {
+        transform: rotateY(-90deg) translateZ(45px);
+    }
+
+    .top {
+        transform: rotateX(90deg) translateZ(45px);
+    }
+
+    .bottom {
+        transform: rotateX(-90deg) translateZ(45px);
+    }
+
+    .cube-center {
+        transform: translateZ(47px);
+        font-size: 21px;
+    }
+
+    .orbit {
+        width: 170px;
+        height: 170px;
+    }
+
+    .glow {
+        width: 120px;
+        height: 120px;
+    }
+
+    .intro-strip {
+        font-size: 10px;
+        padding: 13px 10px;
+        letter-spacing: 0.6px;
+    }
+
+    section:not(.hero) {
+        padding: 55px 6%;
+    }
+
+    .section-heading {
+        margin-bottom: 30px;
+    }
+
+    .section-heading h2 {
+        font-size: 29px;
+    }
+
+    .about-text h2 {
+        font-size: 29px;
+    }
+
+    .about-panel {
+        padding: 27px;
+    }
+
+    .campaign-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .campaign-card {
+        padding: 27px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 25px;
+    }
+}
+
+/* SMALL PHONES */
+
+@media (max-width: 380px) {
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .hero-buttons .btn {
+        padding: 11px 12px;
+        font-size: 11px;
+    }
+
+    .hero-visual {
+        min-height: 155px;
+    }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .cube {
+        animation: none;
+    }
+
+    * {
+        transition: none !important;
+    }
+}
+
 </style>
 </head>
 
 <body>
 
-<header>
-  <a href="#home" class="logo">CORELINK MEDIA</a>
+<!-- HEADER -->
 
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#about">About</a>
-    <a href="#how-it-works">How It Works</a>
-    <a href="#campaigns">Campaigns</a>
-    <a href="#access">Member Access</a>
-    <a href="Dashboard.html" id="memberLink" style="display:none">Dashboard</a>
-    <a href="#access" class="nav-button">Join Now</a>
-  </nav>
+<header>
+
+    <a href="index.html" class="logo">
+        CORELINK <span>MEDIA</span>
+    </a>
+
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open navigation"
+        aria-expanded="false">
+        ☰
+    </button>
+
+    <nav id="mainNav">
+        <a href="#about">About</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#campaigns">Campaigns</a>
+        <a href="Auth.html" class="nav-button">Member Access</a>
+    </nav>
+
 </header>
 
 <main>
 
-<section class="hero" id="home">
-  <div class="hero-label">ADVERTISERS. AFFILIATES. PERFORMANCE.</div>
-  <h1>Connect. <span>Promote.</span><br>Earn.</h1>
-  <p>
-    Corelink Media connects affiliates with campaign opportunities.
-    Promote approved offers, generate qualified results and earn
-    commission through performance-based marketing.
-  </p>
-  <a href="#access" class="primary-button">Become an Affiliate</a>
-  <a href="#campaigns" class="secondary-button">View Campaigns</a>
-</section>
+<!-- HERO -->
 
-<section id="about">
-  <div class="section-heading">
-    <h2>About Corelink Media</h2>
-    <p>
-      We connect businesses and affiliates through performance-driven
-      marketing opportunities built around measurable results.
-    </p>
-  </div>
+<section class="hero">
 
-  <div class="cards">
-    <div class="card">
-      <div class="card-icon">01</div>
-      <h3>Who We Are</h3>
-      <p>
-        Corelink Media is a CPA affiliate marketing network connecting
-        promotional partners with approved campaigns.
-      </p>
-    </div>
+    <div class="hero-content">
 
-    <div class="card">
-      <div class="card-icon">02</div>
-      <h3>Our Mission</h3>
-      <p>
-        To create accessible affiliate opportunities and build
-        reliable partnerships through transparent performance marketing.
-      </p>
-    </div>
+        <span class="eyebrow">
+            Welcome to Corelink Media
+        </span>
 
-    <div class="card">
-      <div class="card-icon">03</div>
-      <h3>Our Vision</h3>
-      <p>
-        To grow a trusted affiliate network where advertisers and
-        affiliates benefit from quality traffic and real results.
-      </p>
-    </div>
-  </div>
-</section>
+        <h1>
+            Connect. Promote.<br>
+            <span>Earn.</span>
+        </h1>
 
-<section class="soft-section" id="how-it-works">
-  <div class="section-heading">
-    <h2>How It Works</h2>
-    <p>Getting started with Corelink Media is simple.</p>
-  </div>
+        <p>
+            Connecting brands and affiliates through
+            performance-driven marketing opportunities.
+            Promote campaigns, generate results and grow with us.
+        </p>
 
-  <div class="cards">
-    <div class="card">
-      <div class="card-icon">1</div>
-      <h3>Register</h3>
-      <p>Create your affiliate account using the registration form.</p>
-    </div>
+        <div class="hero-buttons">
 
-    <div class="card">
-      <div class="card-icon">2</div>
-      <h3>Choose a Campaign</h3>
-      <p>Access available campaigns and follow their promotional rules.</p>
-    </div>
+            <a href="Auth.html" class="btn btn-primary">
+                Join Our Network
+            </a>
 
-    <div class="card">
-      <div class="card-icon">3</div>
-      <h3>Earn Commission</h3>
-      <p>Generate approved actions and earn commission according to campaign terms.</p>
-    </div>
-  </div>
-</section>
+            <a href="#how-it-works" class="btn btn-outline">
+                Discover How It Works
+            </a>
 
-<section id="campaigns">
-  <div class="section-heading">
-    <h2>Our Campaigns</h2>
-    <p>
-      Explore the current campaign opportunities available through
-      Corelink Media. Campaign availability and approval requirements apply.
-    </p>
-  </div>
-
-  <div class="campaign-grid">
-    <div class="campaign">
-      <span class="campaign-tag">CAMPAIGN PARTNER</span>
-      <h3>Goldrush</h3>
-      <p>
-        An affiliate campaign opportunity for approved partners.
-        Promotional activity must follow the campaign's official terms.
-      </p>
-      <a href="#access" class="primary-button">Join to Participate</a>
-    </div>
-
-    <div class="campaign">
-      <span class="campaign-tag">CAMPAIGN PARTNER</span>
-      <h3>YesPlay</h3>
-      <p>
-        A campaign opportunity for registered affiliates.
-        All referrals and promotional methods are subject to approval.
-      </p>
-      <a href="#access" class="primary-button">Join to Participate</a>
-    </div>
-  </div>
-</section>
-
-<section class="soft-section">
-  <div class="section-heading">
-    <h2>Our CPA Business Model</h2>
-    <p>
-      We focus on performance-based marketing where approved actions
-      determine affiliate commission.
-    </p>
-  </div>
-
-  <div class="model-box">
-    <h3>Performance. Transparency. Growth.</h3>
-    <p>
-      Affiliates promote approved campaigns and generate qualifying
-      actions. Commissions are calculated according to the applicable
-      campaign agreement, validation rules and payment terms.
-    </p>
-  </div>
-</section>
-
-<section>
-  <div class="section-heading">
-    <h2>Why Corelink Media?</h2>
-    <p>Our focus is building a dependable affiliate partnership network.</p>
-  </div>
-
-  <div class="cards">
-    <div class="card">
-      <div class="card-icon">✓</div>
-      <h3>Campaign Opportunities</h3>
-      <p>Access available campaigns through your affiliate account.</p>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">✓</div>
-      <h3>Account Dashboard</h3>
-      <p>Use your member account to access the affiliate platform.</p>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">✓</div>
-      <h3>Performance Focus</h3>
-      <p>Build your affiliate activity around approved and measurable results.</p>
-    </div>
-  </div>
-</section>
-
-<section class="access-section" id="access">
-  <div class="section-heading">
-    <h2>Become a Corelink Media Affiliate</h2>
-    <p>Create your account or log in to access your member dashboard.</p>
-  </div>
-
-  <div class="auth-grid">
-
-    <div class="auth-card">
-      <h3>Create Account</h3>
-      <p>Register to become a Corelink Media affiliate.</p>
-
-      <form id="registerForm">
-        <label for="fullName">Full Name</label>
-        <input type="text" id="fullName" required autocomplete="name">
-
-        <label for="mobile">Mobile Number</label>
-        <input type="tel" id="mobile" required autocomplete="tel">
-
-        <label for="telegram">Telegram Username</label>
-        <input type="text" id="telegram" placeholder="@username">
-
-        <label for="registerEmail">Email Address</label>
-        <input type="email" id="registerEmail" required autocomplete="email">
-
-        <label for="registerPassword">Password</label>
-        <input type="password" id="registerPassword" minlength="6" required autocomplete="new-password">
-
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" minlength="6" required autocomplete="new-password">
-
-        <div class="terms-row">
-          <input type="checkbox" id="terms" required>
-          <span>I agree to follow Corelink Media and campaign partner terms and conditions.</span>
         </div>
 
-        <button type="submit" class="primary-button" id="registerButton">
-          Register Now
-        </button>
-
-        <div class="message" id="registerMessage" aria-live="polite"></div>
-      </form>
     </div>
 
-    <div class="auth-card">
-      <h3>Member Login</h3>
-      <p>Already registered? Log in to your account.</p>
+    <!-- 3D SQUARE UNDER THE WORDS -->
 
-      <form id="loginForm">
-        <label for="loginEmail">Email Address</label>
-        <input type="email" id="loginEmail" required autocomplete="email">
+    <div class="hero-visual" aria-hidden="true">
 
-        <label for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" required autocomplete="current-password">
+        <div class="glow"></div>
 
-        <button type="submit" class="primary-button" id="loginButton">
-          Login to Dashboard
-        </button>
+        <div class="orbit"></div>
 
-        <div class="message" id="loginMessage" aria-live="polite"></div>
-      </form>
+        <div class="cube">
+
+            <div class="cube-face front"></div>
+            <div class="cube-face back"></div>
+            <div class="cube-face right"></div>
+            <div class="cube-face left"></div>
+            <div class="cube-face top"></div>
+            <div class="cube-face bottom"></div>
+
+            <div class="cube-center">CM</div>
+
+        </div>
+
     </div>
 
-  </div>
+</section>
+
+<!-- BRAND MESSAGE -->
+
+<div class="intro-strip">
+    CONNECTING BRANDS • EMPOWERING AFFILIATES • REWARDING PERFORMANCE
+</div>
+
+<!-- ABOUT -->
+
+<section class="about" id="about">
+
+    <div class="about-grid">
+
+        <div class="about-text">
+
+            <span class="eyebrow">Who We Are</span>
+
+            <h2>
+                Performance Marketing Built Around Opportunity
+            </h2>
+
+            <p>
+                Corelink Media is a CPA affiliate marketing
+                network focused on connecting advertisers
+                with affiliates who want to promote campaigns
+                and generate measurable results.
+            </p>
+
+            <p>
+                Our platform provides members with access
+                to assigned campaigns, referral links and
+                performance tracking through a dedicated
+                member dashboard.
+            </p>
+
+            <p>
+                We believe in building a professional network
+                where opportunity, transparency and performance
+                work together.
+            </p>
+
+            <a href="Auth.html" class="btn btn-primary">
+                Become a Member
+            </a>
+
+        </div>
+
+        <div class="about-panel">
+
+            <h3>CORELINK MEDIA</h3>
+
+            <p>
+                Our goal is to create meaningful connections
+                between advertisers and affiliates through
+                performance-based marketing opportunities.
+            </p>
+
+            <p>
+                We focus on campaign access, measurable
+                results and structured commission management.
+            </p>
+
+            <strong style="color:#17c6b2;">
+                Connect. Promote. Earn.
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- HOW IT WORKS -->
+
+<section id="how-it-works">
+
+    <div class="section-heading">
+
+        <span>Getting Started</span>
+
+        <h2>How Corelink Media Works</h2>
+
+        <p>
+            A straightforward process designed to help members
+            get started with affiliate campaigns.
+        </p>
+
+    </div>
+
+    <div class="steps">
+
+        <div class="step-card">
+
+            <div class="step-number">01</div>
+
+            <h3>Create Your Account</h3>
+
+            <p>
+                Register through our member access page
+                to create your Corelink Media account.
+            </p>
+
+        </div>
+
+        <div class="step-card">
+
+            <div class="step-number">02</div>
+
+            <h3>Access Your Campaigns</h3>
+
+            <p>
+                View the campaigns assigned to your account
+                and access your unique referral links.
+            </p>
+
+        </div>
+
+        <div class="step-card">
+
+            <div class="step-number">03</div>
+
+            <h3>Promote and Earn</h3>
+
+            <p>
+                Promote your assigned campaigns and track
+                qualifying performance and commissions.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CAMPAIGNS -->
+
+<section class="campaigns" id="campaigns">
+
+    <div class="section-heading">
+
+        <span>Our Campaigns</span>
+
+        <h2>Explore Our Campaign Partners</h2>
+
+        <p>
+            Access campaign opportunities through your
+            Corelink Media member account.
+        </p>
+
+    </div>
+
+    <div class="campaign-grid">
+
+        <div class="campaign-card">
+
+            <span class="campaign-label">
+                Campaign Partner
+            </span>
+
+            <h3>Goldrush</h3>
+
+            <p>
+                An affiliate campaign available to eligible
+                Corelink Media members. Campaign access and
+                promotional details are provided through
+                the member dashboard.
+            </p>
+
+            <a href="Auth.html">
+                Member Access →
+            </a>
+
+        </div>
+
+        <div class="campaign-card">
+
+            <span class="campaign-label">
+                Campaign Partner
+            </span>
+
+            <h3>YesPlay</h3>
+
+            <p>
+                A campaign opportunity available to eligible
+                Corelink Media members. Access your assigned
+                campaign information and referral link through
+                your member dashboard.
+            </p>
+
+            <a href="Auth.html">
+                Member Access →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- MEMBER ACCESS -->
+
+<section class="member-cta">
+
+    <span class="eyebrow">
+        Your Opportunity Starts Here
+    </span>
+
+    <h2>
+        Ready to Grow With Corelink Media?
+    </h2>
+
+    <p>
+        Join our affiliate network, access your campaigns
+        and manage your performance through your dedicated
+        member dashboard.
+    </p>
+
+    <a href="Auth.html" class="btn btn-primary">
+        Access Member Portal
+    </a>
+
 </section>
 
 </main>
 
+<!-- FOOTER -->
+
 <footer>
-  <div class="footer-content">
-    <div>
-      <div class="footer-logo">CORELINK MEDIA</div>
-      <p>Connect. Promote. Earn. Performance-driven affiliate marketing.</p>
+
+    <div class="footer-content">
+
+        <div class="footer-brand">
+
+            <a href="index.html" class="logo">
+                CORELINK <span>MEDIA</span>
+            </a>
+
+            <p>
+                A performance-driven affiliate network
+                connecting brands and affiliates.
+                Connect. Promote. Earn.
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <h4>Quick Links</h4>
+
+            <a href="#about">About Us</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#campaigns">Campaigns</a>
+            <a href="Auth.html">Member Access</a>
+
+        </div>
+
+        <div class="footer-links">
+
+            <h4>Member Area</h4>
+
+            <a href="Auth.html">Register</a>
+            <a href="Auth.html">Login</a>
+
+        </div>
+
     </div>
 
-    <div class="footer-links">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#campaigns">Campaigns</a>
-      <a href="#access">Member Access</a>
-    </div>
-  </div>
+    <div class="copyright">
 
-  <div class="copyright">
-    © <span id="year"></span> Corelink Media. All rights reserved.
-  </div>
+        © <span id="currentYear"></span>
+        Corelink Media. All Rights Reserved.
+
+    </div>
+
 </footer>
 
+<!-- JAVASCRIPT -->
+
 <script>
-const SUPABASE_URL = "https://gxdbhavpbzjruhpafqpf.supabase.co";
-const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DKUKJAPk";
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const menuToggle = document.getElementById("menuToggle");
+const mainNav = document.getElementById("mainNav");
 
-document.getElementById("year").textContent = new Date().getFullYear();
+menuToggle.addEventListener("click", function() {
 
-const registerForm = document.getElementById("registerForm");
-const loginForm = document.getElementById("loginForm");
+    const isOpen = mainNav.classList.toggle("active");
 
-const registerMessage = document.getElementById("registerMessage");
-const loginMessage = document.getElementById("loginMessage");
+    menuToggle.setAttribute("aria-expanded", isOpen);
 
-const registerButton = document.getElementById("registerButton");
-const loginButton = document.getElementById("loginButton");
+    menuToggle.textContent = isOpen ? "✕" : "☰";
 
-function showMessage(element, message, success = false) {
-  element.textContent = message;
-  element.style.color = success ? "#078f80" : "#d93025";
-}
+});
 
-registerForm.addEventListener("submit", async function(event) {
-  event.preventDefault();
+document.querySelectorAll("#mainNav a").forEach(function(link) {
 
-  const fullName = document.getElementById("fullName").value.trim();
-  const mobile = document.getElementById("mobile").value.trim();
-  const telegram = document.getElementById("telegram").value.trim();
-  const email = document.getElementById("registerEmail").value.trim();
-  const password = document.getElementById("registerPassword").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
-  const terms = document.getElementById("terms").checked;
+    link.addEventListener("click", function() {
 
-  if (password !== confirmPassword) {
-    showMessage(registerMessage, "Passwords do not match.");
-    return;
-  }
+        mainNav.classList.remove("active");
 
-  if (!terms) {
-    showMessage(registerMessage, "Please accept the terms to continue.");
-    return;
-  }
+        menuToggle.setAttribute("aria-expanded", "false");
 
-  registerButton.disabled = true;
-  registerButton.textContent = "Creating Account...";
-  showMessage(registerMessage, "Please wait...", true);
+        menuToggle.textContent = "☰";
 
-  try {
-    const { data, error } = await db.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        emailRedirectTo: window.location.origin + "/Auth.html",
-        data: {
-          full_name: fullName,
-          mobile_number: mobile,
-          telegram_username: telegram
-        }
-      }
     });
 
-    if (error) throw error;
-
-    showMessage(
-      registerMessage,
-      "Registration successful. Please check your email to confirm your account.",
-      true
-    );
-
-    registerForm.reset();
-
-  } catch (error) {
-    showMessage(registerMessage, error.message || "Registration failed.");
-  } finally {
-    registerButton.disabled = false;
-    registerButton.textContent = "Register Now";
-  }
 });
 
-loginForm.addEventListener("submit", async function(event) {
-  event.preventDefault();
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
 
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-
-  loginButton.disabled = true;
-  loginButton.textContent = "Logging in...";
-  showMessage(loginMessage, "Checking your account...", true);
-
-  try {
-    const { data, error } = await db.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
-
-    if (error) throw error;
-
-    showMessage(loginMessage, "Login successful. Opening dashboard...", true);
-
-    window.location.href = "Dashboard.html";
-
-  } catch (error) {
-    showMessage(loginMessage, error.message || "Login failed.");
-  } finally {
-    loginButton.disabled = false;
-    loginButton.textContent = "Login to Dashboard";
-  }
-});
-
-async function updateMemberLink() {
-  const memberLink = document.getElementById("memberLink");
-
-  const { data } = await db.auth.getSession();
-
-  if (data && data.session) {
-    memberLink.style.display = "inline-block";
-  } else {
-    memberLink.style.display = "none";
-  }
-}
-
-updateMemberLink();
-
-db.auth.onAuthStateChange(function() {
-  updateMemberLink();
-});
 </script>
 
 </body>
