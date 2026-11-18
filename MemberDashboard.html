@@ -832,9 +832,10 @@ async function loadAffiliatePerformance() {
 
   area.textContent = "Loading affiliate performance...";
 
+  /* FIX: Read available profile columns instead of requesting missing "name". */
   const { data: members, error: memberError } = await db
     .from("member_profiles")
-    .select("id, full_name, name, email, role");
+    .select("*");
 
   if (memberError) {
     area.textContent = "Member error: " + memberError.message;
