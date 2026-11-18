@@ -1,13 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corelink Media | Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#071b33;color:#fff;font-family:Arial,sans-serif}
+header{background:#0b2746;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:2px solid #17c6b2}
+header h2{margin:0;color:#17c6b2}
+.container{max-width:1150px;margin:25px auto;padding:0 16px}
+.card{background:#0b2746;padding:20px;border-radius:12px;margin-bottom:20px;border:1px solid #173d60}
+h3{color:#17c6b2;margin-top:0}
+input,select,textarea{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #31516e;border-radius:7px;background:#071b33;color:#fff;font-size:15px}
+button{background:#17c6b2;color:#071b33;border:0;padding:12px 18px;border-radius:7px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
+.logout{background:#d9534f;color:white}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px}
+.stat{background:#102f50;padding:18px;border-radius:10px}
+.stat strong{display:block;font-size:25px;color:#17c6b2;margin-top:8px}
+.hidden{display:none!important}
+.message{padding:12px;margin:12px 0;border-radius:7px;background:#173d60;overflow-wrap:anywhere}
+.campaign{border:1px solid #31516e;padding:15px;border-radius:9px;margin:12px 0}
+.campaign h4{color:#17c6b2;margin:0 0 8px}
+small{color:#b9c9d8}
+a{color:#17c6b2;overflow-wrap:anywhere}
+label{display:block;font-weight:bold;margin-top:5px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px;border-bottom:1px solid #31516e}
+.table-wrap{overflow-x:auto}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>CORELINK MEDIA</h2>
+  <div>
+    <span id="userEmail"></span>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div id="loading" class="card">
+    Loading your dashboard...
+  </div>
+
+  <div id="message" class="message hidden"></div>
+
+  <!-- MEMBER DASHBOARD -->
+  <section id="memberArea" class="hidden">
+
+    <div class="card">
+      <h3>Welcome to your Member Dashboard</h3>
+      <p id="memberName">Welcome, member.</p>
+      <p>Manage your campaigns, referral links and affiliate activity here.</p>
+    </div>
+
+    <div class="grid">
+      <div class="stat">
+        Active campaigns
+        <strong id="memberCampaignCount">0</strong>
+      </div>
+      <div class="stat">
+        Your referral code
+        <strong id="memberReferralCode">-</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Your Referral Link</h3>
+      <p>Share this link with people you refer.</p>
+      <input id="referralLink" readonly>
+      <button onclick="copyReferral()">Copy Referral Link</button>
+    </div>
+
+    <div class="card">
+      <h3>Available Campaigns</h3>
+      <div id="memberCampaigns">Loading campaigns...</div>
+    </div>
+
+  </section>
+
+  <!-- ADMIN DASHBOARD -->
+  <section id="adminArea" class="hidden">
+
+    <div class="card">
+      <h3>Administrator Dashboard</h3>
+      <p>Manage Corelink Media campaigns from here.</p>
+    </div>
+
+    <div class="grid">
+      <div class="stat">
+        Total members
+        <strong id="adminMemberCount">-</strong>
+      </div>
+      <div class="stat">
+        Total campaigns
+        <strong id="adminCampaignCount">-</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Create Campaign</h3>
+
+      <label for="campaignName">Campaign name</label>
+      <input id="campaignName" placeholder="Enter campaign name">
+
+      <label for="advertiserName">Advertiser / Partner name</label>
+      <input id="advertiserName" placeholder="Enter advertiser name">
+
+      <label for="campaignDescription">Description</label>
+      <textarea id="campaignDescription" placeholder="Describe the campaign"></textarea>
+
+      <label for="destinationUrl">Destination URL</label>
+      <input id="destinationUrl" type="url" placeholder="https://example.com">
+
+      <label for="commissionType">Commission type</label>
+      <select id="commissionType" onchange="updateCommissionFields()">
+        <option value="fixed">Fixed CPA</option>
+        <option value="percentage">Percentage</option>
+      </select>
+
+      <div id="fixedField">
+        <label for="fixedAmount">Fixed amount (ZAR)</label>
+        <input id="fixedAmount" type="number" min="0" step="0.01" placeholder="Example: 100">
+      </div>
+
+      <div id="percentageField" class="hidden">
+        <label for="percentageRate">Percentage rate (%)</label>
+        <input id="percentageRate" type="number" min="0" max="100" step="0.01" placeholder="Example: 20">
+      </div>
+
+      <button id="createCampaignButton" onclick="createCampaign()">Create Campaign</button>
+    </div>
+
+    <div class="card">
+      <h3>Campaign Management</h3>
+      <button onclick="loadAdmin()">Refresh Campaigns</button>
+      <div id="adminCampaigns">Loading campaigns...</div>
+    </div>
+
+    <div class="card">
+      <h3>Registered Members</h3>
+      <div id="adminMembers">Loading members...</div>
+    </div>
+
+  </section>
+
+</div>
+
+<script>
+const SUPABASE_URL = "https://gxdbhavpbzjruhpafqpf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DKUKJAPk";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let currentProfile = null;
+
+function showMessage(message) {
+  const box = document.getElementById("message");
+  box.textContent = message;
+  box.classList.remove("hidden");
+}
+
+function hideMessage() {
+  document.getElementById("message").classList.add("hidden");
+}
+
+async function startDashboard() {
+  try {
+    const { data: authData, error: authError } = await db.auth.getUser();
+
+    if (authError || !authData.user) {
+      window.location.href = "auth.html";
+      return;
+    }
+
+    currentUser = authData.user;
+    document.getElementById("userEmail").textContent = currentUser.email || "";
+
+    const { data: profile, error: profileError } = await db
+      .from("member_profiles")
+      .select("*")
+      .eq("id", currentUser.id)
+      .maybeSingle();
+
+    if (profileError) {
+      throw new Error("Profile error: " + profileError.message);
+    }
+
+    if (!profile) {
+      throw new Error("Your member profile was not found. Please check your member_profiles table.");
+    }
+
+    currentProfile = profile;
+
+    document.getElementById("loading").classList.add("hidden");
+
+    if (String(profile.role || "").toLowerCase() === "admin") {
+      document.getElementById("adminArea").classList.remove("hidden");
+      await loadAdmin();
+    } else {
+      document.getElementById("memberArea").classList.remove("hidden");
+      await loadMember();
+    }
+
+  } catch (error) {
+    document.getElementById("loading").textContent = error.message;
+  }
+}
+
+async function loadMember() {
+  const name = currentProfile.full_name ||
+               currentProfile.name ||
+               currentUser.email;
+
+  const referralCode = currentProfile.referral_code || currentUser.id;
+
+  document.getElementById("memberName").textContent = "Welcome, " + name;
+  document.getElementById("memberReferralCode").textContent = referralCode;
+
+  const link = new URL("index.html", window.location.href);
+  link.searchParams.set("ref", referralCode);
+
+  document.getElementById("referralLink").value = link.toString();
+
+  const { data, error } = await db
+    .from("campaigns")
+    .select("*")
+    .or("status.eq.active,campaign_status.eq.active");
+
+  if (error) {
+    document.getElementById("memberCampaigns").textContent =
+      "Could not load campaigns: " + error.message;
+    return;
+  }
+
+  const campaigns = data || [];
+  document.getElementById("memberCampaignCount").textContent = campaigns.length;
+
+  const area = document.getElementById("memberCampaigns");
+  area.innerHTML = "";
+
+  if (!campaigns.length) {
+    area.textContent = "There are currently no active campaigns.";
+    return;
+  }
+
+  campaigns.forEach(campaign => {
+    const item = document.createElement("div");
+    item.className = "campaign";
+
+    const title = document.createElement("h4");
+    title.textContent = campaign.campaign_name || campaign.name || "Campaign";
+
+    const advertiser = document.createElement("p");
+    advertiser.textContent = "Advertiser: " +
+      (campaign.advertiser_name || campaign.partner_name || "Not specified");
+
+    const description = document.createElement("p");
+    description.textContent = campaign.description || "";
+
+    const commission = document.createElement("p");
+    commission.textContent = "Commission: " +
+      (campaign.commision_type || "Not specified") + " - " +
+      (campaign.commision_value ?? "Not specified");
+
+    const destination = document.createElement("a");
+    destination.href = campaign.destination_url || "#";
+    destination.textContent = "Visit advertiser";
+    destination.target = "_blank";
+    destination.rel = "noopener noreferrer";
+
+    item.append(title, advertiser, description, commission, destination);
+    area.appendChild(item);
+  });
+}
+
+async function loadAdmin() {
+  hideMessage();
+
+  const { count: memberCount, error: memberError } = await db
+    .from("member_profiles")
+    .select("*", { count: "exact", head: true });
+
+  document.getElementById("adminMemberCount").textContent =
+    memberError ? "Error" : (memberCount ?? 0);
+
+  const { data: campaigns, error: campaignError } = await db
+    .from("campaigns")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (campaignError) {
+    document.getElementById("adminCampaigns").textContent =
+      "Campaign loading error: " + campaignError.message;
+    document.getElementById("adminCampaignCount").textContent = "Error";
+  } else {
+    document.getElementById("adminCampaignCount").textContent =
+      (campaigns || []).length;
+
+    const area = document.getElementById("adminCampaigns");
+    area.innerHTML = "";
+
+    if (!campaigns || !campaigns.length) {
+      area.textContent = "No campaigns have been created yet.";
+    } else {
+      campaigns.forEach(campaign => {
+        const item = document.createElement("div");
+        item.className = "campaign";
+
+        const title = document.createElement("h4");
+        title.textContent = campaign.campaign_name || campaign.name || "Campaign";
+
+        const partner = document.createElement("p");
+        partner.textContent = "Advertiser: " +
+          (campaign.advertiser_name || campaign.partner_name || "-");
+
+        const status = document.createElement("p");
+        status.textContent = "Status: " +
+          (campaign.campaign_status || campaign.status || "-");
+
+        const commission = document.createElement("p");
+        commission.textContent = "Commission: " +
+          (campaign.commision_type || "-") + " / " +
+          (campaign.commision_value ?? "-");
+
+        item.append(title, partner, status, commission);
+        area.appendChild(item);
+      });
+    }
+  }
+
+  const { data: members, error: membersError } = await db
+    .from("member_profiles")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  const membersArea = document.getElementById("adminMembers");
+  membersArea.innerHTML = "";
+
+  if (membersError) {
+    membersArea.textContent = "Member loading error: " + membersError.message;
+  } else if (!members || !members.length) {
+    membersArea.textContent = "No members found.";
+  } else {
+    const tableWrap = document.createElement("div");
+    tableWrap.className = "table-wrap";
+
+    const table = document.createElement("table");
+    const header = document.createElement("tr");
+
+    ["Name", "Email", "Role"].forEach(label => {
+      const th = document.createElement("th");
+      th.textContent = label;
+      header.appendChild(th);
+    });
+
+    table.appendChild(header);
+
+    members.forEach(member => {
+      const tr = document.createElement("tr");
+
+      [member.full_name || member.name || "-",
+       member.email || "-",
+       member.role || "member"].forEach(value => {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      });
+
+      table.appendChild(tr);
+    });
+
+    tableWrap.appendChild(table);
+    membersArea.appendChild(tableWrap);
+  }
+}
+
+function updateCommissionFields() {
+  const type = document.getElementById("commissionType").value;
+
+  document.getElementById("fixedField").classList.toggle("hidden", type !== "fixed");
+  document.getElementById("percentageField").classList.toggle("hidden", type !== "percentage");
+}
+
 async function createCampaign() {
+  hideMessage();
+
   const name = document.getElementById("campaignName").value.trim();
   const advertiser = document.getElementById("advertiserName").value.trim();
+  const description = document.getElementById("campaignDescription").value.trim();
+  const destination = document.getElementById("destinationUrl").value.trim();
   const type = document.getElementById("commissionType").value;
   const fixed = Number(document.getElementById("fixedAmount").value || 0);
   const percentage = Number(document.getElementById("percentageRate").value || 0);
   const button = document.getElementById("createCampaignButton");
 
-  if (!name || !advertiser) {
-    showMessage("Enter campaign name and advertiser name.");
+  if (!name || !advertiser || !destination) {
+    showMessage("Please enter the campaign name, advertiser and destination URL.");
+    return;
+  }
+
+  if (!/^https?:\/\//i.test(destination)) {
+    showMessage("Please enter a valid destination URL beginning with https:// or http://.");
+    return;
+  }
+
+  if (type === "fixed" && fixed <= 0) {
+    showMessage("Please enter a fixed commission amount greater than zero.");
+    return;
+  }
+
+  if (type === "percentage" && (percentage <= 0 || percentage > 100)) {
+    showMessage("Please enter a percentage between 0 and 100.");
     return;
   }
 
@@ -15,23 +427,26 @@ async function createCampaign() {
   button.textContent = "Creating...";
 
   try {
+    const amount = type === "percentage" ? percentage : fixed;
+
     const { error } = await db.from("campaigns").insert({
       name: name,
       partner_name: advertiser,
+      description: description,
+      destination_url: destination,
+      commision_type: type,
+      commision_value: amount,
+      status: "active",
+      campaign_status: "active",
       campaign_name: name,
       advertiser_name: advertiser,
-      commision_type: type,
-      commision_value: type === "percentage" ? percentage : fixed,
-      campaign_status: "active",
-      status: "active",
-      fixed_amount: fixed,
-      percentage_rate: percentage
+      fixed_amount: type === "fixed" ? fixed : 0,
+      percentage_rate: type === "percentage" ? percentage : 0
     });
 
     if (error) {
       console.error("Campaign creation error:", error);
-      showMessage("CAMPAIGN ERROR: " + error.message +
-        " | Code: " + error.code);
+      showMessage("CAMPAIGN ERROR: " + error.message + " | Code: " + error.code);
       return;
     }
 
@@ -39,6 +454,8 @@ async function createCampaign() {
 
     document.getElementById("campaignName").value = "";
     document.getElementById("advertiserName").value = "";
+    document.getElementById("campaignDescription").value = "";
+    document.getElementById("destinationUrl").value = "";
     document.getElementById("fixedAmount").value = "";
     document.getElementById("percentageRate").value = "";
 
@@ -51,3 +468,27 @@ async function createCampaign() {
     button.textContent = "Create Campaign";
   }
 }
+
+async function copyReferral() {
+  const field = document.getElementById("referralLink");
+
+  try {
+    await navigator.clipboard.writeText(field.value);
+    showMessage("Referral link copied.");
+  } catch (error) {
+    field.select();
+    document.execCommand("copy");
+    showMessage("Referral link copied.");
+  }
+}
+
+async function logout() {
+  await db.auth.signOut();
+  window.location.href = "auth.html";
+}
+
+startDashboard();
+</script>
+
+</body>
+</html>
