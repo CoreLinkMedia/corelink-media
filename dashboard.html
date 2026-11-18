@@ -3,531 +3,356 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Corelink Media | Dashboard</title>
+<title>Corelink Media | Member Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#071b33;color:#14243a;font-family:Arial,sans-serif;padding:20px}
-.container{max-width:1050px;margin:auto}
-header{background:#102b49;color:white;padding:22px;border-radius:12px;margin-bottom:20px}
-.logo{font-size:25px;font-weight:bold}
-.logo span{color:#17c6b2}
-.muted{color:#aebfd0;font-size:13px}
-.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
-.stat{background:#edf4f8;padding:18px;border-radius:10px}
-.stat small{color:#64748b}
-.stat h2{margin:10px 0 0;color:#071b33;font-size:27px}
-input,select{width:100%;padding:12px;border:1px solid #ccd7e2;border-radius:7px;margin:7px 0 13px;font-size:15px}
-button{padding:12px 16px;border:0;border-radius:7px;background:#17c6b2;color:#071b33;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.6;cursor:wait}
-.logout{background:#e8eef4;color:#071b33;float:right}
-h2,h3{color:#071b33}
-label{font-size:13px;font-weight:bold}
-.message{padding:12px;background:#eaf4f7;border-radius:7px;margin:12px 0;overflow-wrap:anywhere}
+body{margin:0;background:#071b33;color:#fff;font-family:Arial,sans-serif}
+header{background:#102b49;padding:18px;display:flex;justify-content:space-between;align-items:center}
+header h2{margin:0;color:#17c6b2}
+button{background:#17c6b2;color:#071b33;border:0;padding:11px 16px;border-radius:7px;font-weight:bold;cursor:pointer}
+main{max-width:1100px;margin:auto;padding:20px}
+.card{background:#fff;color:#102b49;padding:20px;border-radius:10px;margin-bottom:16px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.stat{font-size:25px;font-weight:bold;color:#17a995;margin-top:8px}
+h3{margin-top:0}
+input,select{width:100%;padding:12px;margin:7px 0 12px;border:1px solid #ccc;border-radius:6px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}
+.table-wrap{overflow-x:auto}
 .hidden{display:none}
-.link{overflow-wrap:anywhere;font-size:13px;background:#edf4f8;padding:10px;border-radius:6px}
-.item{padding:13px 0;border-bottom:1px solid #e5ebf0}
-.item:last-child{border:0}
-.badge{display:inline-block;background:#d9f8ef;color:#087c69;padding:5px 9px;border-radius:20px;font-size:12px}
-@media(max-width:550px){body{padding:12px}.card{padding:15px}}
+.small{font-size:13px;color:#526477}
+#message{padding:12px;border-radius:6px;margin-bottom:15px}
 </style>
 </head>
 
 <body>
-<div class="container">
 
 <header>
-<button class="logout" id="logoutBtn">Logout</button>
-<div class="logo">CORELINK <span>MEDIA</span></div>
-<p class="muted">Grow Together. Earn Through Performance.</p>
-<h2 style="color:white;margin-bottom:5px" id="welcome">Loading dashboard...</h2>
-<div class="muted" id="userEmail"></div>
+<h2>CORELINK MEDIA</h2>
+<button onclick="logout()">Logout</button>
 </header>
 
-<div id="message" class="message hidden" role="status" aria-live="polite"></div>
+<main>
+<div id="message" class="hidden"></div>
 
-<section id="memberPanel" class="hidden">
+<section class="card">
+<h2 id="welcome">Loading dashboard...</h2>
+<p id="accountInfo" class="small"></p>
+</section>
 
-<div class="card">
-<h2>My Performance</h2>
-<div class="grid">
-<div class="stat"><small>Registrations</small><h2 id="regCount">0</h2></div>
-<div class="stat"><small>First Time Deposits</small><h2 id="ftdCount">0</h2></div>
-<div class="stat"><small>Total Commission</small><h2 id="commissionTotal">R0.00</h2></div>
-</div>
-</div>
-
-<div class="card">
-<h2>My Commission</h2>
-<div class="grid">
-<div class="stat"><small>Pending Commission</small><h2 id="memberPending">R0.00</h2></div>
-<div class="stat"><small>Approved Commission</small><h2 id="memberApproved">R0.00</h2></div>
-<div class="stat"><small>Paid Commission</small><h2 id="memberPaid">R0.00</h2></div>
-</div>
+<section id="memberArea" class="hidden">
+<div class="cards">
+<div class="card">Registrations<div class="stat" id="registrations">0</div></div>
+<div class="card">First Deposits<div class="stat" id="ftds">0</div></div>
+<div class="card">Total Commission<div class="stat" id="totalCommission">R0.00</div></div>
+<div class="card">Pending<div class="stat" id="pendingCommission">R0.00</div></div>
+<div class="card">Approved<div class="stat" id="approvedCommission">R0.00</div></div>
+<div class="card">Paid<div class="stat" id="paidCommission">R0.00</div></div>
 </div>
 
 <div class="card">
-<h3>My Assigned Campaigns</h3>
-<div id="myCampaigns">Loading campaigns...</div>
+<h3>My Campaigns</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Campaign</th><th>Referral link</th></tr></thead>
+<tbody id="myCampaigns"></tbody>
+</table>
+</div>
 </div>
 </section>
 
-<section id="adminPanel" class="hidden">
-
-<div class="card">
-<h2>Administrator Overview</h2>
-<div class="grid">
-<div class="stat"><small>Total Members</small><h2 id="adminMembers">0</h2></div>
-<div class="stat"><small>Total Campaigns</small><h2 id="adminCampaigns">0</h2></div>
-<div class="stat"><small>Pending FTDs</small><h2 id="adminFtd">0</h2></div>
-</div>
-</div>
-
-<div class="card">
-<h2>Commission Overview</h2>
-<div class="grid">
-<div class="stat"><small>Total Commission</small><h2 id="adminCommissionTotal">R0.00</h2></div>
-<div class="stat"><small>Pending Commission</small><h2 id="adminCommissionPending">R0.00</h2></div>
-<div class="stat"><small>Approved Commission</small><h2 id="adminCommissionApproved">R0.00</h2></div>
-<div class="stat"><small>Paid Commission</small><h2 id="adminCommissionPaid">R0.00</h2></div>
-</div>
-</div>
-
-<div class="card">
-<h3>Assign Campaign to Affiliate</h3>
-<form id="assignmentForm">
-<label>Select Affiliate</label>
-<select id="affiliateSelect" required>
-<option value="">Loading affiliates...</option>
-</select>
-
-<label>Select Campaign</label>
-<select id="campaignSelect" required>
-<option value="">Loading campaigns...</option>
-</select>
-
-<button type="submit" id="assignBtn">Assign Campaign</button>
-</form>
+<section id="adminArea" class="hidden">
+<div class="cards">
+<div class="card">Total Members<div class="stat" id="adminMembers">0</div></div>
+<div class="card">Campaigns<div class="stat" id="adminCampaigns">0</div></div>
+<div class="card">Pending FTDs<div class="stat" id="adminFtds">0</div></div>
+<div class="card">Commissions<div class="stat" id="adminCommissions">R0.00</div></div>
 </div>
 
 <div class="card">
 <h3>Create Campaign</h3>
-<form id="campaignForm">
-<label>Campaign Name</label>
-<input id="campaignName" placeholder="Example: Goldrush" required>
-
-<label>Advertiser Name</label>
-<input id="advertiserName" placeholder="Example: Goldrush" required>
-
-<label>Commission Model</label>
+<input id="campaignName" placeholder="Campaign name">
+<input id="advertiserName" placeholder="Advertiser name">
 <select id="commissionType">
-<option value="fixed">Fixed amount per FTD</option>
-<option value="percentage">Percentage of first deposit</option>
-<option value="hybrid">Fixed amount plus percentage</option>
+<option value="fixed">Fixed CPA</option>
+<option value="percentage">Percentage</option>
+<option value="hybrid">Hybrid</option>
 </select>
+<input id="fixedAmount" type="number" placeholder="Fixed amount (R)">
+<input id="percentageRate" type="number" placeholder="Percentage rate">
+<button onclick="createCampaign()">Create Campaign</button>
+</div>
 
-<label>Fixed Commission Amount (R)</label>
-<input id="fixedAmount" type="number" min="0" step="0.01" value="0">
-
-<label>Percentage Rate (%)</label>
-<input id="percentageRate" type="number" min="0" max="100" step="0.01" value="0">
-
-<button type="submit" id="createCampaignBtn">Create Campaign</button>
-</form>
+<div class="card">
+<h3>Assign Campaign to Member</h3>
+<input id="memberEmail" type="email" placeholder="Member email address">
+<select id="assignCampaign"></select>
+<button onclick="assignCampaign()">Assign Campaign</button>
 </div>
 
 <div class="card">
 <h3>Campaign Management</h3>
-<div id="campaignList">Loading campaigns...</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Campaign</th><th>Advertiser</th><th>Status</th></tr></thead>
+<tbody id="campaignList"></tbody>
+</table>
 </div>
-
+</div>
 </section>
-</div>
+</main>
 
 <script>
 const SUPABASE_URL = "https://gxdbhavpbzjruhpafqpf.supabase.co";
 const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DUKJAPk";
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const el = id => document.getElementById(id);
-
-function showMessage(text) {
-  el("message").textContent = text;
-  el("message").classList.remove("hidden");
-}
-
-function money(value) {
-  return "R" + Number(value || 0).toFixed(2);
-}
-
-function safe(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",
-    '"':"&quot;","'":"&#39;"
-  }[char]));
-}
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let currentUser = null;
 let profile = null;
-let campaigns = [];
-let affiliates = [];
 
-async function getCount(table, memberId) {
-  let query = db.from(table).select("id", {count:"exact",head:true});
-  if (memberId) query = query.eq("member_id", memberId);
-  const {count,error} = await query;
-  if (error) throw error;
-  return count || 0;
+function showMessage(message){
+ const box=document.getElementById("message");
+ box.textContent=message;
+ box.classList.remove("hidden");
 }
 
-function calculateCommissions(records) {
-  const totals = {total:0,pending:0,approved:0,paid:0};
-
-  (records || []).forEach(item => {
-    const amount = Number(item.commission_amount || 0);
-    const status = String(item.commission_status || "").toLowerCase();
-
-    totals.total += amount;
-    if (status === "pending") totals.pending += amount;
-    else if (status === "approved") totals.approved += amount;
-    else if (status === "paid") totals.paid += amount;
-  });
-
-  return totals;
+function money(value){
+ return "R"+Number(value||0).toFixed(2);
 }
 
-function displayMemberCommissions(totals) {
-  el("commissionTotal").textContent = money(totals.total);
-  el("memberPending").textContent = money(totals.pending);
-  el("memberApproved").textContent = money(totals.approved);
-  el("memberPaid").textContent = money(totals.paid);
+function safe(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
 }
 
-function displayAdminCommissions(totals) {
-  el("adminCommissionTotal").textContent = money(totals.total);
-  el("adminCommissionPending").textContent = money(totals.pending);
-  el("adminCommissionApproved").textContent = money(totals.approved);
-  el("adminCommissionPaid").textContent = money(totals.paid);
+async function startDashboard(){
+ const {data:{session},error}=await db.auth.getSession();
+
+ if(error || !session){
+  window.location.replace("auth.html");
+  return;
+ }
+
+ currentUser=session.user;
+
+ const {data,error:profileError}=await db
+  .from("member_profiles")
+  .select("*")
+  .eq("id",currentUser.id)
+  .single();
+
+ if(profileError || !data){
+  showMessage("Your member profile could not be loaded. Please contact support.");
+  return;
+ }
+
+ profile=data;
+
+ if(profile.account_status && profile.account_status!=="active"){
+  showMessage("Your account is not active. Please contact support.");
+  return;
+ }
+
+ document.getElementById("welcome").textContent=
+  "Welcome, "+(profile.full_name||"Member");
+
+ document.getElementById("accountInfo").textContent=
+  currentUser.email+" | "+profile.role;
+
+ if(profile.role==="admin"){
+  document.getElementById("adminArea").classList.remove("hidden");
+  await loadAdmin();
+ }else{
+  document.getElementById("memberArea").classList.remove("hidden");
+  await loadMember();
+ }
 }
 
-async function loadMemberDashboard() {
-  el("memberPanel").classList.remove("hidden");
+async function loadMember(){
+ const id=currentUser.id;
 
-  const [registrations,ftds,commissions,assignments] = await Promise.all([
-    getCount("client_registrations",currentUser.id),
-    getCount("member_ftd",currentUser.id),
-    db.from("member_commissions")
-      .select("commission_amount,commission_status")
-      .eq("member_id",currentUser.id),
-    db.from("campaign_assignments")
-      .select("id,campaign_id,referral_code,assignment_status")
-      .eq("member_id",currentUser.id)
-  ]);
+ const [regs,ftds,commissions,assignments]=await Promise.all([
+  db.from("client_registrations").select("id",{count:"exact",head:true}).eq("member_id",id),
+  db.from("member_ftd").select("id",{count:"exact",head:true}).eq("member_id",id),
+  db.from("member_commissions").select("commission_amount,commission_status").eq("member_id",id),
+  db.from("campaign_assignments")
+   .select("referral_code,campaign_id,campaigns(campaign_name)")
+   .eq("member_id",id)
+   .eq("assignment_status","active")
+ ]);
 
-  if (commissions.error) throw commissions.error;
-  if (assignments.error) throw assignments.error;
+ if(regs.error || ftds.error || commissions.error || assignments.error){
+  showMessage("Some dashboard information could not be loaded. Please contact support.");
+  return;
+ }
 
-  el("regCount").textContent = registrations;
-  el("ftdCount").textContent = ftds;
-  displayMemberCommissions(calculateCommissions(commissions.data));
+ document.getElementById("registrations").textContent=regs.count||0;
+ document.getElementById("ftds").textContent=ftds.count||0;
 
-  const assigned = assignments.data || [];
-  const campaignIds = assigned.map(a => a.campaign_id);
-  let campaignData = [];
+ let total=0,pending=0,approved=0,paid=0;
 
-  if (campaignIds.length) {
-    const result = await db.from("campaigns")
-      .select("id,campaign_name,advertiser_name,campaign_status")
-      .in("id",campaignIds);
+ (commissions.data||[]).forEach(item=>{
+  const amount=Number(item.commission_amount||0);
+  total+=amount;
+  if(item.commission_status==="pending")pending+=amount;
+  if(item.commission_status==="approved")approved+=amount;
+  if(item.commission_status==="paid")paid+=amount;
+ });
 
-    if (result.error) throw result.error;
-    campaignData = result.data || [];
-  }
+ document.getElementById("totalCommission").textContent=money(total);
+ document.getElementById("pendingCommission").textContent=money(pending);
+ document.getElementById("approvedCommission").textContent=money(approved);
+ document.getElementById("paidCommission").textContent=money(paid);
 
-  const list = el("myCampaigns");
-
-  if (!assigned.length) {
-    list.textContent = "You have not been assigned any campaigns yet.";
-    return;
-  }
-
-  list.innerHTML = assigned.map(a => {
-    const campaign = campaignData.find(c => c.id === a.campaign_id);
-    const link = location.origin + "/index.html?ref=" +
-      encodeURIComponent(a.referral_code) +
-      "&campaign=" + encodeURIComponent(a.campaign_id);
-
-    return `<div class="item">
-      <strong>${safe(campaign?.campaign_name || "Campaign")}</strong>
-      <p>${safe(campaign?.advertiser_name || "")}</p>
-      <span class="badge">${safe(a.assignment_status)}</span>
-      <p><strong>My Referral Code:</strong> ${safe(a.referral_code)}</p>
-      <p class="link">${safe(link)}</p>
-      <button type="button" class="copyBtn" data-link="${safe(link)}">Copy Referral Link</button>
-    </div>`;
-  }).join("");
-
-  list.querySelectorAll(".copyBtn").forEach(button => {
-    button.addEventListener("click", () => copyLink(button.dataset.link));
-  });
+ const rows=assignments.data||[];
+ document.getElementById("myCampaigns").innerHTML=rows.length
+  ? rows.map(item=>{
+    const link=new URL("index.html",window.location.href);
+    link.searchParams.set("ref",item.referral_code);
+    link.searchParams.set("campaign",item.campaign_id);
+    return `<tr>
+      <td>${safe(item.campaigns?.campaign_name||"Campaign")}</td>
+      <td><button onclick="copyLink('${safe(link.href)}')">Copy link</button></td>
+    </tr>`;
+   }).join("")
+  : "<tr><td colspan='2'>No campaigns assigned yet.</td></tr>";
 }
 
-async function copyLink(link) {
-  try {
-    await navigator.clipboard.writeText(link);
-    showMessage("Referral link copied.");
-  } catch (error) {
-    showMessage("Copy unavailable. Please select and copy the referral link manually.");
-  }
+async function loadAdmin(){
+ const [members,campaigns,ftds,commissions]=await Promise.all([
+  db.from("member_profiles").select("id",{count:"exact",head:true}).neq("role","admin"),
+  db.from("campaigns").select("*").order("created_at",{ascending:false}),
+  db.from("member_ftd").select("id",{count:"exact",head:true}).eq("deposit_status","pending"),
+  db.from("member_commissions").select("commission_amount")
+ ]);
+
+ if(members.error||campaigns.error||ftds.error||commissions.error){
+  showMessage("Admin information could not be loaded. Check your database permissions.");
+  return;
+ }
+
+ document.getElementById("adminMembers").textContent=members.count||0;
+ document.getElementById("adminCampaigns").textContent=(campaigns.data||[]).length;
+ document.getElementById("adminFtds").textContent=ftds.count||0;
+
+ const total=(commissions.data||[]).reduce(
+  (sum,item)=>sum+Number(item.commission_amount||0),0
+ );
+ document.getElementById("adminCommissions").textContent=money(total);
+
+ const list=campaigns.data||[];
+
+ document.getElementById("campaignList").innerHTML=list.length
+  ? list.map(c=>`<tr>
+    <td>${safe(c.campaign_name)}</td>
+    <td>${safe(c.advertiser_name)}</td>
+    <td>${safe(c.campaign_status)}</td>
+   </tr>`).join("")
+  : "<tr><td colspan='3'>No campaigns created yet.</td></tr>";
+
+ document.getElementById("assignCampaign").innerHTML=
+  list.map(c=>`<option value="${safe(c.id)}">${safe(c.campaign_name)}</option>`).join("");
 }
 
-async function loadAssignmentOptions() {
-  const [memberResult,campaignResult] = await Promise.all([
-    db.from("member_profiles")
-      .select("id,full_name,email,role")
-      .neq("role","admin")
-      .order("created_at",{ascending:false}),
-    db.from("campaigns")
-      .select("id,campaign_name,advertiser_name,campaign_status")
-      .order("created_at",{ascending:false})
-  ]);
+async function createCampaign(){
+ const name=document.getElementById("campaignName").value.trim();
+ const advertiser=document.getElementById("advertiserName").value.trim();
+ const type=document.getElementById("commissionType").value;
+ const fixed=Number(document.getElementById("fixedAmount").value||0);
+ const percentage=Number(document.getElementById("percentageRate").value||0);
 
-  if (memberResult.error) throw memberResult.error;
-  if (campaignResult.error) throw campaignResult.error;
+ if(!name||!advertiser){
+  showMessage("Enter the campaign name and advertiser.");
+  return;
+ }
 
-  affiliates = memberResult.data || [];
-  const availableCampaigns = campaignResult.data || [];
+ const {error}=await db.from("campaigns").insert({
+  campaign_name:name,
+  advertiser_name:advertiser,
+  campaign_status:"active",
+  commission_type:type,
+  fixed_amount:fixed,
+  percentage_rate:percentage
+ });
 
-  const affiliateSelect = el("affiliateSelect");
-  const campaignSelect = el("campaignSelect");
+ if(error){
+  showMessage("Campaign could not be created: "+error.message);
+  return;
+ }
 
-  affiliateSelect.innerHTML = '<option value="">Choose an affiliate</option>';
-
-  affiliates.forEach(affiliate => {
-    const option = document.createElement("option");
-    option.value = affiliate.id;
-    option.textContent =
-      (affiliate.full_name || affiliate.email || "Affiliate") +
-      (affiliate.email ? " (" + affiliate.email + ")" : "");
-    affiliateSelect.appendChild(option);
-  });
-
-  campaignSelect.innerHTML = '<option value="">Choose a campaign</option>';
-
-  availableCampaigns.forEach(campaign => {
-    const option = document.createElement("option");
-    option.value = campaign.id;
-    option.textContent = campaign.campaign_name +
-      (campaign.advertiser_name ? " - " + campaign.advertiser_name : "");
-    campaignSelect.appendChild(option);
-  });
-
-  if (!affiliates.length) {
-    affiliateSelect.innerHTML = '<option value="">No affiliates registered yet</option>';
-  }
-
-  if (!availableCampaigns.length) {
-    campaignSelect.innerHTML = '<option value="">Create a campaign first</option>';
-  }
+ showMessage("Campaign created successfully.");
+ await loadAdmin();
 }
 
-async function loadAdminDashboard() {
-  el("adminPanel").classList.remove("hidden");
+async function assignCampaign(){
+ const email=document.getElementById("memberEmail").value.trim();
+ const campaignId=document.getElementById("assignCampaign").value;
 
-  const [members,campaignResult,ftds,commissions] = await Promise.all([
-    db.from("member_profiles").select("id,role"),
-    db.from("campaigns").select("*").order("created_at",{ascending:false}),
-    db.from("member_ftd").select("id",{count:"exact",head:true})
-      .eq("deposit_status","pending"),
-    db.from("member_commissions")
-      .select("commission_amount,commission_status")
-  ]);
+ if(!email||!campaignId){
+  showMessage("Enter a member email and select a campaign.");
+  return;
+ }
 
-  if (members.error) throw members.error;
-  if (campaignResult.error) throw campaignResult.error;
-  if (ftds.error) throw ftds.error;
-  if (commissions.error) throw commissions.error;
+ const {data:member,error:memberError}=await db
+  .from("member_profiles")
+  .select("id")
+  .eq("email",email)
+  .single();
 
-  const membersList = members.data || [];
-  campaigns = campaignResult.data || [];
+ if(memberError||!member){
+  showMessage("Member not found. Check the email address.");
+  return;
+ }
 
-  el("adminMembers").textContent =
-    membersList.filter(m => m.role !== "admin").length;
-  el("adminCampaigns").textContent = campaigns.length;
-  el("adminFtd").textContent = ftds.count || 0;
+ const {data:existing}=await db
+  .from("campaign_assignments")
+  .select("id")
+  .eq("member_id",member.id)
+  .eq("campaign_id",campaignId)
+  .maybeSingle();
 
-  displayAdminCommissions(calculateCommissions(commissions.data));
+ if(existing){
+  showMessage("This campaign is already assigned to that member.");
+  return;
+ }
 
-  el("campaignList").innerHTML = campaigns.length ?
-    campaigns.map(c => `
-      <div class="item">
-        <strong>${safe(c.campaign_name)}</strong>
-        <p>${safe(c.advertiser_name || "")}</p>
-        <span class="badge">${safe(c.campaign_status)}</span>
-        <p>Model: ${safe(c.commission_type)}</p>
-        <p>Fixed: ${money(c.fixed_amount)} | Percentage: ${safe(c.percentage_rate)}%</p>
-      </div>`).join("") : "No campaigns created yet.";
+ const referralCode="CL"+crypto.randomUUID().replace(/-/g,"").slice(0,10).toUpperCase();
 
-  await loadAssignmentOptions();
+ const {error}=await db.from("campaign_assignments").insert({
+  member_id:member.id,
+  campaign_id:campaignId,
+  referral_code:referralCode,
+  assignment_status:"active"
+ });
+
+ if(error){
+  showMessage("Campaign assignment failed: "+error.message);
+  return;
+ }
+
+ showMessage("Campaign assigned successfully.");
 }
 
-el("assignmentForm").addEventListener("submit", async function(event) {
-  event.preventDefault();
+async function copyLink(link){
+ try{
+  await navigator.clipboard.writeText(link);
+  showMessage("Referral link copied.");
+ }catch(e){
+  showMessage("Copy was blocked by your browser. Please copy the link manually.");
+ }
+}
 
-  const button = el("assignBtn");
-  button.disabled = true;
-
-  try {
-    const affiliateId = el("affiliateSelect").value;
-    const campaignId = el("campaignSelect").value;
-
-    if (!affiliateId || !campaignId) {
-      throw new Error("Please select an affiliate and a campaign.");
-    }
-
-    const existing = await db.from("campaign_assignments")
-      .select("id")
-      .eq("member_id",affiliateId)
-      .eq("campaign_id",campaignId)
-      .maybeSingle();
-
-    if (existing.error) throw existing.error;
-    if (existing.data) throw new Error("This affiliate already has this campaign assigned.");
-
-    const referralCode = "CL" + crypto.randomUUID()
-      .replace(/-/g,"").substring(0,12).toUpperCase();
-
-    const {error} = await db.from("campaign_assignments").insert({
-      member_id:affiliateId,
-      campaign_id:campaignId,
-      referral_code:referralCode,
-      assignment_status:"active"
-    });
-
-    if (error) throw error;
-
-    const affiliate = affiliates.find(a => a.id === affiliateId);
-
-    showMessage(
-      "Campaign assigned successfully to " +
-      (affiliate?.full_name || affiliate?.email || "affiliate") +
-      ". Referral code: " + referralCode
-    );
-
-    this.reset();
-    await loadAssignmentOptions();
-
-  } catch (error) {
-    showMessage("Assignment error: " + error.message);
-  } finally {
-    button.disabled = false;
-  }
-});
-
-el("campaignForm").addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  const button = el("createCampaignBtn");
-  button.disabled = true;
-
-  try {
-    const campaign = {
-      campaign_name:el("campaignName").value.trim(),
-      advertiser_name:el("advertiserName").value.trim(),
-      commission_type:el("commissionType").value,
-      fixed_amount:Number(el("fixedAmount").value || 0),
-      percentage_rate:Number(el("percentageRate").value || 0),
-      campaign_status:"active"
-    };
-
-    if (campaign.fixed_amount < 0 || campaign.percentage_rate < 0 ||
-        campaign.percentage_rate > 100) {
-      throw new Error("Please enter valid commission amounts and percentages.");
-    }
-
-    if (campaign.commission_type === "fixed" && campaign.fixed_amount <= 0) {
-      throw new Error("Enter a fixed commission amount greater than zero.");
-    }
-
-    if (campaign.commission_type === "percentage" && campaign.percentage_rate <= 0) {
-      throw new Error("Enter a percentage greater than zero.");
-    }
-
-    if (campaign.commission_type === "hybrid" &&
-        campaign.fixed_amount === 0 && campaign.percentage_rate === 0) {
-      throw new Error("Enter a fixed amount, a percentage, or both.");
-    }
-
-    const {error} = await db.from("campaigns").insert(campaign);
-    if (error) throw error;
-
-    this.reset();
-    el("fixedAmount").value = "0";
-    el("percentageRate").value = "0";
-
-    await loadAdminDashboard();
-    showMessage("Campaign created successfully.");
-
-  } catch (error) {
-    showMessage(error.message);
-  } finally {
-    button.disabled = false;
-  }
-});
-
-el("logoutBtn").addEventListener("click", async () => {
-  const {error} = await db.auth.signOut();
-
-  if (error) {
-    showMessage(error.message);
-    return;
-  }
-
-  window.location.assign("Auth.html");
-});
-
-async function startDashboard() {
-  try {
-    const {data,error} = await db.auth.getSession();
-    if (error) throw error;
-
-    currentUser = data.session?.user;
-
-    if (!currentUser) {
-      window.location.replace("Auth.html");
-      return;
-    }
-
-    el("userEmail").textContent = currentUser.email || "";
-
-    const result = await db.from("member_profiles")
-      .select("id,full_name,email,role,account_status")
-      .eq("id",currentUser.id)
-      .single();
-
-    if (result.error) throw result.error;
-
-    profile = result.data;
-    el("welcome").textContent = "Welcome, " + (profile.full_name || "Member");
-
-    if (profile.role === "admin") {
-      await loadAdminDashboard();
-    } else {
-      if (profile.account_status === "inactive") {
-        throw new Error("Your account is inactive. Please contact Corelink Media.");
-      }
-
-      await loadMemberDashboard();
-    }
-
-  } catch (error) {
-    showMessage("Dashboard error: " + error.message);
-  }
+async function logout(){
+ await db.auth.signOut();
+ window.location.replace("Auth.html");
 }
 
 startDashboard();
 </script>
+
 </body>
 </html>
