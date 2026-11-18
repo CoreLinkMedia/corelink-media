@@ -724,7 +724,7 @@ document.getElementById("loginForm").addEventListener("submit",async(event)=>{
     }
 
     showMessage("loginMessage","Login successful. Opening your dashboard...","success");
-    window.location.href="Dashboard.html";
+    window.location.href="MemberDashboard.html";
 
   }catch(error){
     showMessage("loginMessage",error.message||"Login failed. Please check your details.","error");
