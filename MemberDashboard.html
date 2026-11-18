@@ -24,12 +24,11 @@ th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}
 .table-wrap{overflow-x:auto}
 .hidden{display:none}
 .small{font-size:13px;color:#526477}
-#message{padding:12px;border-radius:6px;margin-bottom:15px}
+#message{padding:12px;border-radius:6px;margin-bottom:15px;background:#fff0d9;color:#754600;overflow-wrap:anywhere}
 </style>
 </head>
 
 <body>
-
 <header>
 <h2>CORELINK MEDIA</h2>
 <button onclick="logout()">Logout</button>
@@ -137,11 +136,9 @@ function safe(value){
   }[c]));
 }
 
-/* START DASHBOARD */
-
 async function startDashboard(){
   try {
-    const {data, error} = await db.auth.getSession();
+    const {data,error} = await db.auth.getSession();
 
     if(error) throw error;
 
@@ -154,32 +151,36 @@ async function startDashboard(){
 
     currentUser = session.user;
 
-    const {data: memberProfile, error: profileError} = await db
+    const {data:memberProfile,error:profileError} = await db
       .from("member_profiles")
       .select("*")
-      .eq("id", currentUser.id)
+      .eq("id",currentUser.id)
       .single();
 
-    if(profileError) {
-      console.error("Profile loading error:", profileError);
-      showMessage(
-        "Your member profile could not be loaded. Database permissions or profile information may need checking."
-      );
+    if(profileError || !memberProfile){
+      console.error("Profile loading error:",profileError);
+
+      const errorText = profileError
+        ? profileError.message + 
+          (profileError.code ? " | Code: " + profileError.code : "") +
+          (profileError.details ? " | Details: " + profileError.details : "") +
+          (profileError.hint ? " | Hint: " + profileError.hint : "")
+        : "No profile row returned.";
+
+      showMessage("PROFILE ERROR: " + errorText);
+
       document.getElementById("welcome").textContent =
         "Profile not available";
-      return;
-    }
 
-    if(!memberProfile){
-      showMessage("Your member profile could not be found. Please contact support.");
       return;
     }
 
     profile = memberProfile;
 
     if(profile.account_status &&
-       profile.account_status !== "active"){
+       profile.account_status.toLowerCase() !== "active"){
       showMessage("Your account is not active. Please contact support.");
+      document.getElementById("welcome").textContent = "Account inactive";
       return;
     }
 
@@ -198,19 +199,15 @@ async function startDashboard(){
     }
 
   } catch(error) {
-    console.error("Dashboard startup error:", error);
-    showMessage(
-      "Dashboard could not start: " + (error.message || "Please try again.")
-    );
+    console.error("Dashboard startup error:",error);
+    showMessage("DASHBOARD ERROR: " + (error.message || "Please try again."));
   }
 }
-
-/* MEMBER DASHBOARD */
 
 async function loadMember(){
   const id = currentUser.id;
 
-  const [regs, ftds, commissions, assignments] = await Promise.all([
+  const [regs,ftds,commissions,assignments] = await Promise.all([
     db.from("client_registrations")
       .select("id",{count:"exact",head:true})
       .eq("member_id",id),
@@ -229,27 +226,24 @@ async function loadMember(){
       .eq("assignment_status","active")
   ]);
 
-  if(regs.error || ftds.error ||
-     commissions.error || assignments.error){
-
-    console.error({
+  if(regs.error || ftds.error || commissions.error || assignments.error){
+    console.error("Member data errors:",{
       registrations:regs.error,
       ftds:ftds.error,
       commissions:commissions.error,
       assignments:assignments.error
     });
 
-    showMessage(
-      "Some dashboard information could not be loaded. Please check database permissions and table columns."
-    );
+    const firstError = regs.error || ftds.error ||
+      commissions.error || assignments.error;
+
+    showMessage("MEMBER DATA ERROR: " + firstError.message +
+      (firstError.code ? " | Code: " + firstError.code : ""));
     return;
   }
 
-  document.getElementById("registrations").textContent =
-    regs.count || 0;
-
-  document.getElementById("ftds").textContent =
-    ftds.count || 0;
+  document.getElementById("registrations").textContent = regs.count || 0;
+  document.getElementById("ftds").textContent = ftds.count || 0;
 
   let total = 0;
   let pending = 0;
@@ -286,8 +280,6 @@ async function loadMember(){
     : "<tr><td colspan='2'>No campaigns assigned yet.</td></tr>";
 }
 
-/* ADMIN DASHBOARD */
-
 async function loadAdmin(){
   const [members,campaigns,ftds,commissions] = await Promise.all([
     db.from("member_profiles")
@@ -306,37 +298,32 @@ async function loadAdmin(){
       .select("commission_amount")
   ]);
 
-  if(members.error || campaigns.error ||
-     ftds.error || commissions.error){
-
-    console.error({
+  if(members.error || campaigns.error || ftds.error || commissions.error){
+    console.error("Admin data errors:",{
       members:members.error,
       campaigns:campaigns.error,
       ftds:ftds.error,
       commissions:commissions.error
     });
 
-    showMessage(
-      "Admin information could not be loaded. Please check database permissions."
-    );
+    const firstError = members.error || campaigns.error ||
+      ftds.error || commissions.error;
+
+    showMessage("ADMIN DATA ERROR: " + firstError.message +
+      (firstError.code ? " | Code: " + firstError.code : ""));
     return;
   }
 
-  document.getElementById("adminMembers").textContent =
-    members.count || 0;
-
+  document.getElementById("adminMembers").textContent = members.count || 0;
   document.getElementById("adminCampaigns").textContent =
     (campaigns.data || []).length;
-
-  document.getElementById("adminFtds").textContent =
-    ftds.count || 0;
+  document.getElementById("adminFtds").textContent = ftds.count || 0;
 
   const total = (commissions.data || []).reduce(
     (sum,item)=>sum + Number(item.commission_amount || 0),0
   );
 
-  document.getElementById("adminCommissions").textContent =
-    money(total);
+  document.getElementById("adminCommissions").textContent = money(total);
 
   const list = campaigns.data || [];
 
@@ -351,8 +338,6 @@ async function loadAdmin(){
   document.getElementById("assignCampaign").innerHTML =
     list.map(c=>`<option value="${safe(c.id)}">${safe(c.campaign_name)}</option>`).join("");
 }
-
-/* CREATE CAMPAIGN */
 
 async function createCampaign(){
   const name = document.getElementById("campaignName").value.trim();
@@ -377,15 +362,13 @@ async function createCampaign(){
 
   if(error){
     console.error("Campaign creation error:",error);
-    showMessage("Campaign could not be created: " + error.message);
+    showMessage("Campaign creation error: " + error.message);
     return;
   }
 
   showMessage("Campaign created successfully.");
   await loadAdmin();
 }
-
-/* ASSIGN CAMPAIGN */
 
 async function assignCampaign(){
   const email = document.getElementById("memberEmail").value.trim();
@@ -404,7 +387,9 @@ async function assignCampaign(){
 
   if(memberError || !member){
     console.error("Member lookup error:",memberError);
-    showMessage("Member not found. Check the email address and member profile database.");
+    showMessage("Member lookup error: " +
+      (memberError?.message || "Member not found") +
+      (memberError?.code ? " | Code: " + memberError.code : ""));
     return;
   }
 
@@ -416,7 +401,7 @@ async function assignCampaign(){
     .maybeSingle();
 
   if(existingError){
-    showMessage("Could not check existing assignment: " + existingError.message);
+    showMessage("Assignment check error: " + existingError.message);
     return;
   }
 
@@ -437,14 +422,12 @@ async function assignCampaign(){
 
   if(error){
     console.error("Campaign assignment error:",error);
-    showMessage("Campaign assignment failed: " + error.message);
+    showMessage("Campaign assignment error: " + error.message);
     return;
   }
 
   showMessage("Campaign assigned successfully.");
 }
-
-/* COPY REFERRAL LINK */
 
 async function copyLink(link){
   try{
@@ -455,8 +438,6 @@ async function copyLink(link){
   }
 }
 
-/* LOGOUT */
-
 async function logout(){
   const button = document.querySelector("header button");
   button.disabled = true;
@@ -464,20 +445,13 @@ async function logout(){
 
   try{
     const {error} = await db.auth.signOut();
-
-    if(error){
-      console.error("Logout error:",error);
-    }
-
+    if(error) console.error("Logout error:",error);
   }finally{
     window.location.replace("auth.html");
   }
 }
 
-/* CHECK LOGIN AND LOAD DASHBOARD */
-
 startDashboard();
 </script>
-
 </body>
 </html>
