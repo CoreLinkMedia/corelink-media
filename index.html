@@ -247,12 +247,31 @@ section{padding:55px 5%}
   box-shadow:0 8px 22px rgba(23,198,178,.15);transition:.3s;
 }
 .campaign-card:hover{transform:translateY(-6px);box-shadow:0 0 25px rgba(23,198,178,.3)}
-.campaign-letter{
-  color:#f6c45e;font-size:48px;line-height:1;
-  font-weight:900;min-width:55px;text-align:center;
-}
 .campaign-card h3{font-size:18px;margin-bottom:2px}
 .campaign-tag{color:var(--teal);font-size:12px;font-weight:bold}
+
+/* CAMPAIGN LOGOS */
+.campaign-logo{
+  width:110px;
+  height:65px;
+  object-fit:contain;
+  flex-shrink:0;
+  border-radius:8px;
+  background:#fff;
+  padding:5px;
+  transition:transform .3s ease;
+}
+.campaign-logo:hover,
+.campaign-logo:active{
+  animation:logoShake .55s ease-in-out;
+}
+@keyframes logoShake{
+  0%,100%{transform:translateX(0) rotate(0)}
+  20%{transform:translateX(-5px) rotate(-3deg)}
+  40%{transform:translateX(5px) rotate(3deg)}
+  60%{transform:translateX(-4px) rotate(-2deg)}
+  80%{transform:translateX(4px) rotate(2deg)}
+}
 .campaign-note{
   text-align:center;font-size:12px;color:#668197;
   margin:20px auto 0;max-width:700px;
@@ -342,11 +361,6 @@ footer p{font-size:13px;margin:4px 0}
   font-size:13px;font-weight:bold;margin:0 8px;
 }
 .footer-links a:hover{text-decoration:underline}
-.footer-contact{
-  margin-top:15px;font-size:12px;
-  line-height:2;color:#b6c8d8;
-}
-.footer-contact a{color:var(--teal);text-decoration:none}
 
 /* RESPONSIVE */
 @media(max-width:850px){
@@ -372,7 +386,8 @@ footer p{font-size:13px;margin:4px 0}
   .steps-grid{grid-template-columns:1fr}
   .steps-grid .card{min-height:85px}
   .campaign-grid{grid-template-columns:1fr;gap:15px}
-  .campaign-card{min-height:85px}
+  .campaign-card{min-height:85px;padding:15px}
+  .campaign-logo{width:95px;height:60px}
   .auth-grid{grid-template-columns:1fr}
   .auth-card{padding:22px}
   .features-grid .card{padding:15px}
@@ -520,8 +535,13 @@ footer p{font-size:13px;margin:4px 0}
   </p>
 
   <div class="campaign-grid">
+
     <div class="campaign-card">
-      <div class="campaign-letter">G</div>
+      <img
+        src="goldrush.jpeg"
+        alt="Goldrush logo"
+        class="campaign-logo"
+      >
       <div>
         <h3>Goldrush</h3>
         <div class="campaign-tag">CAMPAIGN PARTNER</div>
@@ -529,12 +549,17 @@ footer p{font-size:13px;margin:4px 0}
     </div>
 
     <div class="campaign-card">
-      <div class="campaign-letter">Y</div>
+      <img
+        src="yesplay.jpeg"
+        alt="YesPlay logo"
+        class="campaign-logo"
+      >
       <div>
         <h3>YesPlay</h3>
         <div class="campaign-tag">CAMPAIGN PARTNER</div>
       </div>
     </div>
+
   </div>
 
   <p class="campaign-note">
@@ -694,9 +719,6 @@ footer p{font-size:13px;margin:4px 0}
     <a href="#campaigns">Campaigns</a>
     <a href="#contact">Contact Us</a>
   </div>
-
-  
-
 
   <p style="margin-top:15px">© 2026 Corelink Media. All rights reserved.</p>
 </footer>
