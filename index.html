@@ -191,8 +191,6 @@ section{padding:55px 5%}
 }
 
 /* CARDS */
-.dark-section .section-title{color:white}
-.dark-section .section-subtitle{color:#c3d5e2}
 .cards{
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
   gap:20px;max-width:1200px;margin:auto;
@@ -215,6 +213,8 @@ section{padding:55px 5%}
 }
 .card h3{color:var(--navy);margin-bottom:5px;font-size:18px}
 .card p{color:#42627d;font-size:14px;line-height:1.5}
+.dark-section .section-title{color:white}
+.dark-section .section-subtitle{color:#c3d5e2}
 .dark-section .card{
   background:linear-gradient(145deg,rgba(16,58,83,.9),rgba(5,35,58,.95));
   border:1px solid rgba(23,198,178,.65);
@@ -299,6 +299,35 @@ input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(23,198,178,.12)}
 .success{display:block;background:#e4f8ed;color:#12633d}
 .error{display:block;background:#ffe8e8;color:#9b2020}
 
+/* CONTACT */
+.contact-card{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(23,198,178,.4);
+  border-radius:14px;
+  padding:25px 16px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(7,27,51,.07);
+  transition:.3s;
+}
+.contact-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 15px 30px rgba(23,198,178,.17);
+}
+.contact-icon{
+  width:55px;height:55px;margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:14px;background:#d7fff7;
+  color:#087d73;font-size:26px;
+}
+.contact-card h3{color:var(--navy);font-size:18px;margin-bottom:6px}
+.contact-card p{color:#52718b;font-size:13px;margin-bottom:12px}
+.contact-card a{
+  color:#087d73;font-weight:bold;
+  font-size:13px;text-decoration:none;
+  overflow-wrap:anywhere;
+}
+.contact-card a:hover{color:#064d48;text-decoration:underline}
+
 /* FOOTER */
 footer{
   background:#041326;color:#b6c8d8;text-align:center;
@@ -307,6 +336,17 @@ footer{
 .footer-logo{color:white;font-size:24px;font-weight:900;letter-spacing:2px}
 .footer-logo span{color:var(--teal)}
 footer p{font-size:13px;margin:4px 0}
+.footer-links{margin:14px 0}
+.footer-links a{
+  color:var(--teal);text-decoration:none;
+  font-size:13px;font-weight:bold;margin:0 8px;
+}
+.footer-links a:hover{text-decoration:underline}
+.footer-contact{
+  margin-top:15px;font-size:12px;
+  line-height:2;color:#b6c8d8;
+}
+.footer-contact a{color:var(--teal);text-decoration:none}
 
 /* RESPONSIVE */
 @media(max-width:850px){
@@ -336,6 +376,7 @@ footer p{font-size:13px;margin:4px 0}
   .auth-grid{grid-template-columns:1fr}
   .auth-card{padding:22px}
   .features-grid .card{padding:15px}
+  .contact-card{padding:22px 12px}
 }
 @media(max-width:360px){
   .header-nav{gap:11px}
@@ -368,6 +409,7 @@ footer p{font-size:13px;margin:4px 0}
   <nav class="header-nav right">
     <a href="#access">Member Access</a>
     <a href="MemberDashboard.html" id="memberLink">Dashboard</a>
+    <a href="#contact">Contact</a>
   </nav>
 </header>
 
@@ -599,14 +641,67 @@ footer p{font-size:13px;margin:4px 0}
   </div>
 </section>
 
+<!-- CONTACT US -->
+<section class="light-section" id="contact">
+  <h2 class="section-title">Contact Corelink Media</h2>
+  <p class="section-subtitle">
+    Our team is ready to assist members, advertisers and business partners.
+  </p>
+
+  <div class="cards">
+
+    <div class="contact-card">
+      <div class="contact-icon">✉</div>
+      <h3>General Enquiries</h3>
+      <p>For general business enquiries and information.</p>
+      <a href="mailto:info@corelinkmedia.co.za">
+        info@corelinkmedia.co.za
+      </a>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-icon">◇</div>
+      <h3>Partnerships</h3>
+      <p>For brand partnerships, advertising and CPA campaigns.</p>
+      <a href="mailto:partnerships@corelinkmedia.co.za">
+        partnerships@corelinkmedia.co.za
+      </a>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-icon">☏</div>
+      <h3>Customer Support</h3>
+      <p>For member assistance and account enquiries.</p>
+      <a href="mailto:support@corelinkmedia.co.za">
+        support@corelinkmedia.co.za
+      </a>
+    </div>
+
+  </div>
+</section>
+
 </main>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-logo">CORELINK <span>MEDIA</span></div>
   <p>CPA Affiliate Marketing Network</p>
   <p>Connect. Promote. Earn.</p>
-  
-  <p style="margin-top:12px">© 2026 Corelink Media. All rights reserved.</p>
+
+  <div class="footer-links">
+    <a href="#home">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#campaigns">Campaigns</a>
+    <a href="#contact">Contact Us</a>
+  </div>
+
+  <div class="footer-contact">
+    <p>General: <a href="mailto:info@corelinkmedia.co.za">info@corelinkmedia.co.za</a></p>
+    <p>Partnerships: <a href="mailto:partnerships@corelinkmedia.co.za">partnerships@corelinkmedia.co.za</a></p>
+    <p>Support: <a href="mailto:support@corelinkmedia.co.za">support@corelinkmedia.co.za</a></p>
+  </div>
+
+  <p style="margin-top:15px">© 2026 Corelink Media. All rights reserved.</p>
 </footer>
 
 <script>
