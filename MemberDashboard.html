@@ -172,13 +172,11 @@ th,td{
   }
 }
 
-/* Dashboard entrance */
 #memberArea:not(.hidden),
 #adminArea:not(.hidden){
   animation:corelinkFadeIn .7s ease both;
 }
 
-/* Smooth card movement */
 .card,
 .stat,
 .campaign{
@@ -188,7 +186,6 @@ th,td{
     box-shadow .3s ease;
 }
 
-/* Gentle hover effects */
 .card:hover,
 .stat:hover,
 .campaign:hover{
@@ -197,7 +194,6 @@ th,td{
   box-shadow:0 8px 22px rgba(0,0,0,.16);
 }
 
-/* Statistics animation */
 .stats-row .stat{
   animation:corelinkStatIn .6s ease both;
 }
@@ -210,7 +206,6 @@ th,td{
   animation-delay:.24s;
 }
 
-/* Button animations */
 button{
   transition:
     transform .2s ease,
@@ -227,7 +222,6 @@ button:active:not(:disabled){
   transform:scale(.97);
 }
 
-/* Table hover */
 tbody tr{
   transition:background .2s ease;
 }
@@ -236,12 +230,10 @@ tbody tr:hover{
   background:rgba(23,198,178,.07);
 }
 
-/* Graph entrance */
 .graph-wrap{
   animation:corelinkFadeIn .8s ease both;
 }
 
-/* Respect reduced-motion settings */
 @media(prefers-reduced-motion:reduce){
   *,
   *::before,
@@ -285,7 +277,6 @@ tbody tr:hover{
     </div>
 
     <div class="stats-row">
-
       <div class="stat">
         <span>Registrations</span>
         <strong id="memberRegistrations">0</strong>
@@ -300,7 +291,6 @@ tbody tr:hover{
         <span>Commission</span>
         <strong id="memberCommission">R0</strong>
       </div>
-
     </div>
 
     <div class="card" style="margin-top:20px">
@@ -337,7 +327,6 @@ tbody tr:hover{
       </div>
     </div>
 
-    <!-- ASSIGN CAMPAIGN -->
     <div class="card">
       <h3>Assign Campaign to Affiliate</h3>
 
@@ -356,7 +345,6 @@ tbody tr:hover{
       </button>
     </div>
 
-    <!-- CREATE CAMPAIGN -->
     <div class="card">
       <h3>Create Campaign</h3>
 
@@ -393,20 +381,17 @@ tbody tr:hover{
       </button>
     </div>
 
-    <!-- CAMPAIGN MANAGEMENT -->
     <div class="card">
       <h3>Campaign Management</h3>
       <button onclick="loadAdmin()">Refresh Campaigns</button>
       <div id="adminCampaigns">Loading campaigns...</div>
     </div>
 
-    <!-- REGISTERED MEMBERS -->
     <div class="card">
       <h3>Registered Members</h3>
       <div id="adminMembers">Loading members...</div>
     </div>
 
-    <!-- AFFILIATE PERFORMANCE BOARD -->
     <div class="card">
       <h3>Affiliate Performance Board</h3>
       <div id="affiliatePerformance">
@@ -420,7 +405,11 @@ tbody tr:hover{
 
 <script>
 const SUPABASE_URL = "https://gxdbhavpbzjruhpafqpf.supabase.co";
-const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DKUKJAPk";
+const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DUKKJAPk";
+
+const YESPLAY_CAMPAIGN_ID = "1c3de827-bd17-459f-a1b6-71736a7b97b3";
+const YESPLAY_REDIRECT_URL =
+  "https://gxdbhavpbzjruhpafqpf.supabase.co/functions/v1/yesplay-redirect";
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
@@ -513,7 +502,7 @@ async function loadMember() {
   await loadMemberRegistrations();
 }
 
-/* MEMBER CAMPAIGNS */
+/* MEMBER CAMPAIGNS - YESPLAY TRACKING UPDATED */
 
 async function loadMemberCampaigns() {
   const area = document.getElementById("memberCampaigns");
@@ -571,10 +560,35 @@ async function loadMemberCampaigns() {
                  currentProfile.referral_code ||
                  currentUser.id;
 
-    const link = new URL("index.html", window.location.href);
+    let link;
 
-    link.searchParams.set("ref", code);
-    link.searchParams.set("campaign", campaign.id);
+    const campaignName = String(
+      campaign.campaign_name ||
+      campaign.name ||
+      campaign.partner_name ||
+      campaign.advertiser_name ||
+      ""
+    ).toLowerCase();
+
+    const isYesPlay =
+      String(campaign.id) === YESPLAY_CAMPAIGN_ID ||
+      campaignName.includes("yesplay");
+
+    if (isYesPlay) {
+
+      link = new URL(YESPLAY_REDIRECT_URL);
+
+      link.searchParams.set("ref", code);
+      link.searchParams.set("campaign", campaign.id);
+
+    } else {
+
+      link = new URL("index.html", window.location.href);
+
+      link.searchParams.set("ref", code);
+      link.searchParams.set("campaign", campaign.id);
+
+    }
 
     const item = document.createElement("div");
     item.className = "campaign";
@@ -756,8 +770,6 @@ async function loadAdmin() {
   document.getElementById("adminMemberCount").textContent =
     memberCountError ? "Error" : (memberCount ?? 0);
 
-  /* LOAD CAMPAIGNS */
-
   const { data: campaigns, error: campaignError } = await db
     .from("campaigns")
     .select("*")
@@ -818,8 +830,6 @@ async function loadAdmin() {
       });
     }
   }
-
-  /* LOAD MEMBERS */
 
   const { data: members, error: membersError } = await db
     .from("member_profiles")
@@ -887,7 +897,6 @@ async function loadAdmin() {
 
   populateAssignmentOptions();
 
-  /* LOAD PERFORMANCE BOARD */
   await loadAffiliatePerformance();
 }
 
