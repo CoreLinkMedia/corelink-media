@@ -10,245 +10,60 @@
 
 <style>
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#071b33;
-  color:#fff;
-  font-family:Arial,sans-serif;
-}
-
-header{
-  background:#0b2746;
-  padding:18px 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  border-bottom:2px solid #17c6b2;
-}
-
+body{margin:0;background:#071b33;color:#fff;font-family:Arial,sans-serif}
+header{background:#0b2746;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:2px solid #17c6b2}
 header h2{margin:0;color:#17c6b2}
-
-.container{
-  max-width:1150px;
-  margin:25px auto;
-  padding:0 16px;
-}
-
-.card{
-  background:#0b2746;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
-  border:1px solid #173d60;
-}
-
+.container{max-width:1150px;margin:25px auto;padding:0 16px}
+.card{background:#0b2746;padding:20px;border-radius:12px;margin-bottom:20px;border:1px solid #173d60}
 h3{color:#17c6b2;margin-top:0}
-
-input,select,textarea{
-  width:100%;
-  padding:12px;
-  margin:7px 0 14px;
-  border:1px solid #31516e;
-  border-radius:7px;
-  background:#071b33;
-  color:#fff;
-  font-size:15px;
-}
-
-button{
-  background:#17c6b2;
-  color:#071b33;
-  border:0;
-  padding:12px 18px;
-  border-radius:7px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
+input,select,textarea{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #31516e;border-radius:7px;background:#071b33;color:#fff;font-size:15px}
+button{background:#17c6b2;color:#071b33;border:0;padding:12px 18px;border-radius:7px;font-weight:bold;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease}
 button:disabled{opacity:.6;cursor:not-allowed}
-
+button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 5px 14px rgba(23,198,178,.2)}
+button:active:not(:disabled){transform:scale(.97)}
 .logout{background:#d9534f;color:white}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-  gap:15px;
-}
-
-.stats-row{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:12px;
-}
-
-.stat{
-  background:#102f50;
-  padding:18px;
-  border-radius:10px;
-  min-width:0;
-}
-
-.stat strong{
-  display:block;
-  font-size:25px;
-  color:#17c6b2;
-  margin-top:8px;
-}
-
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px}
+.stats-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat{background:#102f50;padding:18px;border-radius:10px;min-width:0;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}
+.stat strong{display:block;font-size:25px;color:#17c6b2;margin-top:8px}
 .stats-row .stat{text-align:center}
 .stats-row .stat strong{font-size:27px}
-
 .hidden{display:none!important}
-
-.message{
-  padding:12px;
-  margin:12px 0;
-  border-radius:7px;
-  background:#173d60;
-  overflow-wrap:anywhere;
-}
-
-.campaign{
-  border:1px solid #31516e;
-  padding:15px;
-  border-radius:9px;
-  margin:12px 0;
-}
-
+.message{padding:12px;margin:12px 0;border-radius:7px;background:#173d60;overflow-wrap:anywhere}
+.campaign{border:1px solid #31516e;padding:15px;border-radius:9px;margin:12px 0;transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}
 .campaign h4{color:#17c6b2;margin:0 0 8px}
-
 small{color:#b9c9d8}
-
 a{color:#17c6b2;overflow-wrap:anywhere}
-
 label{display:block;font-weight:bold;margin-top:5px}
-
 .table-wrap{overflow-x:auto}
-
 table{width:100%;border-collapse:collapse}
-
-th,td{
-  text-align:left;
-  padding:10px;
-  border-bottom:1px solid #31516e;
-}
-
-.graph-wrap{
-  position:relative;
-  height:280px;
-  width:100%;
-}
-
-.status-note{
-  color:#b9c9d8;
-  font-size:13px;
-  margin-top:8px;
-}
-
-/* CORELINK MEDIA ANIMATIONS */
+th,td{text-align:left;padding:10px;border-bottom:1px solid #31516e}
+.graph-wrap{position:relative;height:280px;width:100%;animation:corelinkFadeIn .8s ease both}
+.status-note{color:#b9c9d8;font-size:13px;margin-top:8px}
 
 @keyframes corelinkFadeIn{
-  from{
-    opacity:0;
-    transform:translateY(15px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+from{opacity:0;transform:translateY(15px)}
+to{opacity:1;transform:translateY(0)}
 }
-
 @keyframes corelinkStatIn{
-  from{
-    opacity:0;
-    transform:translateY(12px) scale(.97);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
+from{opacity:0;transform:translateY(12px) scale(.97)}
+to{opacity:1;transform:translateY(0) scale(1)}
 }
-
-#memberArea:not(.hidden),
-#adminArea:not(.hidden){
-  animation:corelinkFadeIn .7s ease both;
-}
-
-.card,
-.stat,
-.campaign{
-  transition:
-    transform .3s ease,
-    border-color .3s ease,
-    box-shadow .3s ease;
-}
-
-.card:hover,
-.stat:hover,
-.campaign:hover{
-  transform:translateY(-3px);
-  border-color:#17c6b2;
-  box-shadow:0 8px 22px rgba(0,0,0,.16);
-}
-
-.stats-row .stat{
-  animation:corelinkStatIn .6s ease both;
-}
-
-.stats-row .stat:nth-child(2){
-  animation-delay:.12s;
-}
-
-.stats-row .stat:nth-child(3){
-  animation-delay:.24s;
-}
-
-button{
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease,
-    opacity .2s ease;
-}
-
-button:hover:not(:disabled){
-  transform:translateY(-2px);
-  box-shadow:0 5px 14px rgba(23,198,178,.2);
-}
-
-button:active:not(:disabled){
-  transform:scale(.97);
-}
-
-tbody tr{
-  transition:background .2s ease;
-}
-
-tbody tr:hover{
-  background:rgba(23,198,178,.07);
-}
-
-.graph-wrap{
-  animation:corelinkFadeIn .8s ease both;
-}
-
+#memberArea:not(.hidden),#adminArea:not(.hidden){animation:corelinkFadeIn .7s ease both}
+.card:hover,.stat:hover,.campaign:hover{transform:translateY(-3px);border-color:#17c6b2;box-shadow:0 8px 22px rgba(0,0,0,.16)}
+.stats-row .stat{animation:corelinkStatIn .6s ease both}
+.stats-row .stat:nth-child(2){animation-delay:.12s}
+.stats-row .stat:nth-child(3){animation-delay:.24s}
+tbody tr{transition:background .2s ease}
+tbody tr:hover{background:rgba(23,198,178,.07)}
 @media(prefers-reduced-motion:reduce){
-  *,
-  *::before,
-  *::after{
-    animation-duration:.01ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:.01ms!important;
-  }
+*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
-
 @media(max-width:480px){
-  .stats-row{gap:7px}
-  .stats-row .stat{padding:12px 5px}
-  .stats-row .stat strong{font-size:21px}
-  .stats-row .stat span{font-size:12px}
+.stats-row{gap:7px}
+.stats-row .stat{padding:12px 5px}
+.stats-row .stat strong{font-size:21px}
+.stats-row .stat span{font-size:12px}
 }
 </style>
 </head>
@@ -256,151 +71,139 @@ tbody tr:hover{
 <body>
 
 <header>
-  <h2>CORELINK MEDIA</h2>
-  <div>
-    <span id="userEmail"></span>
-    <button class="logout" onclick="logout()">Logout</button>
-  </div>
+<h2>CORELINK MEDIA</h2>
+<div>
+<span id="userEmail"></span>
+<button class="logout" onclick="logout()">Logout</button>
+</div>
 </header>
 
 <div class="container">
 
-  <div id="loading" class="card">Loading your dashboard...</div>
-  <div id="message" class="message hidden"></div>
+<div id="loading" class="card">Loading your dashboard...</div>
+<div id="message" class="message hidden"></div>
 
-  <!-- MEMBER DASHBOARD -->
-  <section id="memberArea" class="hidden">
+<section id="memberArea" class="hidden">
 
-    <div class="card">
-      <h3>Welcome to your Member Dashboard</h3>
-      <p id="memberName">Welcome, member.</p>
-    </div>
+<div class="card">
+<h3>Welcome to your Member Dashboard</h3>
+<p id="memberName">Welcome, member.</p>
+</div>
 
-    <div class="stats-row">
-      <div class="stat">
-        <span>Registrations</span>
-        <strong id="memberRegistrations">0</strong>
-      </div>
+<div class="stats-row">
+<div class="stat">
+<span>Registrations</span>
+<strong id="memberRegistrations">0</strong>
+</div>
+<div class="stat">
+<span>FTDs</span>
+<strong id="memberFtds">0</strong>
+</div>
+<div class="stat">
+<span>Commission</span>
+<strong id="memberCommission">R0</strong>
+</div>
+</div>
 
-      <div class="stat">
-        <span>FTDs</span>
-        <strong id="memberFtds">0</strong>
-      </div>
+<div class="card" style="margin-top:20px">
+<h3>Your Performance Graph</h3>
+<div class="graph-wrap">
+<canvas id="performanceChart"></canvas>
+</div>
+</div>
 
-      <div class="stat">
-        <span>Commission</span>
-        <strong id="memberCommission">R0</strong>
-      </div>
-    </div>
+<div class="card">
+<h3>Your Campaign Links</h3>
+<div id="memberCampaigns">Loading your assigned campaigns...</div>
+</div>
 
-    <div class="card" style="margin-top:20px">
-      <h3>Your Performance Graph</h3>
-      <div class="graph-wrap">
-        <canvas id="performanceChart"></canvas>
-      </div>
-    </div>
+</section>
 
-    <div class="card">
-      <h3>Your Campaign Links</h3>
-      <div id="memberCampaigns">Loading your assigned campaigns...</div>
-    </div>
+<section id="adminArea" class="hidden">
 
-  </section>
+<div class="card">
+<h3>Administrator Dashboard</h3>
+<p>Manage Corelink Media campaigns and affiliates.</p>
+</div>
 
-  <!-- ADMIN DASHBOARD -->
-  <section id="adminArea" class="hidden">
+<div class="grid">
+<div class="stat">
+Total members
+<strong id="adminMemberCount">0</strong>
+</div>
+<div class="stat">
+Total campaigns
+<strong id="adminCampaignCount">0</strong>
+</div>
+</div>
 
-    <div class="card">
-      <h3>Administrator Dashboard</h3>
-      <p>Manage Corelink Media campaigns and affiliates.</p>
-    </div>
+<div class="card">
+<h3>Assign Campaign to Affiliate</h3>
 
-    <div class="grid">
-      <div class="stat">
-        Total members
-        <strong id="adminMemberCount">0</strong>
-      </div>
+<label for="assignMember">Select affiliate (email)</label>
+<select id="assignMember">
+<option value="">Loading affiliates...</option>
+</select>
 
-      <div class="stat">
-        Total campaigns
-        <strong id="adminCampaignCount">0</strong>
-      </div>
-    </div>
+<label for="assignCampaign">Select campaign</label>
+<select id="assignCampaign">
+<option value="">Loading campaigns...</option>
+</select>
 
-    <div class="card">
-      <h3>Assign Campaign to Affiliate</h3>
+<button id="assignButton" onclick="assignCampaign()">Assign Campaign</button>
+</div>
 
-      <label for="assignMember">Select affiliate (email)</label>
-      <select id="assignMember">
-        <option value="">Loading affiliates...</option>
-      </select>
+<div class="card">
+<h3>Create Campaign</h3>
 
-      <label for="assignCampaign">Select campaign</label>
-      <select id="assignCampaign">
-        <option value="">Loading campaigns...</option>
-      </select>
+<label for="campaignName">Campaign name</label>
+<input id="campaignName" placeholder="Enter campaign name">
 
-      <button id="assignButton" onclick="assignCampaign()">
-        Assign Campaign
-      </button>
-    </div>
+<label for="advertiserName">Advertiser / Partner name</label>
+<input id="advertiserName" placeholder="Enter advertiser name">
 
-    <div class="card">
-      <h3>Create Campaign</h3>
+<label for="campaignDescription">Description</label>
+<textarea id="campaignDescription" placeholder="Describe the campaign"></textarea>
 
-      <label for="campaignName">Campaign name</label>
-      <input id="campaignName" placeholder="Enter campaign name">
+<label for="destinationUrl">Destination URL</label>
+<input id="destinationUrl" type="url" placeholder="https://example.com">
 
-      <label for="advertiserName">Advertiser / Partner name</label>
-      <input id="advertiserName" placeholder="Enter advertiser name">
+<label for="commissionType">Commission type</label>
+<select id="commissionType" onchange="updateCommissionFields()">
+<option value="fixed">Fixed CPA</option>
+<option value="percentage">Percentage</option>
+</select>
 
-      <label for="campaignDescription">Description</label>
-      <textarea id="campaignDescription" placeholder="Describe the campaign"></textarea>
+<div id="fixedField">
+<label for="fixedAmount">Fixed amount (ZAR)</label>
+<input id="fixedAmount" type="number" min="0" step="0.01" placeholder="Example: 100">
+</div>
 
-      <label for="destinationUrl">Destination URL</label>
-      <input id="destinationUrl" type="url" placeholder="https://example.com">
+<div id="percentageField" class="hidden">
+<label for="percentageRate">Percentage rate (%)</label>
+<input id="percentageRate" type="number" min="0" max="100" step="0.01" placeholder="Example: 20">
+</div>
 
-      <label for="commissionType">Commission type</label>
-      <select id="commissionType" onchange="updateCommissionFields()">
-        <option value="fixed">Fixed CPA</option>
-        <option value="percentage">Percentage</option>
-      </select>
+<button id="createCampaignButton" onclick="createCampaign()">Create Campaign</button>
+</div>
 
-      <div id="fixedField">
-        <label for="fixedAmount">Fixed amount (ZAR)</label>
-        <input id="fixedAmount" type="number" min="0" step="0.01" placeholder="Example: 100">
-      </div>
+<div class="card">
+<h3>Campaign Management</h3>
+<button onclick="loadAdmin()">Refresh Campaigns</button>
+<div id="adminCampaigns">Loading campaigns...</div>
+</div>
 
-      <div id="percentageField" class="hidden">
-        <label for="percentageRate">Percentage rate (%)</label>
-        <input id="percentageRate" type="number" min="0" max="100" step="0.01" placeholder="Example: 20">
-      </div>
+<div class="card">
+<h3>Registered Members</h3>
+<div id="adminMembers">Loading members...</div>
+</div>
 
-      <button id="createCampaignButton" onclick="createCampaign()">
-        Create Campaign
-      </button>
-    </div>
+<div class="card">
+<h3>Affiliate Performance Board</h3>
+<div id="affiliatePerformance">Loading affiliate performance...</div>
+</div>
 
-    <div class="card">
-      <h3>Campaign Management</h3>
-      <button onclick="loadAdmin()">Refresh Campaigns</button>
-      <div id="adminCampaigns">Loading campaigns...</div>
-    </div>
-
-    <div class="card">
-      <h3>Registered Members</h3>
-      <div id="adminMembers">Loading members...</div>
-    </div>
-
-    <div class="card">
-      <h3>Affiliate Performance Board</h3>
-      <div id="affiliatePerformance">
-        Loading affiliate performance...
-      </div>
-    </div>
-
-  </section>
-
+</section>
 </div>
 
 <script>
@@ -409,873 +212,670 @@ const SUPABASE_KEY = "sb_publishable_LLiQMeCIIWP_IiQK7Vn7jg_DUKKJAPk";
 
 const YESPLAY_CAMPAIGN_ID = "1c3de827-bd17-459f-a1b6-71736a7b97b3";
 const YESPLAY_REDIRECT_URL =
-  "https://gxdbhavpbzjruhpafqpf.supabase.co/functions/v1/yesplay-redirect";
+"https://gxdbhavpbzjruhpafqpf.supabase.co/functions/v1/yesplay-redirect";
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let currentUser = null;
 let currentProfile = null;
 let performanceChart = null;
-
 let adminMembersCache = [];
 let adminCampaignsCache = [];
 
-function showMessage(message) {
-  const box = document.getElementById("message");
-  box.textContent = message;
-  box.classList.remove("hidden");
+function showMessage(message){
+const box=document.getElementById("message");
+box.textContent=message;
+box.classList.remove("hidden");
 }
 
-function hideMessage() {
-  document.getElementById("message").classList.add("hidden");
+function hideMessage(){
+document.getElementById("message").classList.add("hidden");
 }
 
-function safeText(value) {
-  return value === null || value === undefined ? "-" : String(value);
+function safeText(value){
+return value===null||value===undefined?"-":String(value);
 }
 
 /* START DASHBOARD */
 
-async function startDashboard() {
-  try {
-    const { data: authData, error: authError } =
-      await db.auth.getUser();
+async function startDashboard(){
+try{
+const {data:authData,error:authError}=await db.auth.getUser();
 
-    if (authError || !authData.user) {
-      window.location.href = "auth.html";
-      return;
-    }
+if(authError||!authData.user){
+window.location.href="auth.html";
+return;
+}
 
-    currentUser = authData.user;
+currentUser=authData.user;
+document.getElementById("userEmail").textContent=currentUser.email||"";
 
-    document.getElementById("userEmail").textContent =
-      currentUser.email || "";
+const {data:profile,error:profileError}=await db
+.from("member_profiles")
+.select("*")
+.eq("id",currentUser.id)
+.maybeSingle();
 
-    const { data: profile, error: profileError } = await db
-      .from("member_profiles")
-      .select("*")
-      .eq("id", currentUser.id)
-      .maybeSingle();
+if(profileError)throw new Error("Profile error: "+profileError.message);
+if(!profile)throw new Error("Your member profile was not found.");
 
-    if (profileError) {
-      throw new Error("Profile error: " + profileError.message);
-    }
+currentProfile=profile;
+document.getElementById("loading").classList.add("hidden");
 
-    if (!profile) {
-      throw new Error("Your member profile was not found.");
-    }
+if(String(profile.role||"").toLowerCase()==="admin"){
+document.getElementById("adminArea").classList.remove("hidden");
+await loadAdmin();
+}else{
+document.getElementById("memberArea").classList.remove("hidden");
+await loadMember();
+}
 
-    currentProfile = profile;
-
-    document.getElementById("loading").classList.add("hidden");
-
-    if (String(profile.role || "").toLowerCase() === "admin") {
-      document.getElementById("adminArea").classList.remove("hidden");
-      await loadAdmin();
-    } else {
-      document.getElementById("memberArea").classList.remove("hidden");
-      await loadMember();
-    }
-
-  } catch (error) {
-    document.getElementById("loading").textContent = error.message;
-  }
+}catch(error){
+document.getElementById("loading").textContent=error.message;
+}
 }
 
 /* MEMBER DASHBOARD */
 
-async function loadMember() {
-  const name = currentProfile.full_name ||
-               currentProfile.name ||
-               currentUser.email;
+async function loadMember(){
+const name=currentProfile.full_name||currentProfile.name||currentUser.email;
+document.getElementById("memberName").textContent="Welcome, "+name;
 
-  document.getElementById("memberName").textContent =
-    "Welcome, " + name;
+document.getElementById("memberFtds").textContent="0";
+document.getElementById("memberCommission").textContent="R0";
 
-  document.getElementById("memberFtds").textContent = "0";
-  document.getElementById("memberCommission").textContent = "R0";
-
-  await loadMemberCampaigns();
-  await loadMemberRegistrations();
+await loadMemberCampaigns();
+await loadMemberRegistrations();
 }
 
-/* MEMBER CAMPAIGNS - YESPLAY TRACKING UPDATED */
+/* MEMBER CAMPAIGNS */
 
-async function loadMemberCampaigns() {
-  const area = document.getElementById("memberCampaigns");
+async function loadMemberCampaigns(){
+const area=document.getElementById("memberCampaigns");
+area.textContent="Loading your assigned campaigns...";
 
-  area.textContent = "Loading your assigned campaigns...";
+const {data:assignments,error:assignmentError}=await db
+.from("campaign_assignments")
+.select("campaign_id, referral_code, assignment_status")
+.eq("member_id",currentUser.id);
 
-  const { data: assignments, error: assignmentError } = await db
-    .from("campaign_assignments")
-    .select("campaign_id, referral_code, assignment_status")
-    .eq("member_id", currentUser.id);
+if(assignmentError){
+area.textContent="Could not load assigned campaigns: "+assignmentError.message;
+return;
+}
 
-  if (assignmentError) {
-    area.textContent =
-      "Could not load assigned campaigns: " + assignmentError.message;
-    return;
-  }
+const activeAssignments=(assignments||[]).filter(a=>
+!a.assignment_status||
+String(a.assignment_status).toLowerCase()==="active"
+);
 
-  const activeAssignments = (assignments || []).filter(a =>
-    !a.assignment_status ||
-    String(a.assignment_status).toLowerCase() === "active"
-  );
+const campaignIds=[...new Set(activeAssignments.map(a=>a.campaign_id).filter(Boolean))];
 
-  const campaignIds = [...new Set(
-    activeAssignments
-      .map(a => a.campaign_id)
-      .filter(Boolean)
-  )];
+area.innerHTML="";
 
-  area.innerHTML = "";
+if(!campaignIds.length){
+area.textContent="You do not have any campaigns assigned yet.";
+return;
+}
 
-  if (!campaignIds.length) {
-    area.textContent =
-      "You do not have any campaigns assigned yet.";
-    return;
-  }
+const {data:campaigns,error:campaignError}=await db
+.from("campaigns")
+.select("*")
+.in("id",campaignIds);
 
-  const { data: campaigns, error: campaignError } = await db
-    .from("campaigns")
-    .select("*")
-    .in("id", campaignIds);
+if(campaignError){
+area.textContent="Could not load campaign details: "+campaignError.message;
+return;
+}
 
-  if (campaignError) {
-    area.textContent =
-      "Could not load campaign details: " + campaignError.message;
-    return;
-  }
+(campaigns||[]).forEach(campaign=>{
+const assignment=activeAssignments.find(a=>String(a.campaign_id)===String(campaign.id));
+const code=assignment?.referral_code||currentProfile.referral_code||currentUser.id;
 
-  (campaigns || []).forEach(campaign => {
+const campaignName=String(
+campaign.campaign_name||campaign.name||campaign.partner_name||campaign.advertiser_name||""
+).toLowerCase();
 
-    const assignment = activeAssignments.find(a =>
-      String(a.campaign_id) === String(campaign.id)
-    );
+const isYesPlay=
+String(campaign.id)===YESPLAY_CAMPAIGN_ID||campaignName.includes("yesplay");
 
-    const code = assignment?.referral_code ||
-                 currentProfile.referral_code ||
-                 currentUser.id;
+let link;
 
-    let link;
+if(isYesPlay){
+link=new URL(YESPLAY_REDIRECT_URL);
+link.searchParams.set("ref",code);
+link.searchParams.set("campaign",campaign.id);
+}else{
+link=new URL("index.html",window.location.href);
+link.searchParams.set("ref",code);
+link.searchParams.set("campaign",campaign.id);
+}
 
-    const campaignName = String(
-      campaign.campaign_name ||
-      campaign.name ||
-      campaign.partner_name ||
-      campaign.advertiser_name ||
-      ""
-    ).toLowerCase();
+const item=document.createElement("div");
+item.className="campaign";
 
-    const isYesPlay =
-      String(campaign.id) === YESPLAY_CAMPAIGN_ID ||
-      campaignName.includes("yesplay");
+const title=document.createElement("h4");
+title.textContent=campaign.campaign_name||campaign.name||"Campaign";
 
-    if (isYesPlay) {
+const advertiser=document.createElement("p");
+advertiser.textContent=campaign.advertiser_name||campaign.partner_name||"";
 
-      link = new URL(YESPLAY_REDIRECT_URL);
+const linkField=document.createElement("input");
+linkField.readOnly=true;
+linkField.value=link.toString();
 
-      link.searchParams.set("ref", code);
-      link.searchParams.set("campaign", campaign.id);
+const copyButton=document.createElement("button");
+copyButton.textContent="Copy Referral Link";
+copyButton.addEventListener("click",()=>copyCampaignLink(link.toString()));
 
-    } else {
-
-      link = new URL("index.html", window.location.href);
-
-      link.searchParams.set("ref", code);
-      link.searchParams.set("campaign", campaign.id);
-
-    }
-
-    const item = document.createElement("div");
-    item.className = "campaign";
-
-    const title = document.createElement("h4");
-    title.textContent =
-      campaign.campaign_name || campaign.name || "Campaign";
-
-    const advertiser = document.createElement("p");
-    advertiser.textContent =
-      campaign.advertiser_name || campaign.partner_name || "";
-
-    const linkField = document.createElement("input");
-    linkField.readOnly = true;
-    linkField.value = link.toString();
-
-    const copyButton = document.createElement("button");
-    copyButton.textContent = "Copy Referral Link";
-
-    copyButton.addEventListener("click", () => {
-      copyCampaignLink(link.toString());
-    });
-
-    item.append(title, advertiser, linkField, copyButton);
-    area.appendChild(item);
-  });
+item.append(title,advertiser,linkField,copyButton);
+area.appendChild(item);
+});
 }
 
 /* MEMBER REGISTRATIONS */
 
-async function loadMemberRegistrations() {
+async function loadMemberRegistrations(){
+const {data:registrations,error}=await db
+.from("client_registrations")
+.select("*")
+.eq("member_id",currentUser.id);
 
-  const { data: registrations, error } = await db
-    .from("client_registrations")
-    .select("*")
-    .eq("member_id", currentUser.id);
+if(error){
+showMessage("Registration loading error: "+error.message);
+drawRegistrationGraph([]);
+return;
+}
 
-  if (error) {
-    showMessage("Registration loading error: " + error.message);
-    drawRegistrationGraph([]);
-    return;
-  }
+const rows=registrations||[];
+document.getElementById("memberRegistrations").textContent=rows.length;
 
-  const rows = registrations || [];
+const dateFields=[
+"registered_at","register_at","created_at",
+"registration_date","registered_on","date_registered"
+];
 
-  document.getElementById("memberRegistrations").textContent =
-    rows.length;
+let dateField=null;
 
-  const dateFields = [
-    "register_at",
-    "registered_at",
-    "created_at",
-    "registration_date",
-    "registered_on",
-    "date_registered"
-  ];
+if(rows.length){
+dateField=dateFields.find(field=>
+Object.prototype.hasOwnProperty.call(rows[0],field)&&rows[0][field]
+);
+}
 
-  let dateField = null;
+if(dateField){
+rows.sort((a,b)=>new Date(a[dateField])-new Date(b[dateField]));
+}
 
-  if (rows.length) {
-    dateField = dateFields.find(field =>
-      Object.prototype.hasOwnProperty.call(rows[0], field) &&
-      rows[0][field]
-    );
-  }
-
-  if (dateField) {
-    rows.sort((a, b) =>
-      new Date(a[dateField]) - new Date(b[dateField])
-    );
-  }
-
-  drawRegistrationGraph(rows, dateField);
+drawRegistrationGraph(rows,dateField);
 }
 
 /* MEMBER GRAPH */
 
-function drawRegistrationGraph(registrations, dateField) {
+function drawRegistrationGraph(registrations,dateField){
+const daily={};
 
-  const daily = {};
+if(dateField){
+registrations.forEach(row=>{
+if(!row[dateField])return;
+const key=new Date(row[dateField]).toLocaleDateString();
+daily[key]=(daily[key]||0)+1;
+});
+}
 
-  if (dateField) {
-    registrations.forEach(row => {
-      if (!row[dateField]) return;
+const labels=Object.keys(daily);
+const values=labels.map(label=>daily[label]);
+const canvas=document.getElementById("performanceChart");
 
-      const key = new Date(row[dateField]).toLocaleDateString();
+if(performanceChart)performanceChart.destroy();
 
-      daily[key] = (daily[key] || 0) + 1;
-    });
-  }
-
-  const labels = Object.keys(daily);
-  const values = labels.map(label => daily[label]);
-
-  const canvas = document.getElementById("performanceChart");
-
-  if (performanceChart) {
-    performanceChart.destroy();
-  }
-
-  performanceChart = new Chart(canvas, {
-    type: "line",
-
-    data: {
-      labels: labels.length ? labels : ["Registrations"],
-      datasets: [{
-        label: "Registrations",
-        data: labels.length ? values : [registrations.length],
-        borderColor: "#17c6b2",
-        backgroundColor: "rgba(23,198,178,0.15)",
-        fill: true,
-        tension: 0.3
-      }]
-    },
-
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-
-      plugins: {
-        legend: {
-          labels: { color: "#ffffff" }
-        }
-      },
-
-      scales: {
-        x: {
-          ticks: { color: "#b9c9d8" },
-          grid: {
-            color: "rgba(255,255,255,0.08)"
-          }
-        },
-
-        y: {
-          beginAtZero: true,
-          ticks: {
-            color: "#b9c9d8",
-            precision: 0
-          },
-          grid: {
-            color: "rgba(255,255,255,0.08)"
-          }
-        }
-      }
-    }
-  });
+performanceChart=new Chart(canvas,{
+type:"line",
+data:{
+labels:labels.length?labels:["Registrations"],
+datasets:[{
+label:"Registrations",
+data:labels.length?values:[registrations.length],
+borderColor:"#17c6b2",
+backgroundColor:"rgba(23,198,178,0.15)",
+fill:true,
+tension:.3
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{labels:{color:"#ffffff"}}},
+scales:{
+x:{ticks:{color:"#b9c9d8"},grid:{color:"rgba(255,255,255,0.08)"}},
+y:{beginAtZero:true,ticks:{color:"#b9c9d8",precision:0},grid:{color:"rgba(255,255,255,0.08)"}}
+}
+}
+});
 }
 
 /* COPY LINK */
 
-async function copyCampaignLink(link) {
-  try {
-    await navigator.clipboard.writeText(link);
-    showMessage("Your campaign referral link has been copied.");
-
-  } catch (error) {
-    const field = document.createElement("textarea");
-
-    field.value = link;
-    document.body.appendChild(field);
-    field.select();
-    document.execCommand("copy");
-    field.remove();
-
-    showMessage("Your campaign referral link has been copied.");
-  }
+async function copyCampaignLink(link){
+try{
+await navigator.clipboard.writeText(link);
+showMessage("Your campaign referral link has been copied.");
+}catch(error){
+const field=document.createElement("textarea");
+field.value=link;
+document.body.appendChild(field);
+field.select();
+document.execCommand("copy");
+field.remove();
+showMessage("Your campaign referral link has been copied.");
+}
 }
 
 /* ADMIN DASHBOARD */
 
-async function loadAdmin() {
-  hideMessage();
+async function loadAdmin(){
+hideMessage();
 
-  const { count: memberCount, error: memberCountError } =
-    await db
-      .from("member_profiles")
-      .select("*", { count: "exact", head: true });
+const {count:memberCount,error:memberCountError}=await db
+.from("member_profiles")
+.select("*",{count:"exact",head:true});
 
-  document.getElementById("adminMemberCount").textContent =
-    memberCountError ? "Error" : (memberCount ?? 0);
+document.getElementById("adminMemberCount").textContent=
+memberCountError?"Error":(memberCount??0);
 
-  const { data: campaigns, error: campaignError } = await db
-    .from("campaigns")
-    .select("*")
-    .order("created_at", { ascending: false });
+const {data:campaigns,error:campaignError}=await db
+.from("campaigns")
+.select("*")
+.order("created_at",{ascending:false});
 
-  const campaignArea = document.getElementById("adminCampaigns");
+const campaignArea=document.getElementById("adminCampaigns");
+campaignArea.innerHTML="";
 
-  campaignArea.innerHTML = "";
+if(campaignError){
+campaignArea.textContent="Campaign loading error: "+campaignError.message;
+document.getElementById("adminCampaignCount").textContent="Error";
+adminCampaignsCache=[];
+}else{
+adminCampaignsCache=campaigns||[];
+document.getElementById("adminCampaignCount").textContent=adminCampaignsCache.length;
 
-  if (campaignError) {
-    campaignArea.textContent =
-      "Campaign loading error: " + campaignError.message;
+if(!campaigns||!campaigns.length){
+campaignArea.textContent="No campaigns have been created yet.";
+}else{
+campaigns.forEach(campaign=>{
+const item=document.createElement("div");
+item.className="campaign";
 
-    document.getElementById("adminCampaignCount").textContent = "Error";
+const title=document.createElement("h4");
+title.textContent=campaign.campaign_name||campaign.name||"Campaign";
 
-    adminCampaignsCache = [];
+const partner=document.createElement("p");
+partner.textContent="Advertiser: "+(campaign.advertiser_name||campaign.partner_name||"-");
 
-  } else {
+const status=document.createElement("p");
+status.textContent="Status: "+(campaign.status||"-");
 
-    adminCampaignsCache = campaigns || [];
+const commission=document.createElement("p");
+commission.textContent="Commission: "+
+(campaign.commission_type||"-")+" / "+
+(campaign.commission_value??campaign.fixed_amount??campaign.percentage_rate??"-");
 
-    document.getElementById("adminCampaignCount").textContent =
-      adminCampaignsCache.length;
+item.append(title,partner,status,commission);
+campaignArea.appendChild(item);
+});
+}
+}
 
-    if (!campaigns || !campaigns.length) {
-      campaignArea.textContent =
-        "No campaigns have been created yet.";
+const {data:members,error:membersError}=await db
+.from("member_profiles")
+.select("*")
+.order("created_at",{ascending:false});
 
-    } else {
+const membersArea=document.getElementById("adminMembers");
+membersArea.innerHTML="";
 
-      campaigns.forEach(campaign => {
+if(membersError){
+membersArea.textContent="Member loading error: "+membersError.message;
+adminMembersCache=[];
+}else if(!members||!members.length){
+membersArea.textContent="No members found.";
+adminMembersCache=[];
+}else{
+adminMembersCache=members.filter(member=>
+String(member.role||"member").toLowerCase()!=="admin"
+);
 
-        const item = document.createElement("div");
-        item.className = "campaign";
+const wrap=document.createElement("div");
+wrap.className="table-wrap";
 
-        const title = document.createElement("h4");
-        title.textContent =
-          campaign.campaign_name || campaign.name || "Campaign";
+const table=document.createElement("table");
+const header=document.createElement("tr");
 
-        const partner = document.createElement("p");
-        partner.textContent =
-          "Advertiser: " +
-          (campaign.advertiser_name || campaign.partner_name || "-");
+["Name","Email","Role"].forEach(label=>{
+const th=document.createElement("th");
+th.textContent=label;
+header.appendChild(th);
+});
 
-        const status = document.createElement("p");
-        status.textContent =
-          "Status: " +
-          (campaign.campaign_status || campaign.status || "-");
+table.appendChild(header);
 
-        const commission = document.createElement("p");
-        commission.textContent =
-          "Commission: " +
-          (campaign.commision_type || "-") + " / " +
-          (campaign.commision_value ?? "-");
+members.forEach(member=>{
+const tr=document.createElement("tr");
 
-        item.append(title, partner, status, commission);
-        campaignArea.appendChild(item);
-      });
-    }
-  }
+[
+member.full_name||member.name||"-",
+member.email||"-",
+member.role||"member"
+].forEach(value=>{
+const td=document.createElement("td");
+td.textContent=safeText(value);
+tr.appendChild(td);
+});
 
-  const { data: members, error: membersError } = await db
-    .from("member_profiles")
-    .select("*")
-    .order("created_at", { ascending: false });
+table.appendChild(tr);
+});
 
-  const membersArea = document.getElementById("adminMembers");
+wrap.appendChild(table);
+membersArea.appendChild(wrap);
+}
 
-  membersArea.innerHTML = "";
-
-  if (membersError) {
-
-    membersArea.textContent =
-      "Member loading error: " + membersError.message;
-
-    adminMembersCache = [];
-
-  } else if (!members || !members.length) {
-
-    membersArea.textContent = "No members found.";
-    adminMembersCache = [];
-
-  } else {
-
-    adminMembersCache = members.filter(member =>
-      String(member.role || "member").toLowerCase() !== "admin"
-    );
-
-    const wrap = document.createElement("div");
-    wrap.className = "table-wrap";
-
-    const table = document.createElement("table");
-    const header = document.createElement("tr");
-
-    ["Name", "Email", "Role"].forEach(label => {
-      const th = document.createElement("th");
-      th.textContent = label;
-      header.appendChild(th);
-    });
-
-    table.appendChild(header);
-
-    members.forEach(member => {
-
-      const tr = document.createElement("tr");
-
-      [
-        member.full_name || member.name || "-",
-        member.email || "-",
-        member.role || "member"
-      ].forEach(value => {
-
-        const td = document.createElement("td");
-        td.textContent = safeText(value);
-        tr.appendChild(td);
-
-      });
-
-      table.appendChild(tr);
-    });
-
-    wrap.appendChild(table);
-    membersArea.appendChild(wrap);
-  }
-
-  populateAssignmentOptions();
-
-  await loadAffiliatePerformance();
+populateAssignmentOptions();
+await loadAffiliatePerformance();
 }
 
 /* ADMIN DROPDOWNS */
 
-function populateAssignmentOptions() {
+function populateAssignmentOptions(){
+const memberSelect=document.getElementById("assignMember");
+const campaignSelect=document.getElementById("assignCampaign");
 
-  const memberSelect = document.getElementById("assignMember");
-  const campaignSelect = document.getElementById("assignCampaign");
+memberSelect.innerHTML='<option value="">Select affiliate by email</option>';
 
-  memberSelect.innerHTML =
-    '<option value="">Select affiliate by email</option>';
+adminMembersCache.forEach(member=>{
+const option=document.createElement("option");
+option.value=member.id;
+option.textContent=member.email||member.full_name||member.name||member.id;
+memberSelect.appendChild(option);
+});
 
-  adminMembersCache.forEach(member => {
+campaignSelect.innerHTML='<option value="">Select campaign</option>';
 
-    const option = document.createElement("option");
-
-    option.value = member.id;
-
-    option.textContent =
-      member.email ||
-      member.full_name ||
-      member.name ||
-      member.id;
-
-    memberSelect.appendChild(option);
-  });
-
-  campaignSelect.innerHTML =
-    '<option value="">Select campaign</option>';
-
-  adminCampaignsCache.forEach(campaign => {
-
-    const option = document.createElement("option");
-
-    option.value = campaign.id;
-
-    option.textContent =
-      campaign.campaign_name ||
-      campaign.name ||
-      "Campaign";
-
-    campaignSelect.appendChild(option);
-  });
+adminCampaignsCache.forEach(campaign=>{
+const option=document.createElement("option");
+option.value=campaign.id;
+option.textContent=campaign.campaign_name||campaign.name||"Campaign";
+campaignSelect.appendChild(option);
+});
 }
 
 /* ASSIGN CAMPAIGN */
 
-async function assignCampaign() {
+async function assignCampaign(){
+hideMessage();
 
-  hideMessage();
+const memberId=document.getElementById("assignMember").value;
+const campaignId=document.getElementById("assignCampaign").value;
+const button=document.getElementById("assignButton");
 
-  const memberId = document.getElementById("assignMember").value;
-  const campaignId = document.getElementById("assignCampaign").value;
+if(!memberId||!campaignId){
+showMessage("Please select an affiliate and a campaign.");
+return;
+}
 
-  const button = document.getElementById("assignButton");
+const member=adminMembersCache.find(m=>String(m.id)===String(memberId));
 
-  if (!memberId || !campaignId) {
-    showMessage("Please select an affiliate and a campaign.");
-    return;
-  }
+if(!member){
+showMessage("Affiliate could not be found.");
+return;
+}
 
-  const member = adminMembersCache.find(m =>
-    String(m.id) === String(memberId)
-  );
+button.disabled=true;
+button.textContent="Assigning...";
 
-  if (!member) {
-    showMessage("Affiliate could not be found.");
-    return;
-  }
+try{
+const {data:existing,error:checkError}=await db
+.from("campaign_assignments")
+.select("id, assignment_status")
+.eq("member_id",memberId)
+.eq("campaign_id",campaignId);
 
-  button.disabled = true;
-  button.textContent = "Assigning...";
+if(checkError)throw checkError;
 
-  try {
+const existingAssignment=(existing||[]).find(a=>
+String(a.assignment_status||"active").toLowerCase()==="active"
+);
 
-    const { data: existing, error: checkError } = await db
-      .from("campaign_assignments")
-      .select("id, assignment_status")
-      .eq("member_id", memberId)
-      .eq("campaign_id", campaignId);
+if(existingAssignment){
+showMessage("This campaign is already assigned to this affiliate.");
+return;
+}
 
-    if (checkError) throw checkError;
+const inactiveAssignment=(existing||[]).find(a=>
+String(a.assignment_status||"").toLowerCase()!=="active"
+);
 
-    const existingAssignment = (existing || []).find(a =>
-      String(a.assignment_status || "active").toLowerCase() === "active"
-    );
+const referralCode=member.referral_code||member.id;
+let saveResult;
 
-    if (existingAssignment) {
-      showMessage("This campaign is already assigned to this affiliate.");
-      return;
-    }
+if(inactiveAssignment){
+saveResult=await db
+.from("campaign_assignments")
+.update({
+referral_code:referralCode,
+assignment_status:"active"
+})
+.eq("id",inactiveAssignment.id);
+}else{
+saveResult=await db
+.from("campaign_assignments")
+.insert({
+member_id:memberId,
+campaign_id:campaignId,
+referral_code:referralCode,
+assignment_status:"active"
+});
+}
 
-    const inactiveAssignment = (existing || []).find(a =>
-      String(a.assignment_status || "").toLowerCase() !== "active"
-    );
+if(saveResult.error)throw saveResult.error;
 
-    const referralCode = member.referral_code || member.id;
+const campaign=adminCampaignsCache.find(c=>String(c.id)===String(campaignId));
 
-    let saveResult;
+showMessage(
+"Campaign successfully assigned to "+
+(member.email||member.full_name||member.name||"affiliate")+
+" - "+(campaign?.campaign_name||campaign?.name||"Campaign")
+);
 
-    if (inactiveAssignment) {
-
-      saveResult = await db
-        .from("campaign_assignments")
-        .update({
-          referral_code: referralCode,
-          assignment_status: "active"
-        })
-        .eq("id", inactiveAssignment.id);
-
-    } else {
-
-      saveResult = await db
-        .from("campaign_assignments")
-        .insert({
-          member_id: memberId,
-          campaign_id: campaignId,
-          referral_code: referralCode,
-          assignment_status: "active"
-        });
-    }
-
-    if (saveResult.error) throw saveResult.error;
-
-    const campaign = adminCampaignsCache.find(c =>
-      String(c.id) === String(campaignId)
-    );
-
-    showMessage(
-      "Campaign successfully assigned to " +
-      (member.email || member.full_name || member.name || "affiliate") +
-      " - " +
-      (campaign?.campaign_name || campaign?.name || "Campaign")
-    );
-
-  } catch (error) {
-
-    showMessage("ASSIGNMENT ERROR: " + error.message);
-
-  } finally {
-
-    button.disabled = false;
-    button.textContent = "Assign Campaign";
-  }
+}catch(error){
+showMessage("ASSIGNMENT ERROR: "+error.message);
+}finally{
+button.disabled=false;
+button.textContent="Assign Campaign";
+}
 }
 
 /* AFFILIATE PERFORMANCE BOARD */
 
-async function loadAffiliatePerformance() {
+async function loadAffiliatePerformance(){
+const area=document.getElementById("affiliatePerformance");
+area.textContent="Loading affiliate performance...";
 
-  const area = document.getElementById("affiliatePerformance");
+const {data:members,error:memberError}=await db
+.from("member_profiles")
+.select("*");
 
-  area.textContent = "Loading affiliate performance...";
+if(memberError){
+area.textContent="Member error: "+memberError.message;
+return;
+}
 
-  const { data: members, error: memberError } = await db
-    .from("member_profiles")
-    .select("*");
+const affiliates=(members||[]).filter(member=>
+String(member.role||"member").toLowerCase()!=="admin"
+);
 
-  if (memberError) {
-    area.textContent = "Member error: " + memberError.message;
-    return;
-  }
+const {data:registrations,error:registrationError}=await db
+.from("client_registrations")
+.select("member_id");
 
-  const affiliates = (members || []).filter(member =>
-    String(member.role || "member").toLowerCase() !== "admin"
-  );
+if(registrationError){
+area.textContent="Registration error: "+registrationError.message;
+return;
+}
 
-  const { data: registrations, error: registrationError } = await db
-    .from("client_registrations")
-    .select("member_id");
+const counts={};
 
-  if (registrationError) {
-    area.textContent =
-      "Registration error: " + registrationError.message;
-    return;
-  }
+(registrations||[]).forEach(registration=>{
+const id=registration.member_id;
+counts[id]=(counts[id]||0)+1;
+});
 
-  const counts = {};
+area.innerHTML="";
 
-  (registrations || []).forEach(registration => {
+if(!affiliates.length){
+area.textContent="No affiliates found.";
+return;
+}
 
-    const id = registration.member_id;
+const wrap=document.createElement("div");
+wrap.className="table-wrap";
 
-    counts[id] = (counts[id] || 0) + 1;
-  });
+const table=document.createElement("table");
+const header=document.createElement("tr");
 
-  area.innerHTML = "";
+["Affiliate","Registrations","FTDs","Commission"].forEach(label=>{
+const th=document.createElement("th");
+th.textContent=label;
+header.appendChild(th);
+});
 
-  if (!affiliates.length) {
-    area.textContent = "No affiliates found.";
-    return;
-  }
+table.appendChild(header);
 
-  const wrap = document.createElement("div");
-  wrap.className = "table-wrap";
+affiliates.forEach(member=>{
+const tr=document.createElement("tr");
 
-  const table = document.createElement("table");
+[
+member.email||member.full_name||member.name||"-",
+counts[member.id]||0,
+0,
+"R0"
+].forEach(value=>{
+const td=document.createElement("td");
+td.textContent=safeText(value);
+tr.appendChild(td);
+});
 
-  const header = document.createElement("tr");
+table.appendChild(tr);
+});
 
-  [
-    "Affiliate",
-    "Registrations",
-    "FTDs",
-    "Commission"
-  ].forEach(label => {
-
-    const th = document.createElement("th");
-    th.textContent = label;
-    header.appendChild(th);
-
-  });
-
-  table.appendChild(header);
-
-  affiliates.forEach(member => {
-
-    const tr = document.createElement("tr");
-
-    const values = [
-      member.email || member.full_name || member.name || "-",
-      counts[member.id] || 0,
-      0,
-      "R0"
-    ];
-
-    values.forEach(value => {
-
-      const td = document.createElement("td");
-      td.textContent = safeText(value);
-      tr.appendChild(td);
-
-    });
-
-    table.appendChild(tr);
-  });
-
-  wrap.appendChild(table);
-  area.appendChild(wrap);
+wrap.appendChild(table);
+area.appendChild(wrap);
 }
 
 /* COMMISSION FIELDS */
 
-function updateCommissionFields() {
+function updateCommissionFields(){
+const type=document.getElementById("commissionType").value;
 
-  const type = document.getElementById("commissionType").value;
+document.getElementById("fixedField")
+.classList.toggle("hidden",type!=="fixed");
 
-  document.getElementById("fixedField")
-    .classList.toggle("hidden", type !== "fixed");
-
-  document.getElementById("percentageField")
-    .classList.toggle("hidden", type !== "percentage");
+document.getElementById("percentageField")
+.classList.toggle("hidden",type!=="percentage");
 }
 
 /* CREATE CAMPAIGN */
 
-async function createCampaign() {
+async function createCampaign(){
+hideMessage();
 
-  hideMessage();
+const name=document.getElementById("campaignName").value.trim();
+const advertiser=document.getElementById("advertiserName").value.trim();
+const description=document.getElementById("campaignDescription").value.trim();
+const destination=document.getElementById("destinationUrl").value.trim();
+const type=document.getElementById("commissionType").value;
 
-  const name = document.getElementById("campaignName").value.trim();
-  const advertiser = document.getElementById("advertiserName").value.trim();
-  const description = document.getElementById("campaignDescription").value.trim();
-  const destination = document.getElementById("destinationUrl").value.trim();
+const fixed=Number(document.getElementById("fixedAmount").value||0);
+const percentage=Number(document.getElementById("percentageRate").value||0);
+const button=document.getElementById("createCampaignButton");
 
-  const type = document.getElementById("commissionType").value;
+if(!name||!advertiser||!destination){
+showMessage("Please enter the campaign name, advertiser and destination URL.");
+return;
+}
 
-  const fixed = Number(
-    document.getElementById("fixedAmount").value || 0
-  );
+if(!/^https?:\/\//i.test(destination)){
+showMessage("Please enter a valid destination URL.");
+return;
+}
 
-  const percentage = Number(
-    document.getElementById("percentageRate").value || 0
-  );
+if(type==="fixed"&&fixed<=0){
+showMessage("Please enter a fixed commission amount greater than zero.");
+return;
+}
 
-  const button = document.getElementById("createCampaignButton");
+if(type==="percentage"&&(percentage<=0||percentage>100)){
+showMessage("Please enter a percentage between 0 and 100.");
+return;
+}
 
-  if (!name || !advertiser || !destination) {
-    showMessage(
-      "Please enter the campaign name, advertiser and destination URL."
-    );
-    return;
-  }
+button.disabled=true;
+button.textContent="Creating...";
 
-  if (!/^https?:\/\//i.test(destination)) {
-    showMessage("Please enter a valid destination URL.");
-    return;
-  }
+try{
+const amount=type==="percentage"?percentage:fixed;
 
-  if (type === "fixed" && fixed <= 0) {
-    showMessage("Please enter a fixed commission amount greater than zero.");
-    return;
-  }
+const {error}=await db
+.from("campaigns")
+.insert({
+name:name,
+partner_name:advertiser,
+description:description,
+destination_url:destination,
+commission_type:type,
+commission_value:amount,
+status:"active",
+campaign_name:name,
+advertiser_name:advertiser,
+fixed_amount:type==="fixed"?fixed:0,
+percentage_rate:type==="percentage"?percentage:0
+});
 
-  if (type === "percentage" &&
-      (percentage <= 0 || percentage > 100)) {
+if(error){
+showMessage("CAMPAIGN ERROR: "+error.message+" | Code: "+error.code);
+return;
+}
 
-    showMessage("Please enter a percentage between 0 and 100.");
-    return;
-  }
+showMessage("Campaign created successfully!");
 
-  button.disabled = true;
-  button.textContent = "Creating...";
+[
+"campaignName",
+"advertiserName",
+"campaignDescription",
+"destinationUrl",
+"fixedAmount",
+"percentageRate"
+].forEach(id=>{
+document.getElementById(id).value="";
+});
 
-  try {
+await loadAdmin();
 
-    const amount = type === "percentage" ? percentage : fixed;
-
-    const { error } = await db
-      .from("campaigns")
-      .insert({
-
-        name: name,
-        partner_name: advertiser,
-        description: description,
-        destination_url: destination,
-
-        commision_type: type,
-        commision_value: amount,
-
-        status: "active",
-        campaign_status: "active",
-
-        campaign_name: name,
-        advertiser_name: advertiser,
-
-        fixed_amount: type === "fixed" ? fixed : 0,
-        percentage_rate: type === "percentage" ? percentage : 0
-
-      });
-
-    if (error) {
-      showMessage(
-        "CAMPAIGN ERROR: " +
-        error.message +
-        " | Code: " +
-        error.code
-      );
-      return;
-    }
-
-    showMessage("Campaign created successfully!");
-
-    [
-      "campaignName",
-      "advertiserName",
-      "campaignDescription",
-      "destinationUrl",
-      "fixedAmount",
-      "percentageRate"
-    ].forEach(id => {
-      document.getElementById(id).value = "";
-    });
-
-    await loadAdmin();
-
-  } catch (error) {
-
-    showMessage("CAMPAIGN ERROR: " + error.message);
-
-  } finally {
-
-    button.disabled = false;
-    button.textContent = "Create Campaign";
-  }
+}catch(error){
+showMessage("CAMPAIGN ERROR: "+error.message);
+}finally{
+button.disabled=false;
+button.textContent="Create Campaign";
+}
 }
 
 /* LOGOUT */
 
-async function logout() {
-
-  await db.auth.signOut();
-
-  window.location.href = "auth.html";
+async function logout(){
+await db.auth.signOut();
+window.location.href="auth.html";
 }
 
 startDashboard();
-
 </script>
 
 </body>
